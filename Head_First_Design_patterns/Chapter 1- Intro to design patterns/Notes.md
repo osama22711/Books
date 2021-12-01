@@ -3,5 +3,4 @@
 2. Program to an interface, not an implementation.
 
 
-
 > Reached page: <span style="color: yellow;">21</span>
