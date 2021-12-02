@@ -1,3 +1,4 @@
+package FlyBehavior;
 
 public class FlyRocketPowered implements FlyBehavior {
 	@Override

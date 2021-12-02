@@ -1,3 +1,6 @@
+package Client;
+import FlyBehavior.FlyNoWay;
+import QuackBehavior.Quack;
 
 public class ModelDuck extends Duck {
 	public ModelDuck() {

@@ -1,3 +1,5 @@
+package Client;
+import QuackBehavior.QuackBehavior;
 
 public class MuteQuack implements QuackBehavior {
 
