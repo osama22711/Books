@@ -31,4 +31,4 @@
    * Patterns provide a shared language that can maximize the value of your communication with other developer.
 
 ----
-> Reached page: <span style="color: yellow;">58</span>
+> Reached page: <span style="color: yellow;">64</span>
