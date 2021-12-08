@@ -5,6 +5,7 @@
 * <span style="color: yellow">Polymorphism</span> is the ability of a variable, function or object to take on multiple forms.
 * <span style="color: yellow">Inheritance</span> is the mechanism of basing an object or class upon another object or class.
 * <span style="color: yellow">Loose-coupling</span> in which components are weakly associated (have breakable relationship) with each other, and so, changes in one component least affect existence or performance of another component. Loose coupling is the opposite of <span style="color: orange">tight coupling</span>, Loosely coupled designs allow us to build flexible OO systems that can handle change because they minimize the interdependency between objects.
+* <span style="color: yellow">Delegation</span> refers generally to one entity passing something to another entity
   
 ----
 # OO principles
@@ -12,11 +13,13 @@
 2. Program to an interface, not an implementation.
 3. Favor composition over inheritance
 4. Strive for loosely coupled designs between objects that interact.
+5. Classes should be open for extension, but closed for modifications (as the <span style="color: orange">design pattern guru</span> said: code should be closed to change like the lotus flower in the evening, yet open to extension like the lotus flower in the morning)
 
 ----
 # OO Patterns
 * <span style="color: yellow">The Strategy Pattern</span>: defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it. [ We used it in <span style="color: orange">Testing Duck behaviors</span> application in chapter 1]
 * <span style="color: yellow">The Observer Pattern</span>: defines a one-to-many dependency between objects so that when one object changes state, all of its dependents are notified and updated automatically.
+* <span style="color: yellow">The Decorator Pattern</span>: attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
 
 # Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
@@ -41,4 +44,4 @@
    * You'll also find the pattern in many other places, including JavaBeans and RMI.
 
 ----
-> Reached page: <span style="color: yellow;">79</span>
+> Reached page: <span style="color: yellow;">92</span>
