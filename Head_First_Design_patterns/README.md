@@ -9,6 +9,11 @@
   - [OO principles](#oo-principles)
   - [OO Patterns](#oo-patterns)
   - [Bullet points](#bullet-points)
+- [Design Patterns](#design-patterns)
+  - [Types of patterns](#types-of-patterns)
+    - [1. Creational](#1-creational)
+    - [2. Structural](#2-structural)
+    - [3. Behavioral](#3-behavioral)
 
 
 # ChatGPT Q&A
@@ -57,6 +62,7 @@ It litterly explains everything that a reader would need e.g. who this book for,
 they even talked about their method of writing the book and, how can you best grasp on the information
 
 # Notes from the book
+
 ## OO Basics
 * <span style="color: yellow">Composition</span> describes a class that refrences one or more objects of other classes in instance variables.
 * <span style="color: yellow">Abstraction</span> is a general idea rather than one relating to a particular object, person, or situation.
@@ -111,6 +117,84 @@ they even talked about their method of writing the book and, how can you best gr
    * You can wrap a component with any number of decorators.
    * Decorators are typically transparent to the client of the component; that is, unless the client is relying on the component's concrete type.
    * Decorators can result in many small objects in our design, and overuse can be complex.
+
+# Design Patterns
+There are alot of design patterns out there in the world
+1. [Original foundational patterns (GoF patterns)](http://cmoulliard.github.io/gof%20patterns/design-patterns-quick-reference)
+2. Sun's J2EE patterns
+3. JSP patterns
+4. [Architectural patterns](http://www.tellmehow.co/top-10-programming-architectural-patterns/)
+5. Game design patterns
+
+## Types of patterns
+### 1. Creational
+
+   **Purpose**: Creational design patterns focus on the process of object creation. They provide mechanisms for creating objects in a way that is flexible, efficient, and independent of the system's architecture.
+
+   **Examples**: Some common creational design patterns include the Singleton, Factory Method, Abstract Factory, Builder, and Prototype patterns.
+
+   **Use Cases**:
+
+   1. Singleton: Ensures that a class has only one instance and provides a global point of access to that instance.
+
+   2. Factory Method: Defines an interface for creating an object but allows subclasses to alter the type of objects that will be created.
+
+   3. Abstract Factory: Provides an interface for creating families of related or dependent objects without specifying their concrete classes.
+
+   4. Builder: Separates the construction of a complex object from its representation, allowing the same construction process to create different representations.
+
+   5. Prototype: Creates new objects by copying an existing object, known as the prototype, and customizing it.
+
+
+### 2. Structural
+
+   **Purpose**: Structural design patterns deal with the composition of classes or objects. They help define how objects and classes can be structured to form larger, more complex structures while keeping the system flexible and efficient.
+
+   **Examples**: Some common structural design patterns include the Adapter, Bridge, Composite, Decorator, Facade, Flyweight, and Proxy patterns.
+    
+   **Use Cases**:
+   1. Adapter: Allows incompatible interfaces to work together by providing a wrapper around one of the interfaces.
+   
+   2. Bridge: Separates an object's abstraction from its implementation, allowing both to vary independently.
+   
+   3. Composite: Composes objects into tree structures to represent part-whole hierarchies. Clients can treat individual objects and compositions of objects uniformly.
+
+   4. Decorator: Attaches additional responsibilities to objects dynamically, providing a flexible alternative to subclassing for extending functionality.
+   
+   5. Facade: Provides a simplified, high-level interface to a complex subsystem, making it easier to use.
+   
+   6. Flyweight: Minimizes memory usage or computational expenses by sharing as much as possible with similar objects.
+   
+   7. Proxy: Provides a surrogate or placeholder for another object to control access to it.
+   
+### 3. Behavioral
+
+**Purpose**: Behavioral design patterns focus on how objects interact and communicate with each other. They define the patterns of communication and collaboration between objects to manage responsibilities and behaviors effectively.
+
+**Examples**: Some common behavioral design patterns include the Observer, Strategy, Command, Chain of Responsibility, Interpreter, State, and Visitor patterns.
+
+**Use Cases**:
+
+1. Observer: Defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.
+   
+2. Strategy: Defines a family of algorithms, encapsulates each one, and makes them interchangeable. Clients can choose the appropriate algorithm to use.
+   
+3. Command: Encapsulates a request as an object, thereby allowing for parameterization of clients with queues, requests, and operations.
+   
+4. Chain of Responsibility: Passes a request along a chain of handlers. Each handler decides whether to process the request or pass it to the next handler in the chain.
+   
+5. Interpreter: Defines a grammar for interpreting a language and provides an interpreter for evaluating expressions in that language.
+   
+6. State: Allows an object to alter its behavior when its internal state changes. The object will appear to change its class.
+   
+7. Visitor: Represents an operation to be performed on elements of an object structure. It lets you define a new operation without changing the classes of the elements.
+
+---
+
+In summary, creational design patterns deal with object creation, structural design patterns deal with class and object composition, and behavioral design patterns focus on object interactions and responsibilities. These patterns serve different purposes in software design and can be combined as needed to solve complex problems and create maintainable and scalable software.
+
+![Types of patterns](types-of-patterns.png)
+
 
 ----
 > Reached page: <span style="color: yellow;">109</span>
