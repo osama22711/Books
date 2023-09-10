@@ -1,4 +1,63 @@
-# OO Basics
+# Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [ChatGPT Q\&A](#chatgpt-qa)
+- [Self reflection on the book](#self-reflection-on-the-book)
+  - [intro](#intro)
+- [Notes from the book](#notes-from-the-book)
+  - [OO Basics](#oo-basics)
+  - [OO principles](#oo-principles)
+  - [OO Patterns](#oo-patterns)
+  - [Bullet points](#bullet-points)
+
+
+# ChatGPT Q&A
+1. **Do you suggest reading "Head first design patterns" book for a web developer in 2023 that uses dotnet and angular as a fullstack technologies?**
+
+    "Head First Design Patterns" is a well-regarded book for learning design patterns, and it can be valuable for web developers working with .NET and Angular or any other technology stack. Design patterns are not tied to specific programming languages or frameworks; they are general principles that can be applied across various contexts. Here are some reasons why you might consider reading this book:
+    
+    Foundation of Software Design: Understanding design patterns is essential for writing clean, maintainable, and scalable code. These principles can be applied to any technology stack, including .NET and Angular.
+    
+    Common Language: The book presents design patterns in a beginner-friendly and engaging way, making it accessible even if you are new to the concept.
+    
+    Applicability: While the book doesn't focus specifically on .NET or Angular, the patterns it covers are applicable to these technologies. You can apply the principles learned to improve your code quality and architecture in your full-stack development projects.
+    
+    Transferable Skills: Gaining a strong understanding of design patterns can make you a better developer, regardless of the specific technologies you work with. It's a skill set that can benefit you throughout your career.
+    
+    Problem-Solving: Design patterns are often solutions to common software development problems. Learning these patterns can help you identify and solve similar problems in your own projects.
+    
+    Interview Preparation: Knowledge of design patterns is often tested in technical interviews, so reading this book can be beneficial if you're considering job interviews in the future.
+
+2. **When should I read it?**
+    
+    Deciding when to read "Head First Design Patterns" or any book on design patterns largely depends on your current level of expertise and your immediate needs as a web developer working with .NET and Angular. Here are some considerations to help you determine the right time to read it:
+
+   1. Foundational Knowledge: If you are relatively new to software development or haven't had exposure to design patterns, reading the book early in your development journey can provide a solid foundation in software design principles.
+    
+   2. Intermediate Developer: If you have some experience as a web developer but haven't delved deeply into design patterns, it's a good time to pick up the book. Design patterns can significantly enhance your coding skills and the quality of your projects.
+    
+   3. Project Complexity: If you are working on increasingly complex projects or find that your codebase is becoming harder to maintain, it may be an indication that you should start learning design patterns. They can help you manage complexity effectively.
+    
+   4. Interview Preparation: If you plan to interview for new positions in the near future, it's a good idea to read the book before interviews. Design patterns are often discussed in technical interviews, and having a solid understanding can be advantageous.
+    
+   5. Continuous Learning: If you are committed to ongoing professional development, consider reading the book as part of your continuous learning process. Even experienced developers can benefit from revisiting design patterns to refresh their knowledge.
+    
+   6. Project Needs: If you encounter specific challenges in your current projects that design patterns can address, it might be a good time to learn about those patterns relevant to your immediate needs.
+    
+   7. Learning Style: Consider your personal learning style. If you find the book's approach engaging and effective for your learning style, it can be a valuable resource at any stage of your development career.
+    
+    Remember that learning design patterns is not an all-or-nothing endeavor. You can start with the basics and gradually explore more advanced patterns as you gain experience. Additionally, it's crucial to apply what you learn in real-world projects to solidify your understanding.
+    
+    In summary, there's no one-size-fits-all answer to when you should read "Head First Design Patterns." Assess your current knowledge, experience, and goals as a web developer, and use that information to determine the best time to dive into the book. Ultimately, the earlier you start learning about design patterns, the more they can benefit your career and the quality of your software projects.
+
+# Self reflection on the book
+## intro
+Intro is really amazing! one of the best intro I've ever read in a book.
+It litterly explains everything that a reader would need e.g. who this book for, how to best learn, how to stimulate your brain to do its best (meta-cognition, adding pictures, conversational style).
+they even talked about their method of writing the book and, how can you best grasp on the information
+
+# Notes from the book
+## OO Basics
 * <span style="color: yellow">Composition</span> describes a class that refrences one or more objects of other classes in instance variables.
 * <span style="color: yellow">Abstraction</span> is a general idea rather than one relating to a particular object, person, or situation.
 * <span style="color: yellow">Encapsulation</span> is the restricting of direct access to some of an object's components.
@@ -8,7 +67,7 @@
 * <span style="color: yellow">Delegation</span> refers generally to one entity passing something to another entity
   
 ----
-# OO principles
+## OO principles
 1. Identify the aspects of your application that vary and seperate them from what stays the same
 2. Program to an interface, not an implementation.
 3. Favor composition over inheritance
@@ -16,12 +75,12 @@
 5. Classes should be open for extension, but closed for modifications (as the <span style="color: orange">design pattern guru</span> said: code should be closed to change like the lotus flower in the evening, yet open to extension like the lotus flower in the morning)
 
 ----
-# OO Patterns
+## OO Patterns
 * <span style="color: yellow">The Strategy Pattern</span>: defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it. [ We used it in <span style="color: orange">Testing Duck behaviors</span> application in chapter 1]
 * <span style="color: yellow">The Observer Pattern</span>: defines a one-to-many dependency between objects so that when one object changes state, all of its dependents are notified and updated automatically.
 * <span style="color: yellow">The Decorator Pattern</span>: attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
 
-# Bullet points
+## Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
    * Good OO designs are reusable, extensible and maintainable.
    * Patterns show you how to build systems with good OO design qualities.
