@@ -3,7 +3,8 @@
 - [Table of Contents](#table-of-contents)
 - [ChatGPT Q\&A](#chatgpt-qa)
 - [Self reflection on the book](#self-reflection-on-the-book)
-  - [intro](#intro)
+  - [Intro](#intro)
+  - [Intro To Design Patterns (chapter 1)\\](#intro-to-design-patterns-chapter-1)
 - [Notes from the book](#notes-from-the-book)
   - [OO Basics](#oo-basics)
   - [OO principles](#oo-principles)
@@ -14,6 +15,8 @@
     - [1. Creational](#1-creational)
     - [2. Structural](#2-structural)
     - [3. Behavioral](#3-behavioral)
+- [Patterns in details](#patterns-in-details)
+  - [Strategy Pattern](#strategy-pattern)
 
 
 # ChatGPT Q&A
@@ -56,10 +59,13 @@
     In summary, there's no one-size-fits-all answer to when you should read "Head First Design Patterns." Assess your current knowledge, experience, and goals as a web developer, and use that information to determine the best time to dive into the book. Ultimately, the earlier you start learning about design patterns, the more they can benefit your career and the quality of your software projects.
 
 # Self reflection on the book
-## intro
+## Intro
 Intro is really amazing! one of the best intro I've ever read in a book.
 It litterly explains everything that a reader would need e.g. who this book for, how to best learn, how to stimulate your brain to do its best (meta-cognition, adding pictures, conversational style).
 they even talked about their method of writing the book and, how can you best grasp on the information
+
+## Intro To Design Patterns (chapter 1)\
+- The implementation could be better with programming languages getting better e.g. in the old days we couldn't define couple of constructors but nowadays we could. but, the point here is to understand the concept and the mindset of a software architect.
 
 # Notes from the book
 
@@ -195,6 +201,16 @@ In summary, creational design patterns deal with object creation, structural des
 
 ![Types of patterns](types-of-patterns.png)
 
+
+# Patterns in details
+
+This section discusses the deep details of a pattern
+
+## Strategy Pattern
+
+The Strategy Pattern is a behavioral design pattern in C# (and other object-oriented programming languages) that allows you to define a family of interchangeable algorithms, encapsulate each of them, and make them interchangeable. This pattern is particularly useful when you have multiple ways to perform a specific task, and you want to select the appropriate strategy at runtime.
+
+The Strategy Pattern allows you to decouple the client code from the specific implementations of algorithms. It promotes flexibility and makes it easy to add new strategies without modifying existing code. It's commonly used in scenarios where you have multiple ways to accomplish a task, such as sorting algorithms, payment processing, or validation methods, and you want to choose the appropriate one dynamically.
 
 ----
 > Reached page: <span style="color: yellow;">109</span>

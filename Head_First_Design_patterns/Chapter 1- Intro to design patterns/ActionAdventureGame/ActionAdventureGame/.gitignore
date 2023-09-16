@@ -1,0 +1,10 @@
+# Ignore Visual Studio files
+.vscode/
+.vs/
+
+# Ignore build output
+bin/
+obj/
+
+# Ignore NuGet package directories
+packages/
