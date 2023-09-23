@@ -2,9 +2,11 @@
 
 - [Table of Contents](#table-of-contents)
 - [ChatGPT Q\&A](#chatgpt-qa)
+- [Good References along with this Book](#good-references-along-with-this-book)
 - [Self reflection on the book](#self-reflection-on-the-book)
   - [Intro](#intro)
-  - [Intro To Design Patterns (chapter 1)\\](#intro-to-design-patterns-chapter-1)
+  - [Intro To Design Patterns (chapter 1)](#intro-to-design-patterns-chapter-1)
+  - [The Observer pattern (chapter 2)](#the-observer-pattern-chapter-2)
 - [Notes from the book](#notes-from-the-book)
   - [OO Basics](#oo-basics)
   - [OO principles](#oo-principles)
@@ -17,6 +19,15 @@
     - [3. Behavioral](#3-behavioral)
 - [Patterns in details](#patterns-in-details)
   - [Strategy Pattern](#strategy-pattern)
+    - [Quick introduction:](#quick-introduction)
+    - [Detailed introduction:](#detailed-introduction)
+    - [Real world examples](#real-world-examples)
+  - [Observer Pattern](#observer-pattern)
+    - [Quick Introduction](#quick-introduction-1)
+    - [Detailed Introduction](#detailed-introduction-1)
+    - [Real world examples](#real-world-examples-1)
+- [Decorator Pattern](#decorator-pattern)
+- [Interesting Articles to makes](#interesting-articles-to-makes)
 
 
 # ChatGPT Q&A
@@ -57,15 +68,40 @@
     Remember that learning design patterns is not an all-or-nothing endeavor. You can start with the basics and gradually explore more advanced patterns as you gain experience. Additionally, it's crucial to apply what you learn in real-world projects to solidify your understanding.
     
     In summary, there's no one-size-fits-all answer to when you should read "Head First Design Patterns." Assess your current knowledge, experience, and goals as a web developer, and use that information to determine the best time to dive into the book. Ultimately, the earlier you start learning about design patterns, the more they can benefit your career and the quality of your software projects.
+3. is there any language that allows for multiple parents in a class
+   
+   Yes, there are programming languages that support multiple inheritance, allowing a class to inherit from more than one base class. Some languages that provide this feature include:
+
+    C++: C++ supports multiple inheritance. A class in C++ can inherit from multiple base classes, and this feature is often used to create complex class hierarchies. However, multiple inheritance in C++ can lead to issues like the "diamond problem," which occurs when a class inherits from two classes that have a common base class. C++ provides mechanisms like virtual inheritance to address such issues.
+    
+    Python: Python also supports multiple inheritance. A class in Python can inherit from multiple base classes, and it uses a method resolution order (MRO) algorithm to determine the order in which base classes' methods are called when there are conflicts. Python's multiple inheritance is flexible but requires careful design to avoid ambiguity.
+
+    But, generally no (only 7 of them do from thousands)
+
+
+# Good References along with this Book
+1. Watching this series on youtube discussing each pattern in this book. see: [Design Patterns in Object Oriented Programming](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc)
 
 # Self reflection on the book
+My thoughts along with reading this book
 ## Intro
 Intro is really amazing! one of the best intro I've ever read in a book.
 It litterly explains everything that a reader would need e.g. who this book for, how to best learn, how to stimulate your brain to do its best (meta-cognition, adding pictures, conversational style).
 they even talked about their method of writing the book and, how can you best grasp on the information
 
-## Intro To Design Patterns (chapter 1)\
+## Intro To Design Patterns (chapter 1)
 - The implementation could be better with programming languages getting better e.g. in the old days we couldn't define couple of constructors but nowadays we could. but, the point here is to understand the concept and the mindset of a software architect.
+- **What is the difference between Strategy pattern and dependency injection?**
+  - The Strategy pattern is focused on encapsulating algorithms and allowing dynamic selection of different strategies at runtime, primarily to solve algorithmic problems.
+
+    Dependency Injection, on the other hand, is focused on managing and decoupling dependencies by providing them from external sources, promoting modular and testable code.
+
+    In some cases, Dependency Injection **can be used** to implement the Strategy pattern by injecting different strategies as dependencies into a client object, allowing it to switch between them dynamically.
+
+## The Observer pattern (chapter 2)
+- Observer pattern is a behavioral pattern too
+- I have a feeling that all behavioral patterns are about composition and they all are flexible at run time
+- Inheritance is "is-a" relationship and composition is "has-a" relationship. Always favor "has-a" over "is-a" (composition over inheritance)
 
 # Notes from the book
 
@@ -208,9 +244,39 @@ This section discusses the deep details of a pattern
 
 ## Strategy Pattern
 
+### Quick introduction: 
+Strategy is behavioral design pattern. It is used to switch between family of algorithms.
+
+### Detailed introduction:
+
 The Strategy Pattern is a behavioral design pattern in C# (and other object-oriented programming languages) that allows you to define a family of interchangeable algorithms, encapsulate each of them, and make them interchangeable. This pattern is particularly useful when you have multiple ways to perform a specific task, and you want to select the appropriate strategy at runtime.
 
 The Strategy Pattern allows you to decouple the client code from the specific implementations of algorithms. It promotes flexibility and makes it easy to add new strategies without modifying existing code. It's commonly used in scenarios where you have multiple ways to accomplish a task, such as sorting algorithms, payment processing, or validation methods, and you want to choose the appropriate one dynamically.
 
+### Real world examples
+1. This guy created a system for a drinks store in which pricing is different depending on holidays and happy hours. see: [BillingStrategy](https://github.com/hamzaak/designpatterns/blob/master/strategy/Program.cs)
+2. [Sorting Strategies](http://www.cs.sjsu.edu/~pearce/modules/patterns/behavioral/strategy/lists.htm)
+3. Also, see Chapter 1 - intro to design patterns
+
+## Observer Pattern
+
+### Quick Introduction
+Observer is behavioral design patterns. It is used to share state.
+
+### Detailed Introduction
+The Observer Pattern is a behavioral design pattern. It defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.
+
+### Real world examples
+1. Event handling mechanisms in graphical user interfaces (DOM Elements)
+2. Stock market data updates
+3. Sharing state between the front end application
+4. Any monitoring system
+5. Also, see Chapter 2 - The observer pattern
+
+# Decorator Pattern
+
+# Interesting Articles to makes
+1. Patterns specific articles
+2. Software OO Design principles in Arabic language
 ----
 > Reached page: <span style="color: yellow;">109</span>
