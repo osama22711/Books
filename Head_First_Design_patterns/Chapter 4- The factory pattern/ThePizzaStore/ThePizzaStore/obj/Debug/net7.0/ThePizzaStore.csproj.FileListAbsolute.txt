@@ -1,0 +1,15 @@
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\bin\Debug\net7.0\ThePizzaStore.exe
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\bin\Debug\net7.0\ThePizzaStore.deps.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\bin\Debug\net7.0\ThePizzaStore.runtimeconfig.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\bin\Debug\net7.0\ThePizzaStore.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\bin\Debug\net7.0\ThePizzaStore.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\ThePizzaStore.csproj.AssemblyReference.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\ThePizzaStore.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\ThePizzaStore.AssemblyInfoInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\ThePizzaStore.AssemblyInfo.cs
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\ThePizzaStore.csproj.CoreCompileInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\ThePizzaStore.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\refint\ThePizzaStore.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\ThePizzaStore.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\ThePizzaStore.genruntimeconfig.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 4- The factory pattern\ThePizzaStore\ThePizzaStore\obj\Debug\net7.0\ref\ThePizzaStore.dll

@@ -1,9 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Chapter 1- Intro to design patterns",
-    "\\Chapter 1- Intro to design patterns\\ActionAdventureGame"
+    "\\Chapter 2- The observer pattern\\Designing the weather station",
+    "\\Chapter 2- The observer pattern\\Designing the weather station\\src",
+    "\\Chapter 2- The observer pattern\\Little life-changing application",
+    "\\Chapter 2- The observer pattern\\Little life-changing application\\src",
+    "\\Chapter 4- The factory pattern"
   ],
-  "SelectedNode": "\\Chapter 1- Intro to design patterns\\ActionAdventureGame",
+  "SelectedNode": "\\Chapter 4- The factory pattern",
   "PreviewInSolutionExplorer": false
 }

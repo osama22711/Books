@@ -19,14 +19,29 @@
     - [3. Behavioral](#3-behavioral)
 - [Patterns in details](#patterns-in-details)
   - [Strategy Pattern](#strategy-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru)
     - [Quick introduction:](#quick-introduction)
     - [Detailed introduction:](#detailed-introduction)
     - [Real world examples](#real-world-examples)
+    - [Architecture from Chapter 1](#architecture-from-chapter-1)
   - [Observer Pattern](#observer-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-1)
     - [Quick Introduction](#quick-introduction-1)
     - [Detailed Introduction](#detailed-introduction-1)
     - [Real world examples](#real-world-examples-1)
-- [Decorator Pattern](#decorator-pattern)
+    - [Architecture from Chapter 2](#architecture-from-chapter-2)
+  - [Decorator Pattern](#decorator-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-2)
+    - [Quick Introduction](#quick-introduction-2)
+    - [Detailed Introduction](#detailed-introduction-2)
+    - [Real world examples](#real-world-examples-2)
+    - [Architecture from Chapter 3](#architecture-from-chapter-3)
+  - [Factory Pattern](#factory-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-3)
+    - [Quick Introduction](#quick-introduction-3)
+    - [Detailed Introduction](#detailed-introduction-3)
+    - [Real world examples](#real-world-examples-3)
+    - [Architecture from Chapter 4](#architecture-from-chapter-4)
 - [Interesting Articles to makes](#interesting-articles-to-makes)
 
 
@@ -81,6 +96,8 @@
 
 # Good References along with this Book
 1. Watching this series on youtube discussing each pattern in this book. see: [Design Patterns in Object Oriented Programming](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc)
+2. Reading from [Refactoring Guru's Design Patterns](https://refactoring.guru/design-patterns)
+3. Interesting read about design patterns and anti-patterns (things that breaks a code), refactoring, uml. see: [Source Making](https://sourcemaking.com/)
 
 # Self reflection on the book
 My thoughts along with reading this book
@@ -235,7 +252,7 @@ There are alot of design patterns out there in the world
 
 In summary, creational design patterns deal with object creation, structural design patterns deal with class and object composition, and behavioral design patterns focus on object interactions and responsibilities. These patterns serve different purposes in software design and can be combined as needed to solve complex problems and create maintainable and scalable software.
 
-![Types of patterns](types-of-patterns.png)
+![Types of patterns](./imgs/types-of-patterns.png)
 
 
 # Patterns in details
@@ -243,6 +260,10 @@ In summary, creational design patterns deal with object creation, structural des
 This section discusses the deep details of a pattern
 
 ## Strategy Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+
+![Alt text](./imgs/StrategyPatternArt.png)
 
 ### Quick introduction: 
 Strategy is behavioral design pattern. It is used to switch between family of algorithms.
@@ -258,7 +279,13 @@ The Strategy Pattern allows you to decouple the client code from the specific im
 2. [Sorting Strategies](http://www.cs.sjsu.edu/~pearce/modules/patterns/behavioral/strategy/lists.htm)
 3. Also, see Chapter 1 - intro to design patterns
 
+### Architecture from Chapter 1
+![any text](./Chapter%201-%20Intro%20to%20design%20patterns/ActionAdventureGame/ActionAdventureGameBigPicture.drawio.png)
+
 ## Observer Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/ObserverPatternArt.png)
 
 ### Quick Introduction
 Observer is behavioral design patterns. It is used to share state.
@@ -273,7 +300,57 @@ The Observer Pattern is a behavioral design pattern. It defines a one-to-many de
 4. Any monitoring system
 5. Also, see Chapter 2 - The observer pattern
 
-# Decorator Pattern
+### Architecture from Chapter 2
+![any text](./Chapter%202-%20The%20observer%20pattern/Designing%20the%20weather%20station/Weather-Station.drawio.png)
+
+## Decorator Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/DecoratorPatternArt.png)
+
+### Quick Introduction
+Decorator is a structural design pattern. It is used to add responsibilities to objects dynamically without altering their class or extending it.
+
+### Detailed Introduction
+The Decorator Pattern is a structural design pattern in software development that allows you to add behavior or responsibilities to objects dynamically without altering their class. This pattern is part of the Gang of Four (GoF) design patterns and is particularly useful when you need to extend the functionality of classes in a flexible and maintainable way.
+
+The main idea behind the Decorator Pattern is to create a set of decorator classes that are used to wrap concrete components (objects). These decorators implement the same interface as the components they decorate, and they can add new behavior or modify the behavior of the wrapped component without changing its code.
+
+Here's a basic structure of the Decorator Pattern:
+
+1. Component: This is an interface or abstract class that defines the common interface for both concrete components and decorators. It typically includes the methods that the decorators and concrete components will share.
+
+2. Concrete Component: This is the base class that implements the Component interface. It represents the core functionality that you want to enhance or extend.
+
+3. Decorator: This is an abstract class that also implements the Component interface. Decorators have a reference to a Component and can add additional behavior or modify the behavior of the component. They serve as a base for concrete decorators.
+
+4. Concrete Decorator: These are the actual decorator classes that extend the Decorator class. They provide specific behavior modifications or additions.
+
+The Decorator Pattern allows you to create a chain of decorators, each adding its functionality to the component. This provides a flexible and incremental way to assemble objects with varying sets of features.
+
+### Real world examples
+1. Java I/O packages
+2. Clothes on a human body
+3. Toppings on icecream
+4. Coffee with condiments
+
+### Architecture from Chapter 3
+![any text](./Chapter%203-%20The%20decorator%20pattern/Starbuzz-Coffee.drawio.png)
+
+## Factory Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+
+![Alt text](./imgs/FactoryPatternArt.png)
+
+### Quick Introduction
+
+### Detailed Introduction
+
+### Real world examples
+
+### Architecture from Chapter 4
+![any text](./Chapter%204-%20The%20factory%20pattern/ThePizzaStoreBigPicture.drawio.png)
 
 # Interesting Articles to makes
 1. Patterns specific articles
