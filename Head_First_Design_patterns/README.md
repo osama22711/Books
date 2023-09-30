@@ -94,11 +94,13 @@
     But, generally no (only 7 of them do from thousands)
 
 
+---
 # Good References along with this Book
 1. Watching this series on youtube discussing each pattern in this book. see: [Design Patterns in Object Oriented Programming](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc)
 2. Reading from [Refactoring Guru's Design Patterns](https://refactoring.guru/design-patterns)
 3. Interesting read about design patterns and anti-patterns (things that breaks a code), refactoring, uml. see: [Source Making](https://sourcemaking.com/)
 
+---
 # Self reflection on the book
 My thoughts along with reading this book
 ## Intro
@@ -120,6 +122,7 @@ they even talked about their method of writing the book and, how can you best gr
 - I have a feeling that all behavioral patterns are about composition and they all are flexible at run time
 - Inheritance is "is-a" relationship and composition is "has-a" relationship. Always favor "has-a" over "is-a" (composition over inheritance)
 
+---
 # Notes from the book
 
 ## OO Basics
@@ -131,7 +134,6 @@ they even talked about their method of writing the book and, how can you best gr
 * <span style="color: yellow">Loose-coupling</span> in which components are weakly associated (have breakable relationship) with each other, and so, changes in one component least affect existence or performance of another component. Loose coupling is the opposite of <span style="color: orange">tight coupling</span>, Loosely coupled designs allow us to build flexible OO systems that can handle change because they minimize the interdependency between objects.
 * <span style="color: yellow">Delegation</span> refers generally to one entity passing something to another entity
   
-----
 ## OO principles
 1. Identify the aspects of your application that vary and seperate them from what stays the same
 2. Program to an interface, not an implementation.
@@ -139,7 +141,6 @@ they even talked about their method of writing the book and, how can you best gr
 4. Strive for loosely coupled designs between objects that interact.
 5. Classes should be open for extension, but closed for modifications (as the <span style="color: orange">design pattern guru</span> said: code should be closed to change like the lotus flower in the evening, yet open to extension like the lotus flower in the morning)
 
-----
 ## OO Patterns
 * <span style="color: yellow">The Strategy Pattern</span>: defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it. [ We used it in <span style="color: orange">Testing Duck behaviors</span> application in chapter 1]
 * <span style="color: yellow">The Observer Pattern</span>: defines a one-to-many dependency between objects so that when one object changes state, all of its dependents are notified and updated automatically.
@@ -177,6 +178,7 @@ they even talked about their method of writing the book and, how can you best gr
    * Decorators are typically transparent to the client of the component; that is, unless the client is relying on the component's concrete type.
    * Decorators can result in many small objects in our design, and overuse can be complex.
 
+---
 # Design Patterns
 There are alot of design patterns out there in the world
 1. [Original foundational patterns (GoF patterns)](http://cmoulliard.github.io/gof%20patterns/design-patterns-quick-reference)
@@ -255,6 +257,7 @@ In summary, creational design patterns deal with object creation, structural des
 ![Types of patterns](./imgs/types-of-patterns.png)
 
 
+---
 # Patterns in details
 
 This section discusses the deep details of a pattern
@@ -352,8 +355,9 @@ The Decorator Pattern allows you to create a chain of decorators, each adding it
 ### Architecture from Chapter 4
 ![any text](./Chapter%204-%20The%20factory%20pattern/ThePizzaStoreBigPicture.drawio.png)
 
+---
 # Interesting Articles to makes
 1. Patterns specific articles
 2. Software OO Design principles in Arabic language
 ----
-> Reached page: <span style="color: yellow;">109</span>
+> Reached page: <span style="color: yellow;">Keep going!</span>
