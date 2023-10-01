@@ -42,7 +42,20 @@
     - [Detailed Introduction](#detailed-introduction-3)
     - [Real world examples](#real-world-examples-3)
     - [Architecture from Chapter 4](#architecture-from-chapter-4)
+  - [Singleton Pattern](#singleton-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-4)
+    - [Quick Introduction](#quick-introduction-4)
+    - [Detailed Introduction](#detailed-introduction-4)
+    - [Real world examples](#real-world-examples-4)
+    - [Architecture from Chapter 5](#architecture-from-chapter-5)
 - [Interesting Articles to makes](#interesting-articles-to-makes)
+- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
+  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-5)
+    - [Quick Introduction](#quick-introduction-5)
+    - [Detailed Introduction](#detailed-introduction-5)
+    - [Real world examples](#real-world-examples-5)
+    - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
 # ChatGPT Q&A
@@ -140,11 +153,13 @@ they even talked about their method of writing the book and, how can you best gr
 3. Favor composition over inheritance
 4. Strive for loosely coupled designs between objects that interact.
 5. Classes should be open for extension, but closed for modifications (as the <span style="color: orange">design pattern guru</span> said: code should be closed to change like the lotus flower in the evening, yet open to extension like the lotus flower in the morning)
+6. Depend on abstractions. Do not depend on concrete classes.
 
 ## OO Patterns
 * <span style="color: yellow">The Strategy Pattern</span>: defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it. [ We used it in <span style="color: orange">Testing Duck behaviors</span> application in chapter 1]
 * <span style="color: yellow">The Observer Pattern</span>: defines a one-to-many dependency between objects so that when one object changes state, all of its dependents are notified and updated automatically.
 * <span style="color: yellow">The Decorator Pattern</span>: attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
+* <span style="color: yellow">The Factory Method</span>: Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to the subclasses. 
 
 ## Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
@@ -177,6 +192,15 @@ they even talked about their method of writing the book and, how can you best gr
    * You can wrap a component with any number of decorators.
    * Decorators are typically transparent to the client of the component; that is, unless the client is relying on the component's concrete type.
    * Decorators can result in many small objects in our design, and overuse can be complex.
+4. * All factories encapsulate object creation.
+   * Simple Factory, while not a bonafide design pattern, is a simple way to decouple your clients from concrete classes.
+   * Factory Method relies on inheritance: object creation is delegated to subclasses which implement the factory method to create objects.
+   * Abstract Factory relies on object composition: object creation is implemented in methods exposed in the factory interface.
+   * All factory patterns promote loose coupling by reducing the dependency of your application on concrete classes.
+   * The intent of Factory Method is to allow a class to defer instantiation to its subclasses
+   * The intent of Abstract Factory is to create families of related objects without having to depend on their concrete classes
+   * The Dependency Inversion Principle guides us to avoid dependencies on concrete types and to strive for abstraction
+   * Factories are a powerful technique for coding to abstractions, not concrete classes.
 
 ---
 # Design Patterns
@@ -347,17 +371,62 @@ The Decorator Pattern allows you to create a chain of decorators, each adding it
 ![Alt text](./imgs/FactoryPatternArt.png)
 
 ### Quick Introduction
+Factory is a creational design pattern. It is used to let subclasses alter the methods with inheritance.
+
+### Detailed Introduction
+The Factory Pattern is a creational design pattern in software development that provides an interface for creating objects but allows subclasses to alter the type of objects that will be created. It falls under the Gang of Four (GoF) design patterns and is commonly used to abstract the process of object creation. The Factory Pattern promotes loose coupling and adheres to the "Dependency Inversion Principle" by ensuring that client code depends on abstractions rather than concrete implementations.
+
+The Factory Pattern typically involves the following components:
+
+1. Factory Interface (or Abstract Factory): This is an interface (or abstract class) that declares a method for creating objects. This method is often called a "factory method." Subclasses of the Factory Interface provide concrete implementations of the factory method.
+
+2. Concrete Factories: These are classes that implement the Factory Interface. Each concrete factory is responsible for creating objects of a specific type or family of related types.
+
+3. Product: This represents the object being created. It's the abstract class or interface that defines the common interface for all products created by the factories.
+
+4. Concrete Products: These are the actual implementations of the Product interface. Each concrete factory produces objects of a specific Concrete Product type.
+
+The Factory Pattern allows client code to create objects without needing to know the specific class of objects being created. Instead, the client code interacts with the Factory Interface, which provides a level of abstraction. This makes it easier to change or extend the system because you can introduce new Concrete Factories and Products without modifying the client code.
+
+### Real world examples
+1. Any factory (car, pizza, etc..)
+2. Bank accounts (personal, business etc..)
+
+### Architecture from Chapter 4
+![any text](./Chapter%204-%20The%20factory%20pattern/ThePizzaStoreBigPicture.drawio.png)
+
+## Singleton Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/SingletonPatternArt.png)
+
+### Quick Introduction
 
 ### Detailed Introduction
 
 ### Real world examples
 
-### Architecture from Chapter 4
-![any text](./Chapter%204-%20The%20factory%20pattern/ThePizzaStoreBigPicture.drawio.png)
+### Architecture from Chapter 5
 
 ---
 # Interesting Articles to makes
 1. Patterns specific articles
 2. Software OO Design principles in Arabic language
 ----
+
+# Pattern of creating "patterns in details" sections
+
+## {{Name of the pattern}} Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+
+### Quick Introduction
+
+### Detailed Introduction
+
+### Real world examples
+
+### Architecture from Chapter NO.
+
+---
 > Reached page: <span style="color: yellow;">Keep going!</span>

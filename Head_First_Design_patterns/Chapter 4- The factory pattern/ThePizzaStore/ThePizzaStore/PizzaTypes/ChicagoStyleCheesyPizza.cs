@@ -1,15 +1,22 @@
-﻿namespace ThePizzaStore.PizzaTypes
+﻿using ThePizzaStore.PizzaIngredientFactories;
+
+namespace ThePizzaStore.PizzaTypes
 {
     public class ChicagoStyleCheesyPizza : Pizza
     {
+        private readonly IPizzaIngredientFactory _pizzaIngredientFactory;
 
-        public ChicagoStyleCheesyPizza()
+        public ChicagoStyleCheesyPizza(IPizzaIngredientFactory pizzaIngredientFactory)
         {
-            Name = "Chicago Style Sauce and Cheesy Pizza";
-            Dough = "Thick Crust Dough";
-            Sauce = "Marinara Sauce";
+            _pizzaIngredientFactory = pizzaIngredientFactory;
+        }
 
-            Toppings.Add("Grated Reggiano Cheese");
+        public override void Prepare()
+        {
+            Console.WriteLine($"Preparing {Name}");
+            Dough = _pizzaIngredientFactory.CreateDough();
+            Sauce = _pizzaIngredientFactory.CreateSauce();
+            Cheese = _pizzaIngredientFactory.CreateCheese();
         }
     }
 }

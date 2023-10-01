@@ -1,14 +1,22 @@
-﻿namespace ThePizzaStore.PizzaTypes
+﻿using ThePizzaStore.PizzaIngredientFactories;
+
+namespace ThePizzaStore.PizzaTypes
 {
     public class NewYorkStyleClamPizza : Pizza
     {
-        public NewYorkStyleClamPizza()
-        {
-            Name = "NY Style Sauce and Clam Pizza";
-            Dough = "Thing Crust Dough";
-            Sauce = "Marinara Sauce";
+        private readonly IPizzaIngredientFactory _pizzaIngredientFactory;
 
-            Toppings.Add("Grated Reggiano Cheese");
+        public NewYorkStyleClamPizza(IPizzaIngredientFactory pizzaIngredientFactory)
+        {
+            _pizzaIngredientFactory = pizzaIngredientFactory;
+        }
+
+        public override void Prepare()
+        {
+            Console.WriteLine($"Preparing {Name}");
+            Dough = _pizzaIngredientFactory.CreateDough();
+            Sauce = _pizzaIngredientFactory.CreateSauce();
+            Cheese = _pizzaIngredientFactory.CreateCheese();
         }
     }
 }

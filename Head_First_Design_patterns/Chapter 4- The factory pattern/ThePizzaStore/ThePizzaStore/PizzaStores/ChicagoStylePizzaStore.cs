@@ -1,4 +1,5 @@
-﻿using ThePizzaStore.PizzaTypes;
+﻿using ThePizzaStore.PizzaIngredientFactories;
+using ThePizzaStore.PizzaTypes;
 
 namespace ThePizzaStore.PizzaStores
 {
@@ -7,25 +8,35 @@ namespace ThePizzaStore.PizzaStores
         private readonly string Verbiage = "{0} Chicago Style Pizza";
         public override Pizza? CreatePizza(PizzaEnum pizzaEnum)
         {
+            var pizzaIngredientFactory = new ChicagoPizzaIngredientFactory();
             Pizza? pizza = null;
+            string? name = null;
 
             switch (pizzaEnum)
             {
                 case PizzaEnum.Cheese:
-                    Console.WriteLine(string.Format("Cheesy", Verbiage));
-                    pizza = new ChicagoStyleCheesyPizza();
+                    name = string.Format("Cheesy", Verbiage);
+                    Console.WriteLine(name);
+                    pizza = new ChicagoStyleCheesyPizza(pizzaIngredientFactory);
+                    pizza.Name = name;
                     break;
                 case PizzaEnum.Pepperoni:
-                    Console.WriteLine(string.Format("Pepporoni", Verbiage));
-                    pizza = new ChicagoStylePepporoniPizza();
+                    name = string.Format("Pepporoni", Verbiage);
+                    Console.WriteLine(name);
+                    pizza = new ChicagoStylePepporoniPizza(pizzaIngredientFactory);
+                    pizza.Name = name;
                     break;
                 case PizzaEnum.Veggie:
-                    Console.WriteLine(string.Format("Veggie", Verbiage));
-                    pizza = new ChicagoStyleVeggiePizza();
+                    name = string.Format("Veggie", Verbiage);
+                    Console.WriteLine(name);
+                    pizza = new ChicagoStyleVeggiePizza(pizzaIngredientFactory);
+                    pizza.Name = name;
                     break;
                 case PizzaEnum.Clam:
-                    Console.WriteLine(string.Format("Clam", Verbiage));
-                    pizza = new ChicagoStyleClamPizza();
+                    name = string.Format("Clam", Verbiage);
+                    Console.WriteLine(name);
+                    pizza = new ChicagoStyleClamPizza(pizzaIngredientFactory);
+                    pizza.Name = name;
                     break;
             }
 
