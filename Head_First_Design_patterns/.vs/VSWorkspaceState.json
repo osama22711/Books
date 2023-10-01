@@ -1,12 +1,15 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Chapter 2- The observer pattern\\Designing the weather station",
-    "\\Chapter 2- The observer pattern\\Designing the weather station\\src",
-    "\\Chapter 2- The observer pattern\\Little life-changing application",
-    "\\Chapter 2- The observer pattern\\Little life-changing application\\src",
-    "\\Chapter 4- The factory pattern"
+    "\\Chapter 4- The factory pattern\\ThePizzaStore",
+    "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore",
+    "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\Ingredients",
+    "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\Ingredients\\Interfaces",
+    "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\PizzaIngredientFactories",
+    "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\PizzaStores",
+    "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\PizzaTypes",
+    "\\Chapter 5- The singleton pattern"
   ],
-  "SelectedNode": "\\Chapter 4- The factory pattern",
+  "SelectedNode": "\\Chapter 5- The singleton pattern",
   "PreviewInSolutionExplorer": false
 }

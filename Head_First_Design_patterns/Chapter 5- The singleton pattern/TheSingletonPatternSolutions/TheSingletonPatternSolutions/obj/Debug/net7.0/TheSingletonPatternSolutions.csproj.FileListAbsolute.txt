@@ -1,0 +1,15 @@
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\bin\Debug\net7.0\TheSingletonPatternSolutions.exe
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\bin\Debug\net7.0\TheSingletonPatternSolutions.deps.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\bin\Debug\net7.0\TheSingletonPatternSolutions.runtimeconfig.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\bin\Debug\net7.0\TheSingletonPatternSolutions.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\bin\Debug\net7.0\TheSingletonPatternSolutions.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\TheSingletonPatternSolutions.csproj.AssemblyReference.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\TheSingletonPatternSolutions.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\TheSingletonPatternSolutions.AssemblyInfoInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\TheSingletonPatternSolutions.AssemblyInfo.cs
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\TheSingletonPatternSolutions.csproj.CoreCompileInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\TheSingletonPatternSolutions.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\refint\TheSingletonPatternSolutions.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\TheSingletonPatternSolutions.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\TheSingletonPatternSolutions.genruntimeconfig.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 5- The singleton pattern\TheSingletonPatternSolutions\TheSingletonPatternSolutions\obj\Debug\net7.0\ref\TheSingletonPatternSolutions.dll

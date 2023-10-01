@@ -47,7 +47,6 @@
     - [Quick Introduction](#quick-introduction-4)
     - [Detailed Introduction](#detailed-introduction-4)
     - [Real world examples](#real-world-examples-4)
-    - [Architecture from Chapter 5](#architecture-from-chapter-5)
 - [Interesting Articles to makes](#interesting-articles-to-makes)
 - [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
   - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
@@ -160,6 +159,7 @@ they even talked about their method of writing the book and, how can you best gr
 * <span style="color: yellow">The Observer Pattern</span>: defines a one-to-many dependency between objects so that when one object changes state, all of its dependents are notified and updated automatically.
 * <span style="color: yellow">The Decorator Pattern</span>: attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
 * <span style="color: yellow">The Factory Method</span>: Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to the subclasses. 
+* <span style="color: yellow">The Singleton Pattern</span>: Ensure a class has one instance and provide a global point of access to it.
 
 ## Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
@@ -201,6 +201,13 @@ they even talked about their method of writing the book and, how can you best gr
    * The intent of Abstract Factory is to create families of related objects without having to depend on their concrete classes
    * The Dependency Inversion Principle guides us to avoid dependencies on concrete types and to strive for abstraction
    * Factories are a powerful technique for coding to abstractions, not concrete classes.
+5. * The Singleton Pattern ensures you have at most one instance of a class in your application.
+   * The Singleton Pattern also provides a global access point to that instance.
+   * Java's implementation of the Singleton Pattern makes use of a private constructor, a static method combined with a static variable.
+   * Examine your performance and resource constraints and carefully choose an appropriate Singleton implementation for multithreaded applications (and we should consider all applications multithreaded!)
+   * Beware of the double-checked locking implementation; it is not thread-safe in versions before Java2, version 5.
+   * Be careful if you are using multiple class loaders; this could defeat the Singleton implementation and result in multiple instances.
+   * If you are using a JVM earlier than 1.2, you'll need to create a registry of Singletons to defeat the garbage collector.
 
 ---
 # Design Patterns
@@ -401,12 +408,23 @@ The Factory Pattern allows client code to create objects without needing to know
 ![Alt text](./imgs/SingletonPatternArt.png)
 
 ### Quick Introduction
+Singleton pattern is a creational pattern. It is used to provide one and only one instance of the object.
 
 ### Detailed Introduction
+The Singleton Pattern is a design pattern in software engineering that ensures a class has only one instance and provides a global point of access to that instance. It is one of the creational design patterns and is commonly used when exactly one object needs to coordinate actions across the system, such as a configuration manager, a database connection pool, or a logging service.
+
+The key characteristics of the Singleton Pattern include:
+
+1. Single Instance: It ensures that there is only one instance of the class.
+
+2. Global Access: It provides a way to access the single instance globally, typically through a well-defined method or property.
+
+3. Lazy Initialization: The instance is created only when it's first requested, rather than being created at the time the class is loaded or initialized.
 
 ### Real world examples
-
-### Architecture from Chapter 5
+1. Logging services
+2. Device drivers
+3. Caching mechanism
 
 ---
 # Interesting Articles to makes
