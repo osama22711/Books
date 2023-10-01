@@ -52,7 +52,7 @@
     - [Quick Introduction](#quick-introduction-5)
     - [Detailed Introduction](#detailed-introduction-5)
     - [Real world examples](#real-world-examples-5)
-    - [Architecture from Chapter NO.](#architecture-from-chapter-no)
+    - [Architecture from Chapter 6](#architecture-from-chapter-6)
 - [Interesting Articles to makes](#interesting-articles-to-makes)
 - [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
   - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
@@ -60,7 +60,7 @@
     - [Quick Introduction](#quick-introduction-6)
     - [Detailed Introduction](#detailed-introduction-6)
     - [Real world examples](#real-world-examples-6)
-    - [Architecture from Chapter NO.](#architecture-from-chapter-no-1)
+    - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
 # ChatGPT Q&A
@@ -166,6 +166,7 @@ they even talked about their method of writing the book and, how can you best gr
 * <span style="color: yellow">The Decorator Pattern</span>: attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
 * <span style="color: yellow">The Factory Method</span>: Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to the subclasses. 
 * <span style="color: yellow">The Singleton Pattern</span>: Ensure a class has one instance and provide a global point of access to it.
+* <span style="color: yellow">The Command Pattern</span>: Encapsulates a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations.
 
 ## Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
@@ -214,6 +215,14 @@ they even talked about their method of writing the book and, how can you best gr
    * Beware of the double-checked locking implementation; it is not thread-safe in versions before Java2, version 5.
    * Be careful if you are using multiple class loaders; this could defeat the Singleton implementation and result in multiple instances.
    * If you are using a JVM earlier than 1.2, you'll need to create a registry of Singletons to defeat the garbage collector.
+6. * The Command Pattern decouples an object, making a request from the one that knows how to perform it.
+   * A command object is at the center of this decoupling and encapsulates a receiver with an action (or set of actions).
+   * An invoker makes a request of a Command object by calling its execute() method, which invokes those actions on the receiver.
+   * Invokers can be parameterized with Commands, even dynamically at runtime.
+   * Commands may support undo by implementing an undo method that restores the object to its previous state before the execute() method was last called.
+   * Macro Commands are a simple extension of Command that allow multiple commands to be invoked. Likewise, Macro Commands can easily support undo().
+   * In practice, it is not uncommon for "smart" Command objects to implement the request themselves rather than delegating to a receiver.
+   * Commands may also be used to implement logging and transactional systems.
 
 ---
 # Design Patterns
@@ -438,12 +447,34 @@ The key characteristics of the Singleton Pattern include:
 ![Alt text](./imgs/CommandPatternArt.png)
 
 ### Quick Introduction
+Command is a behavioral pattern. It is used to decouple the sender and receiver of a request.
 
 ### Detailed Introduction
+The Command Pattern is a behavioral design pattern used in software engineering. It falls under the Gang of Four (GoF) design patterns and is used to encapsulate a request as an object, thereby allowing for parameterization of clients with queues, requests, and operations. This pattern decouples the sender of a request from the receiver, allowing for greater flexibility and extensibility in how requests are handled.
+
+Here are the main components of the Command Pattern:
+
+1. Command: This is an interface or abstract class that defines the common methods that concrete command classes must implement. Typically, this interface includes an execute() method, which encapsulates the action to be taken when the command is executed.
+
+2. Concrete Command: These are the concrete implementations of the Command interface. Each concrete command class represents a specific action or operation and contains the logic for executing that action. These commands store information about the receiver (the object that will perform the action) and the parameters needed to carry out the action.
+
+3. Invoker: The invoker is responsible for executing commands. It does not know the specifics of how each command works but simply triggers the execution of a command when needed. The invoker may maintain a queue of commands, undo/redo functionality, or other mechanisms for managing commands.
+
+4. Receiver: The receiver is the object that performs the actual work associated with a command. It has knowledge of how to carry out the requested action. The receiver is specified when creating a concrete command.
+
+5. Client: The client is responsible for creating and configuring commands, associating them with receivers, and setting up the invoker. It can build complex sequences of commands and pass them to the invoker for execution.
+
+The Command Pattern is useful in scenarios where you want to decouple the sender and receiver of a request, support undo/redo functionality, create composite commands, or implement features like queuing and logging of commands. It promotes the separation of concerns and makes it easier to extend and maintain the codebase by encapsulating actions and their parameters into objects.
 
 ### Real world examples
+1. Any Controller
+2. API request
+3. Queue
+4. Database transactions
+5. Text editor (Excel, Notepad++, VSCode)
 
-### Architecture from Chapter NO.
+### Architecture from Chapter 6
+![Some Title](Chapter%206-%20The%20Command%20Pattern/RemoteControllerBigPicture.drawio.png)
 
 ---
 # Interesting Articles to makes

@@ -7,8 +7,9 @@ namespace RemoteController
 {
     public class RemoteControl
     {
-        public List<ICommand> onCommands;
-        public List<ICommand> offCommands;
+        private List<ICommand> onCommands;
+        private List<ICommand> offCommands;
+        private ICommand undoCommand { get; set; }
         private const int BUTTONS_COUNT = 7;
 
         public RemoteControl()
@@ -17,6 +18,7 @@ namespace RemoteController
             offCommands = new List<ICommand>(BUTTONS_COUNT);
 
             var noCommand = new NoCommand();
+            undoCommand = noCommand;
             for (int i = 0; i < BUTTONS_COUNT; i++)
             {
                 onCommands.Add(noCommand);
@@ -24,20 +26,27 @@ namespace RemoteController
             }
         }
 
-        public void setCommand(int slot, ICommand onCommand, ICommand offCommand)
+        public void SetCommand(int slot, ICommand onCommand, ICommand offCommand)
         {
             onCommands[slot] = onCommand;
             offCommands[slot] = offCommand;
         }
 
-        public void pressOnButton(int slot)
+        public void PressOnButton(int slot)
         {
             onCommands[slot].Execute();
+            undoCommand = onCommands[slot];
         }
 
-        public void pressOffButton(int slot)
+        public void PressOffButton(int slot)
         {
             offCommands[slot].Execute();
+            undoCommand = offCommands[slot];
+        }
+
+        public void PressUndoButton()
+        {
+            undoCommand.Undo();
         }
 
         public override string ToString()
