@@ -1,0 +1,15 @@
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\bin\Debug\net7.0\RemoteController.exe
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\bin\Debug\net7.0\RemoteController.deps.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\bin\Debug\net7.0\RemoteController.runtimeconfig.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\bin\Debug\net7.0\RemoteController.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\bin\Debug\net7.0\RemoteController.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\RemoteController.csproj.AssemblyReference.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\RemoteController.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\RemoteController.AssemblyInfoInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\RemoteController.AssemblyInfo.cs
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\RemoteController.csproj.CoreCompileInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\RemoteController.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\refint\RemoteController.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\RemoteController.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\RemoteController.genruntimeconfig.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 6- The Command Pattern\RemoteController\RemoteController\obj\Debug\net7.0\ref\RemoteController.dll

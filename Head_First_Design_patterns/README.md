@@ -47,14 +47,20 @@
     - [Quick Introduction](#quick-introduction-4)
     - [Detailed Introduction](#detailed-introduction-4)
     - [Real world examples](#real-world-examples-4)
-- [Interesting Articles to makes](#interesting-articles-to-makes)
-- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
-  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+  - [Command Pattern](#command-pattern)
     - [Picture from Refactoring Guru](#picture-from-refactoring-guru-5)
     - [Quick Introduction](#quick-introduction-5)
     - [Detailed Introduction](#detailed-introduction-5)
     - [Real world examples](#real-world-examples-5)
     - [Architecture from Chapter NO.](#architecture-from-chapter-no)
+- [Interesting Articles to makes](#interesting-articles-to-makes)
+- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
+  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-6)
+    - [Quick Introduction](#quick-introduction-6)
+    - [Detailed Introduction](#detailed-introduction-6)
+    - [Real world examples](#real-world-examples-6)
+    - [Architecture from Chapter NO.](#architecture-from-chapter-no-1)
 
 
 # ChatGPT Q&A
@@ -425,6 +431,19 @@ The key characteristics of the Singleton Pattern include:
 1. Logging services
 2. Device drivers
 3. Caching mechanism
+
+## Command Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/CommandPatternArt.png)
+
+### Quick Introduction
+
+### Detailed Introduction
+
+### Real world examples
+
+### Architecture from Chapter NO.
 
 ---
 # Interesting Articles to makes
