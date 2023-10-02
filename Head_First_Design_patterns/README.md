@@ -53,13 +53,25 @@
     - [Detailed Introduction](#detailed-introduction-5)
     - [Real world examples](#real-world-examples-5)
     - [Architecture from Chapter 6](#architecture-from-chapter-6)
-- [Interesting Articles to makes](#interesting-articles-to-makes)
-- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
-  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+  - [The Adapter Pattern](#the-adapter-pattern)
     - [Picture from Refactoring Guru](#picture-from-refactoring-guru-6)
     - [Quick Introduction](#quick-introduction-6)
     - [Detailed Introduction](#detailed-introduction-6)
     - [Real world examples](#real-world-examples-6)
+    - [Architecture from Chapter 7](#architecture-from-chapter-7)
+  - [The Facade Pattern](#the-facade-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-7)
+    - [Quick Introduction](#quick-introduction-7)
+    - [Detailed Introduction](#detailed-introduction-7)
+    - [Real world examples](#real-world-examples-7)
+    - [Architecture from Chapter 7](#architecture-from-chapter-7-1)
+- [Interesting Articles to makes](#interesting-articles-to-makes)
+- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
+  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-8)
+    - [Quick Introduction](#quick-introduction-8)
+    - [Detailed Introduction](#detailed-introduction-8)
+    - [Real world examples](#real-world-examples-8)
     - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
@@ -266,7 +278,7 @@ There are alot of design patterns out there in the world
    
    3. Composite: Composes objects into tree structures to represent part-whole hierarchies. Clients can treat individual objects and compositions of objects uniformly.
 
-   4. Decorator: Attaches additional responsibilities to objects dynamically, providing a flexible alternative to subclassing for extending functionality.
+   4. Decorator: Attaches additional responsibilities to objects dynamically, providing a flexible alternative to sub-classing for extending functionality.
    
    5. Facade: Provides a simplified, high-level interface to a complex subsystem, making it easier to use.
    
@@ -472,9 +484,57 @@ The Command Pattern is useful in scenarios where you want to decouple the sender
 3. Queue
 4. Database transactions
 5. Text editor (Excel, Notepad++, VSCode)
-
+   
 ### Architecture from Chapter 6
 ![Some Title](Chapter%206-%20The%20Command%20Pattern/RemoteControllerBigPicture.drawio.png)
+
+## The Adapter Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/AdapterPatternArt.png)
+
+### Quick Introduction
+Adapter is a structural design pattern. It is used to convert an interface an interface to another.
+
+### Detailed Introduction
+The Adapter Pattern is a structural design pattern in software engineering that allows two incompatible interfaces to work together. It is used when you have an existing class with a certain interface (or method signature), and you want to use it in a context where another interface is expected. The Adapter Pattern acts as a bridge between these interfaces, allowing them to collaborate without modifying the existing code.
+
+Here's how the Adapter Pattern typically works:
+
+1. Target Interface: This is the interface that the client code expects or relies on. The client code is designed to work with objects that implement this interface.
+
+2. Adaptee: This is the existing class or component that you want to use in your application, but it has an interface that is incompatible with the client's interface.
+
+3. Adapter: The adapter is a class that implements the target interface while internally delegating the actual work to an instance of the adaptee. It acts as a translator between the target interface and the adaptee's interface.
+
+By using the Adapter Pattern, you can make the client code work seamlessly with the adaptee, even though their interfaces are different. This is particularly useful when you have third-party libraries or legacy code that you can't or don't want to modify but need to integrate into your system.
+
+There are two common variations of the Adapter Pattern:
+
+1. Class Adapter: In this version, the adapter class inherits from both the target interface and the adaptee class. It can override methods from the target interface and delegate calls to the adaptee's methods.
+
+2. Object Adapter: In this version, the adapter class contains an instance of the adaptee class. It implements the target interface by forwarding calls to the adaptee's methods.
+
+### Real world examples
+1. Electric Adapter types
+2. File Format Convertors
+3. Legacy System Integration
+
+### Architecture from Chapter 7
+![Some Title](./Chapter%207-%20The%20Adapter%20and%20Facade%20Patterns/TheAdapterPattern/TheAdapterPatternBigPicture.drawio.png)
+
+## The Facade Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/FacadePatternArt.png)
+
+### Quick Introduction
+
+### Detailed Introduction
+
+### Real world examples
+
+### Architecture from Chapter 7
 
 ---
 # Interesting Articles to makes

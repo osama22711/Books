@@ -1,0 +1,15 @@
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\bin\Debug\net7.0\TheAdapterPattern.exe
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\bin\Debug\net7.0\TheAdapterPattern.deps.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\bin\Debug\net7.0\TheAdapterPattern.runtimeconfig.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\bin\Debug\net7.0\TheAdapterPattern.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\bin\Debug\net7.0\TheAdapterPattern.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\TheAdapterPattern.csproj.AssemblyReference.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\TheAdapterPattern.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\TheAdapterPattern.AssemblyInfoInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\TheAdapterPattern.AssemblyInfo.cs
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\TheAdapterPattern.csproj.CoreCompileInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\TheAdapterPattern.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\refint\TheAdapterPattern.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\TheAdapterPattern.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\TheAdapterPattern.genruntimeconfig.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 7- The Adapter and Facade Patterns\TheAdapterPattern\TheAdapterPattern\obj\Debug\net7.0\ref\TheAdapterPattern.dll

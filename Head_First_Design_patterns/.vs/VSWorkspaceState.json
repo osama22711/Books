@@ -3,13 +3,14 @@
     "",
     "\\Chapter 4- The factory pattern\\ThePizzaStore",
     "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore",
-    "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\Ingredients",
-    "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\Ingredients\\Interfaces",
-    "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\PizzaIngredientFactories",
     "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\PizzaStores",
     "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\PizzaTypes",
-    "\\Chapter 5- The singleton pattern"
+    "\\Chapter 6- The Command Pattern\\RemoteController",
+    "\\Chapter 6- The Command Pattern\\RemoteController\\RemoteController",
+    "\\Chapter 6- The Command Pattern\\RemoteController\\RemoteController\\Commands",
+    "\\Chapter 6- The Command Pattern\\RemoteController\\RemoteController\\Models",
+    "\\Chapter 7- The Adapter and Facade Patterns"
   ],
-  "SelectedNode": "\\Chapter 6- The Command Pattern",
+  "SelectedNode": "\\Chapter 7- The Adapter and Facade Patterns",
   "PreviewInSolutionExplorer": false
 }
