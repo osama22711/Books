@@ -65,13 +65,19 @@
     - [Detailed Introduction](#detailed-introduction-7)
     - [Real world examples](#real-world-examples-7)
     - [Architecture from Chapter 7](#architecture-from-chapter-7-1)
-- [Interesting Articles to makes](#interesting-articles-to-makes)
-- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
-  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+  - [The Template Method Pattern](#the-template-method-pattern)
     - [Picture from Refactoring Guru](#picture-from-refactoring-guru-8)
     - [Quick Introduction](#quick-introduction-8)
     - [Detailed Introduction](#detailed-introduction-8)
     - [Real world examples](#real-world-examples-8)
+    - [Architecture from Chapter 8](#architecture-from-chapter-8)
+- [Interesting Articles to makes](#interesting-articles-to-makes)
+- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
+  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-9)
+    - [Quick Introduction](#quick-introduction-9)
+    - [Detailed Introduction](#detailed-introduction-9)
+    - [Real world examples](#real-world-examples-9)
     - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
@@ -135,7 +141,7 @@
 My thoughts along with reading this book
 ## Intro
 Intro is really amazing! one of the best intro I've ever read in a book.
-It litterly explains everything that a reader would need e.g. who this book for, how to best learn, how to stimulate your brain to do its best (meta-cognition, adding pictures, conversational style).
+It literally explains everything that a reader would need e.g. who this book for, how to best learn, how to stimulate your brain to do its best (meta-cognition, adding pictures, conversational style).
 they even talked about their method of writing the book and, how can you best grasp on the information
 
 ## Intro To Design Patterns (chapter 1)
@@ -156,7 +162,7 @@ they even talked about their method of writing the book and, how can you best gr
 # Notes from the book
 
 ## OO Basics
-* <span style="color: yellow">Composition</span> describes a class that refrences one or more objects of other classes in instance variables.
+* <span style="color: yellow">Composition</span> describes a class that references one or more objects of other classes in instance variables.
 * <span style="color: yellow">Abstraction</span> is a general idea rather than one relating to a particular object, person, or situation.
 * <span style="color: yellow">Encapsulation</span> is the restricting of direct access to some of an object's components.
 * <span style="color: yellow">Polymorphism</span> is the ability of a variable, function or object to take on multiple forms.
@@ -165,20 +171,25 @@ they even talked about their method of writing the book and, how can you best gr
 * <span style="color: yellow">Delegation</span> refers generally to one entity passing something to another entity
   
 ## OO principles
-1. Identify the aspects of your application that vary and seperate them from what stays the same
+1. Identify the aspects of your application that vary and separate them from what stays the same
 2. Program to an interface, not an implementation.
 3. Favor composition over inheritance
 4. Strive for loosely coupled designs between objects that interact.
 5. Classes should be open for extension, but closed for modifications (as the <span style="color: orange">design pattern guru</span> said: code should be closed to change like the lotus flower in the evening, yet open to extension like the lotus flower in the morning)
 6. Depend on abstractions. Do not depend on concrete classes.
+7. Only talk to your friends.
+8. Don't call us, we'll call you.
 
 ## OO Patterns
 * <span style="color: yellow">The Strategy Pattern</span>: defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it. [ We used it in <span style="color: orange">Testing Duck behaviors</span> application in chapter 1]
 * <span style="color: yellow">The Observer Pattern</span>: defines a one-to-many dependency between objects so that when one object changes state, all of its dependents are notified and updated automatically.
-* <span style="color: yellow">The Decorator Pattern</span>: attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
+* <span style="color: yellow">The Decorator Pattern</span>: attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to sub-classing for extending functionality.
 * <span style="color: yellow">The Factory Method</span>: Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to the subclasses. 
 * <span style="color: yellow">The Singleton Pattern</span>: Ensure a class has one instance and provide a global point of access to it.
 * <span style="color: yellow">The Command Pattern</span>: Encapsulates a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations.
+* <span style="color: yellow">The Adapter Pattern</span>: Converts the interface of a class into another interface clients expect. Lets classes work together that couldn't otherwise because of incompatible interfaces.
+* <span style="color: yellow">The Facade Pattern</span>: Provides a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.
+* <span style="color: yellow">The Template Method Pattern</span>: Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure.
 
 ## Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
@@ -204,7 +215,7 @@ they even talked about their method of writing the book and, how can you best gr
 3. * Inheritance is one form of extension, but not necessarily the best way to achieve flexibility in our designs.
    * In our designs we should allow behavior to be extended without the need to modify existing code.
    * Composition and delegation can often be used to add new behaviors at runtime.
-   * The Decorator Pattern provides an alternative to subclassing for extending behavior.
+   * The Decorator Pattern provides an alternative to sub-classing for extending behavior.
    * The Decorator Pattern involves a set of decorator classes that are used to wrap concrete components.
    * Decorator classes mirror the type of the components they decorate. (in fact, they are the same type as the components they decorate, either through inheritance or interface implementation.)
    * Decorators change the behavior of their components by adding new functionality before and/or after (or even in place of) method calls to the component.
@@ -235,10 +246,31 @@ they even talked about their method of writing the book and, how can you best gr
    * Macro Commands are a simple extension of Command that allow multiple commands to be invoked. Likewise, Macro Commands can easily support undo().
    * In practice, it is not uncommon for "smart" Command objects to implement the request themselves rather than delegating to a receiver.
    * Commands may also be used to implement logging and transactional systems.
+7. * When you need to use an existing class and its interface is not the one you need, use an adapter.
+   * When you need to simplify and unify a large interface or complex set of interfaces, use a facade.
+   * An adapter changes an interface into one a client expects.
+   * A facade decouples a client from a complex subsystem.
+   * Implementing a facade requires that we compose the facade with its subsystem and use delegation to perform the work of the facade.
+   * There are two forms of the Adapter pattern: object and class adapters. Class adapters require multiple inheritance.
+   * You can implement more than one facade for a subsystem.
+   * An adapter wraps an object to change its interface, a decorator wraps an object to add new behaviors and responsibilities, and a facade "wraps" a set of objects to simplify
+     * **Facade** => Simplify
+     * **Adapter** => Change interface
+     * **Decorator** => New responsibility
+8. * A "template method" defines the steps of an algorithm, deferring to subclasses for the implementation of those steps.
+   * The Template Method Pattern gives us an important technique for code reuse.
+   * The template method's abstract class may define concrete methods, abstract methods and hooks.
+   * Abstract methods are implemented by subclasses.
+   * Hooks are methods that do nothing or default behavior in the abstract class, but may be overridden in the subclass.
+   * To prevent subclasses from changing the algorithm in the template method, declare the template method as final.
+   * The Hollywood Principle guides us to put decision-making in high-level modules that can decide how and when to call low level modules.
+   * You'll see lots of uses of the Template Method Pattern in real world code, but don't expect it all (like any pattern) to be designed "by this book".
+   * The Strategy and Template Method Patterns both encapsulate algorithms, one by inheritance and one by composition.
+   * The Factory Method is a a specialization of Template Method
 
 ---
 # Design Patterns
-There are alot of design patterns out there in the world
+There are a lot of design patterns out there in the world
 1. [Original foundational patterns (GoF patterns)](http://cmoulliard.github.io/gof%20patterns/design-patterns-quick-reference)
 2. Sun's J2EE patterns
 3. JSP patterns
@@ -392,7 +424,7 @@ The Decorator Pattern allows you to create a chain of decorators, each adding it
 ### Real world examples
 1. Java I/O packages
 2. Clothes on a human body
-3. Toppings on icecream
+3. Toppings on ice-cream
 4. Coffee with condiments
 
 ### Architecture from Chapter 3
@@ -529,12 +561,67 @@ There are two common variations of the Adapter Pattern:
 ![Alt text](./imgs/FacadePatternArt.png)
 
 ### Quick Introduction
+Facade is a structural design pattern. It is used to simplify systems.
 
 ### Detailed Introduction
+The Facade pattern is a design pattern in software engineering that falls under the category of structural patterns. It is used to provide a simplified and unified interface to a complex subsystem, making it easier for clients to interact with that subsystem.
+
+In essence, the Facade pattern acts as a "facade" or a simplified front-end for a set of more complex classes or components. It hides the complexity of the underlying system and provides a single entry point through which clients can access its functionality. This can improve code readability, maintainability, and ease of use.
+
+Key characteristics of the Facade pattern:
+
+1. Simplified interface: The facade provides a simplified, high-level interface that abstracts away the details of the underlying subsystem. Clients interact with the facade instead of directly with the complex components.
+
+2. Encapsulation: The internal workings of the subsystem are encapsulated within the facade, reducing the need for clients to know about or deal with the intricacies of individual components.
+
+3. Decoupling: By introducing a facade, you can reduce the coupling between clients and the subsystem, making it easier to modify or extend the subsystem without affecting client code.
+
+4. Single point of entry: Clients interact with the facade to access the functionality of the subsystem, which provides a single point of entry for all operations. This simplifies client code and reduces the complexity of managing dependencies.
+
+5. Improved maintainability: Facades can help improve code maintainability by centralizing complex operations and changes within the subsystem, minimizing the impact on the rest of the codebase.
+
+Overall, the Facade pattern is valuable for promoting separation of concerns, reducing code complexity, and enhancing the overall structure and readability of software systems.
 
 ### Real world examples
+1. A graphics library that provides a high-level interface for drawing shapes and images, hiding the complexity of rendering and device-specific details.
+2. An API for a complex system, such as an operating system, that simplifies access to system functionality for application developers.
+3. A banking system that exposes a simple interface for account management, hiding the complexities of transactions, balances, and security.
 
 ### Architecture from Chapter 7
+![Some Title](./Chapter%207-%20The%20Adapter%20and%20Facade%20Patterns/TheFacadePattern/HomeTheaterFacade.drawio.png)
+
+## The Template Method Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/TemplateMethodPatternArt.png)
+
+### Quick Introduction
+Template Method is a behavioral design pattern. It is used to let subclass define a step in an algorithm.
+
+### Detailed Introduction
+The Template Method pattern is a behavioral design pattern used in software engineering. It is a way to define the skeleton or structure of an algorithm in a superclass (or base class), while allowing subclasses to provide specific implementations of certain steps of that algorithm without changing its overall structure. In other words, it defines the "template" for an algorithm, and the specific details can be customized in subclasses.
+
+Key components and characteristics of the Template Method pattern:
+
+1. Abstract Base Class: The Template Method pattern starts with an abstract base class that defines the overall algorithm structure. This base class contains one or more methods (referred to as "template methods") that outline the steps of the algorithm. These template methods can be declared as abstract or concrete with default implementations.
+
+2. Concrete Subclasses: Subclasses (concrete classes) inherit from the abstract base class. They provide concrete implementations for the specific steps of the algorithm defined in the template methods. These implementations customize or extend the behavior of the algorithm.
+
+3. Inversion of Control: The Template Method pattern follows the principle of inversion of control, where the control over the algorithm's flow is shifted from the client code to the base class. The base class defines the sequence of steps and delegates the implementation of certain steps to its subclasses.
+
+4. Hooks: In addition to the template methods, the base class may include "hook" methods, which are methods that have default (often empty) implementations. Subclasses can choose to override these hook methods to customize behavior if needed, but they are not required to do so.
+
+5. Consistent Algorithm: The Template Method pattern ensures that the overall algorithm's structure remains consistent across subclasses while allowing for variations in specific steps. This can lead to code reuse and easier maintenance.
+
+### Real world examples
+1. Implementing different types of sorting algorithms where the comparison and swapping steps vary.
+2. Building user interfaces with a consistent layout but allowing different widgets or controls in specific sections (Components/Applets).
+3. Implementing data import/export processes where the data parsing and transformation steps may differ for different data formats.
+  
+By using the Template Method pattern, you can promote code reusability and maintainability while ensuring a consistent overall algorithm structure.
+
+### Architecture from Chapter 8
+![Some Title](./Chapter%208-%20The%20Template%20Method%20Pattern/TheTemplateMethodPattern.drawio.png)
 
 ---
 # Interesting Articles to makes

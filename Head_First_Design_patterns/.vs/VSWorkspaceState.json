@@ -5,11 +5,7 @@
     "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore",
     "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\PizzaStores",
     "\\Chapter 4- The factory pattern\\ThePizzaStore\\ThePizzaStore\\PizzaTypes",
-    "\\Chapter 6- The Command Pattern\\RemoteController",
-    "\\Chapter 6- The Command Pattern\\RemoteController\\RemoteController",
-    "\\Chapter 6- The Command Pattern\\RemoteController\\RemoteController\\Commands",
-    "\\Chapter 6- The Command Pattern\\RemoteController\\RemoteController\\Models",
-    "\\Chapter 7- The Adapter and Facade Patterns"
+    "\\Chapter 7- The Adapter and Facade Patterns\\TheAdapterPattern"
   ],
   "SelectedNode": "\\Chapter 7- The Adapter and Facade Patterns",
   "PreviewInSolutionExplorer": false
