@@ -71,13 +71,25 @@
     - [Detailed Introduction](#detailed-introduction-8)
     - [Real world examples](#real-world-examples-8)
     - [Architecture from Chapter 8](#architecture-from-chapter-8)
-- [Interesting Articles to makes](#interesting-articles-to-makes)
-- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
-  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+  - [The Iterator Pattern](#the-iterator-pattern)
     - [Picture from Refactoring Guru](#picture-from-refactoring-guru-9)
     - [Quick Introduction](#quick-introduction-9)
     - [Detailed Introduction](#detailed-introduction-9)
     - [Real world examples](#real-world-examples-9)
+    - [Architecture from Chapter 9](#architecture-from-chapter-9)
+  - [The Composite Pattern](#the-composite-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-10)
+    - [Quick Introduction](#quick-introduction-10)
+    - [Detailed Introduction](#detailed-introduction-10)
+    - [Real world examples](#real-world-examples-10)
+    - [Architecture from Chapter 9](#architecture-from-chapter-9-1)
+- [Interesting Articles to makes](#interesting-articles-to-makes)
+- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
+  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-11)
+    - [Quick Introduction](#quick-introduction-11)
+    - [Detailed Introduction](#detailed-introduction-11)
+    - [Real world examples](#real-world-examples-11)
     - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
@@ -179,6 +191,7 @@ they even talked about their method of writing the book and, how can you best gr
 6. Depend on abstractions. Do not depend on concrete classes.
 7. Only talk to your friends.
 8. Don't call us, we'll call you.
+9. A class should have only one reason to change.
 
 ## OO Patterns
 * <span style="color: yellow">The Strategy Pattern</span>: defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it. [ We used it in <span style="color: orange">Testing Duck behaviors</span> application in chapter 1]
@@ -190,6 +203,8 @@ they even talked about their method of writing the book and, how can you best gr
 * <span style="color: yellow">The Adapter Pattern</span>: Converts the interface of a class into another interface clients expect. Lets classes work together that couldn't otherwise because of incompatible interfaces.
 * <span style="color: yellow">The Facade Pattern</span>: Provides a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.
 * <span style="color: yellow">The Template Method Pattern</span>: Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure.
+* <span style="color: yellow">The Iterator Pattern</span>: Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.
+* <span style="color: yellow">The Composite Pattern</span>: Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.
 
 ## Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
@@ -267,6 +282,15 @@ they even talked about their method of writing the book and, how can you best gr
    * You'll see lots of uses of the Template Method Pattern in real world code, but don't expect it all (like any pattern) to be designed "by this book".
    * The Strategy and Template Method Patterns both encapsulate algorithms, one by inheritance and one by composition.
    * The Factory Method is a a specialization of Template Method
+9. * An Iterator allows access to an aggregate's elements without exposing its internal structure.
+   * An Iterator takes the job of iterating over an aggregate and encapsulates it in another object.
+   * When using an Iterator, we relieve the aggregate of the responsibility of supporting operations for traversing its data.
+   * An Iterator provides a common interface for traversing the items of an aggregate, allowing you to use polymorphism when writing code that makes use of the items of the aggregate.
+   * We should strive to assign only one responsibility to each class.
+   * The Composite Pattern provides a structure to hold both individual objects and composites.
+   * The Composite Pattern allows clients to treat composites and individual objects uniformly.
+   * A Component is any object in a Composite structure. Components maybe be other composites or leaf nodes.
+   * There are many design tradeoffs in implementing Composite. You need to balance transparency and safety with your needs.
 
 ---
 # Design Patterns
@@ -622,6 +646,67 @@ By using the Template Method pattern, you can promote code reusability and maint
 
 ### Architecture from Chapter 8
 ![Some Title](./Chapter%208-%20The%20Template%20Method%20Pattern/TheTemplateMethodPattern.drawio.png)
+
+## The Iterator Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/IteratorPatternArt.png)
+
+### Quick Introduction
+Iterator is a behavioral design pattern. It is ued to generalize iterating over a list of things without knowing the used data structure.
+
+### Detailed Introduction
+The Iterator Pattern is a behavioral design pattern that is used to provide a standardized way to traverse through a collection of objects, such as a list, array, tree, or any other data structure, without exposing the underlying implementation details of that collection. It allows you to access the elements of a collection sequentially without needing to know how the collection is structured or how it stores its elements.
+
+The key idea behind the Iterator Pattern is to separate the responsibility of iterating over a collection from the collection itself. This separation promotes a more modular and flexible design, as it allows you to change the internal structure of the collection (e.g., switching from an array to a linked list) without affecting the code that relies on the iterator.
+
+The Iterator Pattern typically consists of the following components:
+
+1. Iterator: This is an interface or an abstract class that defines methods for traversing the collection. It typically includes methods like next(), hasNext(), and sometimes remove(). Each concrete collection class (e.g., a list or tree) will have its own iterator implementation.
+
+2. Concrete Iterator: These are the actual implementations of the Iterator interface for specific types of collections. They maintain the current position within the collection and provide the logic for moving to the next element and checking for the presence of more elements.
+
+3. Aggregate: This is an interface or abstract class that defines a method for creating an iterator. It represents the collection of objects and can also include methods for adding, removing, or accessing elements in the collection.
+
+4. Concrete Aggregate: These are the classes that implement the Aggregate interface. They provide the concrete implementation of the iterator creation method and manage the collection of objects.
+
+### Real world examples
+1. IEnumerator in csharp
+2. Any code that wants to generalize the iterator
+3. It is used mostly used with the composite pattern (best friends)
+
+### Architecture from Chapter 9
+![Some Title](./Chapter%209-%20The%20Iterator%20and%20Composite%20Patterns/RestaurantWithDifferentMenus/RestaurantMenus.drawio.png)
+
+## The Composite Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/CompositePatternArt.png)
+
+### Quick Introduction
+Composite is a structural design pattern. It is used to represent part-whole hierarchies.
+
+### Detailed Introduction
+The Composite Pattern is a structural design pattern that is used to compose objects into tree structures to represent part-whole hierarchies. It allows clients to treat individual objects and compositions of objects uniformly. In other words, the pattern lets you build complex structures by combining simpler objects and treat both the composite and individual objects in a consistent manner.
+
+Key components of the Composite Pattern include:
+
+1. Component: This is an abstract class or interface that defines the common interface for all concrete objects in the composition, whether they are leaf nodes (individual objects) or composite nodes (collections of objects). This interface typically includes operations like add, remove, getChild, and any other relevant methods.
+
+2. Leaf: This is a concrete class that implements the Component interface. Leaf objects are the individual, non-composite objects that do not have children. They provide the actual functionality.
+
+3. Composite: This is a concrete class that also implements the Component interface. Composite objects can have child components, which can be either leaves or other composites. The Composite class defines operations to manage its child components, such as adding, removing, and iterating over them.
+
+The Composite Pattern allows you to create hierarchies of objects that can represent complex structures. Clients of these structures can work with individual objects (leaf nodes) or with compositions of objects (composite nodes) without needing to know the specific type of each element. This promotes a "uniform" interface for both single objects and collections of objects.
+
+### Real world examples
+1. HTML DOM
+2. File/Folder Systems
+3. a lot and a lot of things
+4. Its best friend is obviously the iterator pattern
+
+### Architecture from Chapter 9
+![Some Title](./Chapter%209-%20The%20Iterator%20and%20Composite%20Patterns/RestaurantWithDifferentMenus/RestaurantMenus.drawio.png)
 
 ---
 # Interesting Articles to makes
