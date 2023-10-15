@@ -1,0 +1,15 @@
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\bin\Debug\net7.0\MightyGumball.exe
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\bin\Debug\net7.0\MightyGumball.deps.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\bin\Debug\net7.0\MightyGumball.runtimeconfig.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\bin\Debug\net7.0\MightyGumball.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\bin\Debug\net7.0\MightyGumball.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\MightyGumball.csproj.AssemblyReference.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\MightyGumball.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\MightyGumball.AssemblyInfoInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\MightyGumball.AssemblyInfo.cs
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\MightyGumball.csproj.CoreCompileInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\MightyGumball.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\refint\MightyGumball.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\MightyGumball.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\MightyGumball.genruntimeconfig.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 10- The State Pattern\MightyGumball\MightyGumball\obj\Debug\net7.0\ref\MightyGumball.dll

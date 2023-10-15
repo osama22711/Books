@@ -83,13 +83,19 @@
     - [Detailed Introduction](#detailed-introduction-10)
     - [Real world examples](#real-world-examples-10)
     - [Architecture from Chapter 9](#architecture-from-chapter-9-1)
-- [Interesting Articles to makes](#interesting-articles-to-makes)
-- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
-  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+  - [The State Pattern](#the-state-pattern)
     - [Picture from Refactoring Guru](#picture-from-refactoring-guru-11)
     - [Quick Introduction](#quick-introduction-11)
     - [Detailed Introduction](#detailed-introduction-11)
     - [Real world examples](#real-world-examples-11)
+    - [Architecture from Chapter 10](#architecture-from-chapter-10)
+- [Interesting Articles to makes](#interesting-articles-to-makes)
+- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
+  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-12)
+    - [Quick Introduction](#quick-introduction-12)
+    - [Detailed Introduction](#detailed-introduction-12)
+    - [Real world examples](#real-world-examples-12)
     - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
@@ -205,6 +211,7 @@ they even talked about their method of writing the book and, how can you best gr
 * <span style="color: yellow">The Template Method Pattern</span>: Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure.
 * <span style="color: yellow">The Iterator Pattern</span>: Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.
 * <span style="color: yellow">The Composite Pattern</span>: Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.
+* <span style="color: yellow">The State Pattern</span>: Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.
 
 ## Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
@@ -291,6 +298,16 @@ they even talked about their method of writing the book and, how can you best gr
    * The Composite Pattern allows clients to treat composites and individual objects uniformly.
    * A Component is any object in a Composite structure. Components maybe be other composites or leaf nodes.
    * There are many design tradeoffs in implementing Composite. You need to balance transparency and safety with your needs.
+10. * The State Pattern allows an object to have many different behaviors that are based on its internal state.
+    * Unlike a procedural state machine, the State Pattern represents state as a full-blown class.
+    * The Context gets its behavior by delegating to the current state object it is composed with.
+    * By encapsulating each state into a class, we localize any changes that will need to be made.
+    * The State and Strategy Patterns have the same class diagram, but they differ in intent.
+    * Strategy Pattern typically configures context classes with a behavior or algorithm.
+    * State Pattern allows a Context to change its behavior as the state of the Context changes.
+    * State transitions can be controlled by the state classes or by the context classes.
+    * Using the state pattern will typically result in a greater number of classes in your design.
+    * State classes may be shared among Context instances.
 
 ---
 # Design Patterns
@@ -707,6 +724,41 @@ The Composite Pattern allows you to create hierarchies of objects that can repre
 
 ### Architecture from Chapter 9
 ![Some Title](./Chapter%209-%20The%20Iterator%20and%20Composite%20Patterns/RestaurantWithDifferentMenus/RestaurantMenus.drawio.png)
+
+## The State Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/StatePatternArt.png)
+
+### Quick Introduction
+State is a behavioral design pattern. It is similar to strategy pattern but it changes its behavior internally without the user defining it.
+
+### Detailed Introduction
+The State pattern is a behavioral design pattern that is used in software engineering to allow an object to alter its behavior when its internal state changes. This pattern is part of the Gang of Four (GoF) design patterns and is particularly useful in scenarios where an object needs to exhibit different behaviors in response to changes in its state without using a multitude of conditional statements.
+
+Key components of the State pattern include:
+
+Context: This is the object that maintains a reference to the current state object and delegates requests to it. The context is the object whose behavior changes based on its internal state.
+
+State: State objects represent the various states that the context can be in. Each state object typically defines the behavior and actions that the context can perform when it is in that state. State objects share a common interface, allowing the context to interact with them in a consistent way.
+
+The State pattern provides several benefits:
+
+1. Clean Code: It helps in organizing code by separating state-specific behavior into different state classes. This makes the code cleaner and more maintainable.
+
+2. Flexibility: It allows for the easy addition of new states and the modification of existing ones without changing the context or other state classes. This promotes flexibility and extensibility.
+
+3. Reduces Conditional Statements: It eliminates or reduces large, complex conditional statements in the context object. Instead of using a series of if-else or switch-case statements to determine behavior based on the state, the context simply delegates the request to its current state object.
+
+4. Promotes Encapsulation: Each state class encapsulates its behavior and rules, making it easier to reason about and test.
+
+### Real world examples
+1. Finite State Machine
+2. Game character behavior
+3. Auth system
+
+### Architecture from Chapter 10
+![Some Title](./Chapter%2010-%20The%20State%20Pattern/MightyGumball/TheStatePattern.drawio.png)
 
 ---
 # Interesting Articles to makes
