@@ -2,7 +2,7 @@
 
 namespace MightyGumball
 {
-    public class GumballMachine
+    public class GumballMachine : IGumballMachine
     {
         public State soldOutState { get; set; }
         public State noQuaterState { get; set; }
@@ -62,6 +62,11 @@ namespace MightyGumball
             {
                 state = soldOutState;
             }
+        }
+
+        public int GetGumballCount()
+        {
+            return this.count;
         }
     }
 }

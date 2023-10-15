@@ -89,13 +89,19 @@
     - [Detailed Introduction](#detailed-introduction-11)
     - [Real world examples](#real-world-examples-11)
     - [Architecture from Chapter 10](#architecture-from-chapter-10)
-- [Interesting Articles to makes](#interesting-articles-to-makes)
-- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
-  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+  - [The Proxy Pattern](#the-proxy-pattern)
     - [Picture from Refactoring Guru](#picture-from-refactoring-guru-12)
     - [Quick Introduction](#quick-introduction-12)
     - [Detailed Introduction](#detailed-introduction-12)
     - [Real world examples](#real-world-examples-12)
+    - [Architecture from Chapter 11](#architecture-from-chapter-11)
+- [Interesting Articles to makes](#interesting-articles-to-makes)
+- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
+  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-13)
+    - [Quick Introduction](#quick-introduction-13)
+    - [Detailed Introduction](#detailed-introduction-13)
+    - [Real world examples](#real-world-examples-13)
     - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
@@ -212,6 +218,7 @@ they even talked about their method of writing the book and, how can you best gr
 * <span style="color: yellow">The Iterator Pattern</span>: Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.
 * <span style="color: yellow">The Composite Pattern</span>: Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.
 * <span style="color: yellow">The State Pattern</span>: Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.
+* <span style="color: yellow">The Proxy Pattern</span>: Provide a surrogate or placeholder for another object to control access to it.
 
 ## Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
@@ -308,6 +315,15 @@ they even talked about their method of writing the book and, how can you best gr
     * State transitions can be controlled by the state classes or by the context classes.
     * Using the state pattern will typically result in a greater number of classes in your design.
     * State classes may be shared among Context instances.
+11. * The Proxy pattern provides a representative for another object in order to control the client's access to it. there are a number of ways it can manage that access.
+    * A Remote Proxy manages interaction between a client and a remote object.
+    * A Virtual Proxy controls access to an object that is expensive to instantiate.
+    * A  Protection Proxy controls access to the methods of an object based on the caller.
+    * Many other variants of the Proxy Pattern exist including caching proxies, synchronization proxies, firewall proxies, copy-on-write proxies, and so on.
+    * Proxy is structurally similar to Decorator, but the two differ in their purpose.
+    * The Decorator Pattern adds behavior to an object, while a proxy controls access.
+    * Java's built-in support for Proxy can build a dynamic proxy class on demand and dispatch all calls on it to a handler of your choosing.
+    * Like any wrapper, proxies will increase the number of classes and objects in your designs.
 
 ---
 # Design Patterns
@@ -759,6 +775,61 @@ The State pattern provides several benefits:
 
 ### Architecture from Chapter 10
 ![Some Title](./Chapter%2010-%20The%20State%20Pattern/MightyGumball/TheStatePattern.drawio.png)
+
+
+## The Proxy Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/ProxyPatternArt.png)
+
+### Quick Introduction
+Proxy is a structural design pattern. It is used as a placeholder between the client and the server.
+
+### Detailed Introduction
+The Proxy Pattern is a structural design pattern in software engineering. It provides a surrogate or placeholder for another object to control access to it. In other words, the Proxy Pattern allows you to create an intermediary or wrapper around an object to add additional functionality or control access to the real object.
+
+Key characteristics and purposes of the Proxy Pattern include:
+
+1. Controlled Access: The Proxy controls access to the real object, allowing you to manage and restrict how clients interact with it.
+
+2. Lazy Initialization: The Proxy can postpone the creation or initialization of the real object until it's actually needed. This is known as lazy loading.
+
+3. Security: Proxies can enforce security policies, authentication, and authorization checks to ensure that clients have the appropriate permissions to access the real object.
+
+4. Logging and Monitoring: Proxies can log and monitor the interactions between clients and the real object for debugging or auditing purposes.
+
+5. Caching: Proxies can implement caching mechanisms to store and reuse previously fetched data or results, improving performance.
+
+6. Remote Proxy: In distributed systems, a Proxy can represent a remote object, making it appear as if it's a local object. This is commonly used in Remote Procedure Call (RPC) systems.
+
+7. Virtual Proxy: A Virtual Proxy provides a placeholder for an expensive-to-create object. The real object is created only when needed, optimizing resource usage.
+
+8. Smart Proxy: A Smart Proxy adds additional functionality to the real object, such as reference counting, to manage its lifecycle.
+
+Common examples of the Proxy Pattern include:
+
+1. Image Proxy: In a multimedia application, an image proxy may load and display a high-resolution image only when it's needed. Until then, a lower-resolution placeholder image is shown.
+
+2. Remote Database Proxy: In distributed systems, a remote database proxy may represent a remote database server, allowing clients to interact with it as if it were a local database.
+
+3. Access Control Proxy: Access control proxies can enforce authentication and authorization checks to restrict access to sensitive resources.
+
+4. Logging Proxy: A logging proxy can log the interactions between a client and a real object, providing debugging and auditing capabilities.
+
+5. Caching Proxy: Caching proxies can store and retrieve previously fetched data to improve performance.
+
+The Proxy Pattern is a versatile pattern that can be used to add various types of functionality to objects, including controlling access, optimizing resource usage, and enhancing security. It's particularly useful in scenarios where you want to provide a simplified or controlled interface to a complex or resource-intensive object.
+
+### Real world examples
+1. Angular's guard
+2. APIs
+3. Caching proxies
+4. Authentication Middleware
+
+### Architecture from Chapter 11
+No Repo was created for this chapter, and the following image was taken from the internet:
+
+![Alt text](./imgs/ProxyPatternArchitecture.png)
 
 ---
 # Interesting Articles to makes
