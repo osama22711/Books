@@ -1,0 +1,15 @@
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\bin\Debug\net7.0\DrawingApp.exe
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\bin\Debug\net7.0\DrawingApp.deps.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\bin\Debug\net7.0\DrawingApp.runtimeconfig.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\bin\Debug\net7.0\DrawingApp.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\bin\Debug\net7.0\DrawingApp.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\DrawingApp.csproj.AssemblyReference.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\DrawingApp.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\DrawingApp.AssemblyInfoInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\DrawingApp.AssemblyInfo.cs
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\DrawingApp.csproj.CoreCompileInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\DrawingApp.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\refint\DrawingApp.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\DrawingApp.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\DrawingApp.genruntimeconfig.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Bridge Pattern\DrawingApp\DrawingApp\obj\Debug\net7.0\ref\DrawingApp.dll

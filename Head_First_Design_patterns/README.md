@@ -95,13 +95,25 @@
     - [Detailed Introduction](#detailed-introduction-12)
     - [Real world examples](#real-world-examples-12)
     - [Architecture from Chapter 11](#architecture-from-chapter-11)
-- [Interesting Articles to makes](#interesting-articles-to-makes)
-- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
-  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+  - [The Bridge Pattern](#the-bridge-pattern)
     - [Picture from Refactoring Guru](#picture-from-refactoring-guru-13)
     - [Quick Introduction](#quick-introduction-13)
     - [Detailed Introduction](#detailed-introduction-13)
     - [Real world examples](#real-world-examples-13)
+    - [Architecture from Chapter 14](#architecture-from-chapter-14)
+  - [The Chain Of Responsibility Pattern](#the-chain-of-responsibility-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-14)
+    - [Quick Introduction](#quick-introduction-14)
+    - [Detailed Introduction](#detailed-introduction-14)
+    - [Real world examples](#real-world-examples-14)
+    - [Architecture from Chapter 14](#architecture-from-chapter-14-1)
+- [Interesting Articles to makes](#interesting-articles-to-makes)
+- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
+  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-15)
+    - [Quick Introduction](#quick-introduction-15)
+    - [Detailed Introduction](#detailed-introduction-15)
+    - [Real world examples](#real-world-examples-15)
     - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
@@ -219,6 +231,7 @@ they even talked about their method of writing the book and, how can you best gr
 * <span style="color: yellow">The Composite Pattern</span>: Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.
 * <span style="color: yellow">The State Pattern</span>: Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.
 * <span style="color: yellow">The Proxy Pattern</span>: Provide a surrogate or placeholder for another object to control access to it.
+* <span style="color: yellow">The Compound Patterns</span>: Combines two or more patterns into a solution that solves a recurring or general problem.
 
 ## Bullet points
 1. * Knowing the OO basics does not make you a good OO designer.
@@ -324,6 +337,23 @@ they even talked about their method of writing the book and, how can you best gr
     * The Decorator Pattern adds behavior to an object, while a proxy controls access.
     * Java's built-in support for Proxy can build a dynamic proxy class on demand and dispatch all calls on it to a handler of your choosing.
     * Like any wrapper, proxies will increase the number of classes and objects in your designs.
+12. * The Model View Controller Pattern (MVC) is a compound pattern consisting of the Observer, Strategy and Composite Patterns.
+    * The model makes use of the Observer Pattern so that it can keep observers updated yet stay decoupled from them.
+    * The controller is the strategy for the view. The view can use different implementations of the controller to get different behavior.
+    * The view uses the Composite Pattern to implement the user interface, which usually consists of nested components like panels, frames and buttons.
+    * These patterns work together to decouple the three players in the MVC model, which keeps designs clear and flexible.
+    * The Adapter Pattern can be used to adapt a new model to an existing view and controller.
+    * Model 2 is an adaptation of MVC for web applications.
+    * In Model 2, the controller is implemented as a servlet and JSP & HTML implement the view.
+13. * Let Design Patterns emerge in your designs, don't force them in just for the sake of using a pattern.
+    * Design Patterns aren't set in stone; adapt and tweak them to meet your needs.
+    * Always use the simplest solution that meets your needs, even if it doesn't include a pattern.
+    * Study Design Pattern catalogs to familiarize yourself with patterns and the relationships among them.
+    * Pattern classifications (or categories) provide groupings for patterns. When they help, use them.
+    * You need to be committed to be a patterns writer: it takes time and patience, and you have to be willing to do lots of refinement.
+    * Remember, most patterns you encounter will be adaptations of existing patterns, not new patterns.
+    * Build your team's shared vocabulary. This is one of the most powerful benefits of using patterns.
+    * Like any community, the patterns community has its own lingo. Don't let that hold you back. Having read this book, you now know most of it.
 
 ---
 # Design Patterns
@@ -830,6 +860,81 @@ The Proxy Pattern is a versatile pattern that can be used to add various types o
 No Repo was created for this chapter, and the following image was taken from the internet:
 
 ![Alt text](./imgs/ProxyPatternArchitecture.png)
+
+## The Bridge Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/BridgePatternArt.png)
+
+### Quick Introduction
+Bridge is a structural design pattern. It is like a mix of composite and strategy patterns.
+
+### Detailed Introduction
+The Bridge Pattern is a structural design pattern that separates an object's abstraction (interface) from its implementation, allowing them to vary independently. It is used to avoid a permanent binding between an abstraction and its implementation, making the system more flexible and extensible.
+
+Key components of the Bridge Pattern include:
+
+1. Abstraction: This is the high-level interface that clients interact with. It defines the abstract operations and maintains a reference to an instance of the Implementor.
+
+2. Refined Abstraction: These are extensions of the Abstraction that can add more functionality while still relying on the Implementor for the basic operations.
+
+3. Implementor: This is the low-level interface that defines the operations that the Concrete Implementors must implement. It is independent of the Abstraction and allows different implementations to be interchangeable.
+
+4. Concrete Implementor: These are the classes that provide specific implementations of the operations defined in the Implementor interface.
+
+The Bridge Pattern is particularly useful when you have a system where there are multiple dimensions of variation, and you want to avoid the combinatorial explosion of classes that would result from implementing every possible combination. By separating the abstraction from its implementation, you can create a more maintainable and flexible system.
+
+For example, if you're developing a drawing application, you might have an Abstraction that represents different shapes (e.g., circles, squares) and an Implementor that provides different rendering mechanisms (e.g., rasterization, vector graphics). By using the Bridge Pattern, you can easily add new shapes or rendering mechanisms without having to create a class for every possible combination.
+
+In summary, the Bridge Pattern is a design pattern that promotes loose coupling between abstractions and their implementations, allowing them to vary independently and making the system more adaptable to change and extension.
+
+### Real world examples
+1. Remote controller types and receivers
+2. Shapes and Colors
+
+### Architecture from Chapter 14
+
+Same would apply in case of Shapes and Colors.
+
+![sometitle](./Chapter%2014-%20The%20Bridge%20Pattern/BridgePattern.drawio.png)
+
+## The Chain Of Responsibility Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/CORPatternArt.png)
+
+### Quick Introduction
+COR is a behavioral design pattern. It is used to process a request at the right place in a chain.
+
+### Detailed Introduction
+The Chain of Responsibility Pattern is a behavioral design pattern that allows you to pass a request along a chain of handlers. Each handler decides whether to process the request or pass it to the next handler in the chain. This pattern is used to achieve loose coupling between the sender of a request and its receivers.
+
+Key components of the Chain of Responsibility pattern include:
+
+1. Handler: An abstract class or interface that defines the common interface for handling requests. It usually contains a reference to the next handler in the chain and a method for processing requests.
+
+2. ConcreteHandler: Concrete classes that implement the Handler interface and provide specific implementations for handling requests. Each concrete handler decides whether to handle the request or pass it to the next handler in the chain.
+
+3. Client: Initiates a request and starts the chain. It's unaware of which handler will ultimately process the request.
+
+The primary benefits of the Chain of Responsibility Pattern include:
+
+Decoupling the sender and receiver of requests: The sender doesn't need to know which handler will process its request, and the receiver doesn't need to know the sender's identity.
+
+Dynamic and flexible chaining of handlers: You can easily add, remove, or reorder handlers in the chain without affecting the client code.
+
+Avoiding a "God" class with multiple conditional statements: Instead of having a single class with complex if-else statements to handle different types of requests, you can distribute the responsibility across multiple handlers.
+
+A common real-world analogy for the Chain of Responsibility Pattern is a customer support hotline. When a customer calls with an issue, the call may be initially handled by a general customer service representative. If the issue is beyond their scope, they may forward the call to a specialist, who, in turn, may pass it to a higher-level expert. This chain of handling the customer's issue can continue until it is resolved or until it reaches the most appropriate person to handle it.
+
+The Chain of Responsibility Pattern is particularly useful in scenarios where you have a sequence of processing steps, and the exact sequence or combination of steps needed depends on the situation. It promotes flexibility and maintainability in your codebase.
+
+### Real world examples
+1. Call center
+2. Outlook (managing spams and emails)
+
+### Architecture from Chapter 14
+![some img](./Chapter%2014-%20The%20Chain%20Of%20Responsibility%20Pattern/CORPattern.drawio.png)
 
 ---
 # Interesting Articles to makes

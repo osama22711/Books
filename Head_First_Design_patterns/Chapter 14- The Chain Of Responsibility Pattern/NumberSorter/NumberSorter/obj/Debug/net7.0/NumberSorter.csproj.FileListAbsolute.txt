@@ -1,0 +1,15 @@
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\bin\Debug\net7.0\NumberSorter.exe
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\bin\Debug\net7.0\NumberSorter.deps.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\bin\Debug\net7.0\NumberSorter.runtimeconfig.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\bin\Debug\net7.0\NumberSorter.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\bin\Debug\net7.0\NumberSorter.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\NumberSorter.csproj.AssemblyReference.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\NumberSorter.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\NumberSorter.AssemblyInfoInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\NumberSorter.AssemblyInfo.cs
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\NumberSorter.csproj.CoreCompileInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\NumberSorter.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\refint\NumberSorter.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\NumberSorter.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\NumberSorter.genruntimeconfig.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Chain Of Responsibility Pattern\NumberSorter\NumberSorter\obj\Debug\net7.0\ref\NumberSorter.dll
