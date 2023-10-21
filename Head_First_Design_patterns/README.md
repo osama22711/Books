@@ -107,13 +107,19 @@
     - [Detailed Introduction](#detailed-introduction-14)
     - [Real world examples](#real-world-examples-14)
     - [Architecture from Chapter 14](#architecture-from-chapter-14-1)
-- [Interesting Articles to makes](#interesting-articles-to-makes)
-- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
-  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+  - [The Mediator Pattern](#the-mediator-pattern)
     - [Picture from Refactoring Guru](#picture-from-refactoring-guru-15)
     - [Quick Introduction](#quick-introduction-15)
     - [Detailed Introduction](#detailed-introduction-15)
     - [Real world examples](#real-world-examples-15)
+    - [Architecture from Chapter 14](#architecture-from-chapter-14-2)
+- [Interesting Articles to makes](#interesting-articles-to-makes)
+- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
+  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
+    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-16)
+    - [Quick Introduction](#quick-introduction-16)
+    - [Detailed Introduction](#detailed-introduction-16)
+    - [Real world examples](#real-world-examples-16)
     - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
@@ -171,6 +177,7 @@
 1. Watching this series on youtube discussing each pattern in this book. see: [Design Patterns in Object Oriented Programming](https://www.youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc)
 2. Reading from [Refactoring Guru's Design Patterns](https://refactoring.guru/design-patterns)
 3. Interesting read about design patterns and anti-patterns (things that breaks a code), refactoring, uml. see: [Source Making](https://sourcemaking.com/)
+4. Understand how design patterns is used in games, see: [Game Patterns YouTube channel](https://www.youtube.com/@GamePatterns)
 
 ---
 # Self reflection on the book
@@ -935,6 +942,43 @@ The Chain of Responsibility Pattern is particularly useful in scenarios where yo
 
 ### Architecture from Chapter 14
 ![some img](./Chapter%2014-%20The%20Chain%20Of%20Responsibility%20Pattern/CORPattern.drawio.png)
+
+## The Mediator Pattern
+
+### Picture from [Refactoring Guru](https://refactoring.guru/)
+![Alt text](./imgs/MediatorPatternArt.png)
+
+### Quick Introduction
+Mediator is a behavioral design pattern. It is like the network's switch of applications.
+
+### Detailed Introduction
+The Mediator Pattern is a behavioral design pattern that promotes loose coupling between objects by centralizing communication and control through a mediator object. It is used to manage complex relationships and interactions among objects. The primary goal of this pattern is to reduce the direct connections between objects, which can make a system more maintainable and extendable.
+
+Key components of the Mediator Pattern include:
+
+1. Mediator: This is the central component that defines the interface for communication between colleagues (participants). It encapsulates the communication and coordination logic. The mediator maintains references to all the colleagues and directs messages between them.
+
+2. Colleague (Participant): These are the objects that interact with each other through the mediator. Colleagues are not aware of each other and communicate indirectly through the mediator. They typically hold a reference to the mediator.
+
+The Mediator Pattern offers several benefits:
+
+1. Reduced Coupling: It reduces the number of direct connections between objects, making the system less tightly coupled. Colleagues only need to know about the mediator, not each other.
+
+2. Centralized Control: The mediator provides a central point of control and coordination for interactions among colleagues, making it easier to manage complex behavior.
+
+3. Reusability: Mediators can be reused in different contexts, and the addition of new colleagues doesn't require changes to existing colleagues or the mediator.
+
+4. Easier Maintenance: Changes or enhancements to communication and coordination logic can be made in a centralized way within the mediator without affecting the colleagues.
+
+Common real-world analogies for the Mediator Pattern include air traffic control systems, where a central authority (mediator) coordinates the movement and communication of multiple aircraft (colleagues), and chat applications where a server (mediator) facilitates communication between users (colleagues) without direct connections between them.
+
+The Mediator Pattern is particularly useful in scenarios where complex interactions exist, and you want to avoid the proliferation of direct relationships between objects, which can lead to increased coupling and maintenance challenges.
+
+### Real world examples
+1. Message brokers (Microservice architecture)
+
+### Architecture from Chapter 14
+![Some Title](./Chapter%2014-%20The%20Mediator%20Pattern/MediatorPattern.drawio.png)
 
 ---
 # Interesting Articles to makes

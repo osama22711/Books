@@ -1,0 +1,15 @@
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\bin\Debug\net7.0\ChatApp.exe
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\bin\Debug\net7.0\ChatApp.deps.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\bin\Debug\net7.0\ChatApp.runtimeconfig.json
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\bin\Debug\net7.0\ChatApp.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\bin\Debug\net7.0\ChatApp.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\ChatApp.csproj.AssemblyReference.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\ChatApp.AssemblyInfoInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\ChatApp.AssemblyInfo.cs
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\ChatApp.csproj.CoreCompileInputs.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\ChatApp.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\refint\ChatApp.dll
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\ChatApp.pdb
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\ChatApp.genruntimeconfig.cache
+Z:\Designning Projects\Books\Head_First_Design_patterns\Chapter 14- The Mediator Pattern\ChatApp\ChatApp\obj\Debug\net7.0\ref\ChatApp.dll
