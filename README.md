@@ -1,4 +1,4 @@
-# Emoji/Meaning
+# Emoji - Meaning
 1. ✅ - Completed
 2. 🎦 - In Progress
 3. ⏸ - Paused/To be continued
