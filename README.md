@@ -1,3 +1,5 @@
+Table Of Contents
+
 - [Emoji - Meaning](#emoji---meaning)
 - [Books](#books)
 
@@ -15,5 +17,5 @@ List of books:
 
 1. ✅ [Head First Design Patterns](./Head_First_Design_patterns/)
 
-2. 🎦 [The Clean Code](./Clean_Code/)
+2. 🎦 [Clean Code](./Clean_Code/)
 
