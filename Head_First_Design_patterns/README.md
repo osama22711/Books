@@ -1001,4 +1001,4 @@ The Mediator Pattern is particularly useful in scenarios where complex interacti
 ### Architecture from Chapter NO.
 
 ---
-> Reached page: <span style="color: yellow;">Keep going!</span>
+> Reached page: <span style="color: yellow;">Book is done</span>
