@@ -3,10 +3,6 @@
 - [Table of Contents](#table-of-contents)
 - [ChatGPT Q\&A](#chatgpt-qa)
 - [Good References along with this Book](#good-references-along-with-this-book)
-- [Self reflection on the book](#self-reflection-on-the-book)
-  - [Intro](#intro)
-  - [Intro To Design Patterns (chapter 1)](#intro-to-design-patterns-chapter-1)
-  - [The Observer pattern (chapter 2)](#the-observer-pattern-chapter-2)
 - [Notes from the book](#notes-from-the-book)
   - [OO Basics](#oo-basics)
   - [OO principles](#oo-principles)
@@ -178,28 +174,6 @@
 2. Reading from [Refactoring Guru's Design Patterns](https://refactoring.guru/design-patterns)
 3. Interesting read about design patterns and anti-patterns (things that breaks a code), refactoring, uml. see: [Source Making](https://sourcemaking.com/)
 4. Understand how design patterns is used in games, see: [Game Patterns YouTube channel](https://www.youtube.com/@GamePatterns)
-
----
-# Self reflection on the book
-My thoughts along with reading this book
-## Intro
-Intro is really amazing! one of the best intro I've ever read in a book.
-It literally explains everything that a reader would need e.g. who this book for, how to best learn, how to stimulate your brain to do its best (meta-cognition, adding pictures, conversational style).
-they even talked about their method of writing the book and, how can you best grasp on the information
-
-## Intro To Design Patterns (chapter 1)
-- The implementation could be better with programming languages getting better e.g. in the old days we couldn't define couple of constructors but nowadays we could. but, the point here is to understand the concept and the mindset of a software architect.
-- **What is the difference between Strategy pattern and dependency injection?**
-  - The Strategy pattern is focused on encapsulating algorithms and allowing dynamic selection of different strategies at runtime, primarily to solve algorithmic problems.
-
-    Dependency Injection, on the other hand, is focused on managing and decoupling dependencies by providing them from external sources, promoting modular and testable code.
-
-    In some cases, Dependency Injection **can be used** to implement the Strategy pattern by injecting different strategies as dependencies into a client object, allowing it to switch between them dynamically.
-
-## The Observer pattern (chapter 2)
-- Observer pattern is a behavioral pattern too
-- I have a feeling that all behavioral patterns are about composition and they all are flexible at run time
-- Inheritance is "is-a" relationship and composition is "has-a" relationship. Always favor "has-a" over "is-a" (composition over inheritance)
 
 ---
 # Notes from the book
@@ -454,6 +428,7 @@ This section discusses the deep details of a pattern
 
 ### Quick introduction: 
 Strategy is behavioral design pattern. It is used to switch between family of algorithms.
+Refer to [Chapter 1](./Chapter%201-%20Intro%20to%20design%20patterns/) for an example.
 
 ### Detailed introduction:
 
@@ -476,6 +451,7 @@ The Strategy Pattern allows you to decouple the client code from the specific im
 
 ### Quick Introduction
 Observer is behavioral design patterns. It is used to share state.
+Refer to [Chapter 2](./Chapter%202-%20The%20observer%20pattern/) for an example.
 
 ### Detailed Introduction
 The Observer Pattern is a behavioral design pattern. It defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.
@@ -497,6 +473,7 @@ The Observer Pattern is a behavioral design pattern. It defines a one-to-many de
 
 ### Quick Introduction
 Decorator is a structural design pattern. It is used to add responsibilities to objects dynamically without altering their class or extending it.
+Refer to [Chapter 3](./Chapter%203-%20The%20decorator%20pattern/) for an example.
 
 ### Detailed Introduction
 The Decorator Pattern is a structural design pattern in software development that allows you to add behavior or responsibilities to objects dynamically without altering their class. This pattern is part of the Gang of Four (GoF) design patterns and is particularly useful when you need to extend the functionality of classes in a flexible and maintainable way.
@@ -532,6 +509,7 @@ The Decorator Pattern allows you to create a chain of decorators, each adding it
 
 ### Quick Introduction
 Factory is a creational design pattern. It is used to let subclasses alter the methods with inheritance.
+Refer to [Chapter 4](./Chapter%204-%20The%20factory%20pattern/) for an example.
 
 ### Detailed Introduction
 The Factory Pattern is a creational design pattern in software development that provides an interface for creating objects but allows subclasses to alter the type of objects that will be created. It falls under the Gang of Four (GoF) design patterns and is commonly used to abstract the process of object creation. The Factory Pattern promotes loose coupling and adheres to the "Dependency Inversion Principle" by ensuring that client code depends on abstractions rather than concrete implementations.
@@ -562,6 +540,7 @@ The Factory Pattern allows client code to create objects without needing to know
 
 ### Quick Introduction
 Singleton pattern is a creational pattern. It is used to provide one and only one instance of the object.
+Refer to [Chapter 5](./Chapter%205-%20The%20singleton%20pattern/) for an example.
 
 ### Detailed Introduction
 The Singleton Pattern is a design pattern in software engineering that ensures a class has only one instance and provides a global point of access to that instance. It is one of the creational design patterns and is commonly used when exactly one object needs to coordinate actions across the system, such as a configuration manager, a database connection pool, or a logging service.
@@ -586,6 +565,7 @@ The key characteristics of the Singleton Pattern include:
 
 ### Quick Introduction
 Command is a behavioral pattern. It is used to decouple the sender and receiver of a request.
+Refer to [Chapter 6](./Chapter%206-%20The%20Command%20Pattern/) for an example.
 
 ### Detailed Introduction
 The Command Pattern is a behavioral design pattern used in software engineering. It falls under the Gang of Four (GoF) design patterns and is used to encapsulate a request as an object, thereby allowing for parameterization of clients with queues, requests, and operations. This pattern decouples the sender of a request from the receiver, allowing for greater flexibility and extensibility in how requests are handled.
@@ -621,6 +601,7 @@ The Command Pattern is useful in scenarios where you want to decouple the sender
 
 ### Quick Introduction
 Adapter is a structural design pattern. It is used to convert an interface an interface to another.
+Refer to [Chapter 7](./Chapter%207-%20The%20Adapter%20and%20Facade%20Patterns/) for an example.
 
 ### Detailed Introduction
 The Adapter Pattern is a structural design pattern in software engineering that allows two incompatible interfaces to work together. It is used when you have an existing class with a certain interface (or method signature), and you want to use it in a context where another interface is expected. The Adapter Pattern acts as a bridge between these interfaces, allowing them to collaborate without modifying the existing code.
@@ -656,6 +637,7 @@ There are two common variations of the Adapter Pattern:
 
 ### Quick Introduction
 Facade is a structural design pattern. It is used to simplify systems.
+Refer to [Chapter 7](./Chapter%207-%20The%20Adapter%20and%20Facade%20Patterns/) for an example.
 
 ### Detailed Introduction
 The Facade pattern is a design pattern in software engineering that falls under the category of structural patterns. It is used to provide a simplified and unified interface to a complex subsystem, making it easier for clients to interact with that subsystem.
@@ -691,6 +673,7 @@ Overall, the Facade pattern is valuable for promoting separation of concerns, re
 
 ### Quick Introduction
 Template Method is a behavioral design pattern. It is used to let subclass define a step in an algorithm.
+Refer to [Chapter 8](./Chapter%208-%20The%20Template%20Method%20Pattern/) for an example.
 
 ### Detailed Introduction
 The Template Method pattern is a behavioral design pattern used in software engineering. It is a way to define the skeleton or structure of an algorithm in a superclass (or base class), while allowing subclasses to provide specific implementations of certain steps of that algorithm without changing its overall structure. In other words, it defines the "template" for an algorithm, and the specific details can be customized in subclasses.
@@ -724,6 +707,7 @@ By using the Template Method pattern, you can promote code reusability and maint
 
 ### Quick Introduction
 Iterator is a behavioral design pattern. It is ued to generalize iterating over a list of things without knowing the used data structure.
+Refer to [Chapter 9](./Chapter%209-%20The%20Iterator%20and%20Composite%20Patterns/) for an example.
 
 ### Detailed Introduction
 The Iterator Pattern is a behavioral design pattern that is used to provide a standardized way to traverse through a collection of objects, such as a list, array, tree, or any other data structure, without exposing the underlying implementation details of that collection. It allows you to access the elements of a collection sequentially without needing to know how the collection is structured or how it stores its elements.
@@ -755,6 +739,7 @@ The Iterator Pattern typically consists of the following components:
 
 ### Quick Introduction
 Composite is a structural design pattern. It is used to represent part-whole hierarchies.
+Refer to [Chapter 9](./Chapter%209-%20The%20Iterator%20and%20Composite%20Patterns/) for an example.
 
 ### Detailed Introduction
 The Composite Pattern is a structural design pattern that is used to compose objects into tree structures to represent part-whole hierarchies. It allows clients to treat individual objects and compositions of objects uniformly. In other words, the pattern lets you build complex structures by combining simpler objects and treat both the composite and individual objects in a consistent manner.
@@ -785,6 +770,7 @@ The Composite Pattern allows you to create hierarchies of objects that can repre
 
 ### Quick Introduction
 State is a behavioral design pattern. It is similar to strategy pattern but it changes its behavior internally without the user defining it.
+Refer to [Chapter 10](./Chapter%2010-%20The%20State%20Pattern/) for an example.
 
 ### Detailed Introduction
 The State pattern is a behavioral design pattern that is used in software engineering to allow an object to alter its behavior when its internal state changes. This pattern is part of the Gang of Four (GoF) design patterns and is particularly useful in scenarios where an object needs to exhibit different behaviors in response to changes in its state without using a multitude of conditional statements.
@@ -875,6 +861,7 @@ No Repo was created for this chapter, and the following image was taken from the
 
 ### Quick Introduction
 Bridge is a structural design pattern. It is like a mix of composite and strategy patterns.
+Refer to [Chapter 14](./Chapter%2014-%20The%20Bridge%20Pattern/) for an example.
 
 ### Detailed Introduction
 The Bridge Pattern is a structural design pattern that separates an object's abstraction (interface) from its implementation, allowing them to vary independently. It is used to avoid a permanent binding between an abstraction and its implementation, making the system more flexible and extensible.
@@ -912,6 +899,7 @@ Same would apply in case of Shapes and Colors.
 
 ### Quick Introduction
 COR is a behavioral design pattern. It is used to process a request at the right place in a chain.
+Refer to [Chapter 14](./Chapter%2014-%20The%20Bridge%20Pattern/) for an example.
 
 ### Detailed Introduction
 The Chain of Responsibility Pattern is a behavioral design pattern that allows you to pass a request along a chain of handlers. Each handler decides whether to process the request or pass it to the next handler in the chain. This pattern is used to achieve loose coupling between the sender of a request and its receivers.
@@ -930,7 +918,7 @@ Decoupling the sender and receiver of requests: The sender doesn't need to know 
 
 Dynamic and flexible chaining of handlers: You can easily add, remove, or reorder handlers in the chain without affecting the client code.
 
-Avoiding a "God" class with multiple conditional statements: Instead of having a single class with complex if-else statements to handle different types of requests, you can distribute the responsibility across multiple handlers.
+Avoiding a "HUGE" class with multiple conditional statements: Instead of having a single class with complex if-else statements to handle different types of requests, you can distribute the responsibility across multiple handlers.
 
 A common real-world analogy for the Chain of Responsibility Pattern is a customer support hotline. When a customer calls with an issue, the call may be initially handled by a general customer service representative. If the issue is beyond their scope, they may forward the call to a specialist, who, in turn, may pass it to a higher-level expert. This chain of handling the customer's issue can continue until it is resolved or until it reaches the most appropriate person to handle it.
 
@@ -950,6 +938,7 @@ The Chain of Responsibility Pattern is particularly useful in scenarios where yo
 
 ### Quick Introduction
 Mediator is a behavioral design pattern. It is like the network's switch of applications.
+Refer to [Chapter 14](./Chapter%2014-%20The%20Bridge%20Pattern/) for an example.
 
 ### Detailed Introduction
 The Mediator Pattern is a behavioral design pattern that promotes loose coupling between objects by centralizing communication and control through a mediator object. It is used to manage complex relationships and interactions among objects. The primary goal of this pattern is to reduce the direct connections between objects, which can make a system more maintainable and extendable.
