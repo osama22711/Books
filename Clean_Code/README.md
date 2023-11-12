@@ -87,3 +87,98 @@ The 5S methodology is often used in manufacturing and production environments to
 13. Use Verbs as Method Names (`get, set, fetch, etc...`)
 
 # Chapter 3: Functions
+
+1. Functions should be small
+- 3-4 lines is a proper function
+- No more than one or two indent levels
+- Function calls should be inside either `if` or `while`
+
+```csharp
+public static string renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) {
+    if (isTestPage(pageData)) {
+        includeSetupAndTeardownPages(pageData, isSuite);
+    }
+    return pageData.getHTML();
+}
+```
+- More than three argument isn't recommended
+
+- Use verbs in the function name
+
+- Functions should either do something or answer something
+( Doing both often leads to confusion. )
+
+2. Do one thing
+
+- Functions should do one thing. They should do it well. They should do it only.
+
+- To know if the function do one thing: see if you can extract a function from it without restating its implementation
+
+- Make it clear for the user about the output of the function
+
+- Name should reflect only one thing
+( No side effects should be there )
+
+3. Functions should be read seamlessly from top to bottom: The Stepdown rule
+
+- Short
+- One Thing
+- Keeping the abstraction level consistent
+
+4. Use descriptive Names
+
+- A long descriptive name is better than a short enigmatic name. 
+- A long descriptive name is better than a long descriptive comment
+- Easy to read words of the function
+- Be consistent in naming functions
+
+5. General output argument should be avoided
+
+```csharp
+public void appendFooter(StringBuffer report)
+
+// report is being used as an input
+// being modified and returned again to be used
+```
+
+```csharp
+report.appendFooter();
+
+// It's clear that it will append the report to the footer
+```
+
+- In general output arguments should be avoided. If your function must change the state of something, have it change the state of its owning object.
+
+6. DRY ( Don't repeat yourself )
+
+- Taking out duplicated code leads to a more clear, easy to understand code
+
+- Duplication may be the root of all evil in software
+
+7. Stuctured Programming ( Dijkstra's way )
+
+- functions or block of code should have one entry and one exit
+( Single Entry Single Exit rule)
+
+8. How do you write functions like the above?
+
+- Software is like any other kind of writing
+
+- You get your thoughts down
+
+- First draft is ugly
+
+- Through the following, they become the way we like:
+    * Splitting out functions
+    * Changing names
+    * Eliminating duplication
+
+9. Conclusion
+
+- Every system is built from a domain-specific language
+- Functions are its verbs
+- Classes are its nouns
+
+Overall functions should be short, well named and nicely organized.
+
+# Chapter 4 - Comments
