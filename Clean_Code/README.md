@@ -217,3 +217,31 @@ Overall functions should be short, well named and nicely organized.
    - Every programmer has his own favorite formatting rules, but if he works in a team, then the team rules.
 
 # Chapter 6 - Objects and Data Structures
+
+1. Data/Object Anti-Symmetry
+   - Procedural code makes it hard to add new data structures because all the functions must change
+   - OO code makes it hard to add new features because all the classes must change
+   - The things that are hard for OO are easy for procedures, and the things that are hard for procedures are easy for OO
+   - Mature programmers know that the idea that everything is an object is a myth. Sometimes your really do want simple data structures with procedures operating on them.
+  
+2. The Law of Demeter
+   - A module should not know about the innards of the objects it manipulates
+   - The method should not invoke methods on objects that are returned by any of the allowed functions. In other words, talk to friends, not to strangers.
+   - For understanding this rule view [Train Wrecks](#train-wrecks)
+
+3. Train Wrecks
+   - This kind if code is often called a train wreck because it look like a bunch of coupled train cards.
+   - Chains of calls like the following are generally considered ti be sloppy style and should be avoided
+      ```csharp
+         final String outputDir = ctxt.getOptions().getScrachDir().getAbsolutePath();
+      ```
+   - This is hard to track each function and what it returns and, per the law of demeter it's not acceptable but, if it were variables calling variables (object), it's totally fine.
+      ```csharp
+         final String outputDir = ctxt.options.scratchDir.absolutePath;
+      ```
+   - It is usually best to split them up as follows:
+      ```csharp
+         Options opts = ctxt.getOptions();
+         File scratchDir = opts.getScratchDir()
+         final String outputDir = scratchDir.getAbsolutePath();
+      ```
