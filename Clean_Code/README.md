@@ -3,6 +3,8 @@
 - [Chapter 2: Meaningful Names](#chapter-2-meaningful-names)
 - [Chapter 3: Functions](#chapter-3-functions)
 - [Chapter 4 - Comments](#chapter-4---comments)
+- [Chapter 5 - Formatting](#chapter-5---formatting)
+- [Chapter 6 - Objects and Data Structures](#chapter-6---objects-and-data-structures)
 
 
 
@@ -184,3 +186,34 @@ The 5S methodology is often used in manufacturing and production environments to
 Overall functions should be short, well named and nicely organized.
 
 # Chapter 4 - Comments
+
+  - The proper use of comments is to compensate for our failure to express ourself in code
+  - Comment lie not intentionally because programmers can't maintain them
+  - Comments delude and mislead, they are worse than no comments.
+  - Any comment that forces you to look in another module for the meaning of that comment has failed to communicate to you.
+  - It is just silly to have a javadoc for every function or every variable must have a comment.
+
+# Chapter 5 - Formatting
+
+1. The purpose of formatting
+   - Code formatting is about communication, and communication is the professional developer's first order of business.
+   - The coding style and readability set precedents that continue to affect maintainability and extensibility long after the original code has been changed beyond recognition
+  
+2. The newspaper metaphor
+   - We would like a source file to be like a newspaper article
+   - The name should be simple but explanatory
+   - The name, by itself, should be sufficient to tell us whether we are in the right module or not.
+   - The topmost parts of the source file should provide the high-level concepts and algorithms.
+   - Detail should increase as we move downward, until at the end we find the lowest level functions and details in the source file.
+
+3. Vertical openness between concepts
+   - Each blank line is a visual cue that identifies a new and separate concept. As you scan down the listing, your eye is drawn to the first line that follows a blank line.
+
+4. Vertical distance
+   - Concepts that are closely related, should be kept vertically close to each other.
+   - If one function calls another, they should be vertically close, and the caller should be above the callee, if at all possible.
+
+5. Team rules
+   - Every programmer has his own favorite formatting rules, but if he works in a team, then the team rules.
+
+# Chapter 6 - Objects and Data Structures
