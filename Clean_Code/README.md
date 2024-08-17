@@ -6,6 +6,7 @@
 - [Chapter 5 - Formatting](#chapter-5---formatting)
 - [Chapter 6 - Objects and Data Structures](#chapter-6---objects-and-data-structures)
 - [Chapter 9 - Unit Tests](#chapter-9---unit-tests)
+- [Chapter 10 - Classes](#chapter-10---classes)
 
 
 
@@ -283,3 +284,27 @@ Overall functions should be short, well named and nicely organized.
         - **R** - Repeatable Tests should be repeatable in any environment. You should be able to run the tests in the production environment, in the QA environment, and on your laptop while riding home on the train without a network. If your tests aren't repeatable in any environment, then you'll always have an execuse for why they fail. You'll also find yourself unable to run tests when the environment isn't available.
         - **S** - Self-Validating The tests should have a boolean output. Either they pass or fail. You should not have to read through a log fail to tell whether the tests pass. If the tests aren't self-validating, then failure can become subjective and running the tests can require a manual evaluation.
         - **T** - Timely the tests need to be written in a timely fashion. Unit tests should be written just before the production code that makes them pass. If you write tests after the production code. then you may find the production code to be hard to test. You may decide that some production code is too hard to test. You may not design the production code to be testable.
+
+# Chapter 10 - Classes
+  - This chapter can be better understood with design patterns, refer to a previous book "Head First Design Patterns"
+  - The first rule of classes is that they should be small
+  - With functions we measured size by counting physical lines.
+  - With classes we use a different measure. We count responsibilities.
+  - The single responsibility principle
+    - states that a class or a module should have one, and only one, reason to change, example below:
+    - ```java
+      public class Version {
+        public int getMajorVersionNumber();
+        public int getMinorVersionNumber();
+        public int getBuildNumber();
+      }
+      ```
+   - Difference between having a huge class or a separated small classes is like asking the following question:
+     - Do you want your tools organized into toolboxes with many small drawers each containing well-defined and well-labeled components? Or do you want a few drawers that you just toss everything into?
+   - Cohesion
+     - Classes should have a small number of instance variable. 
+     - Each of the methods of a class should manipulate one or more of those variables.
+     - In general the more variables a method manipulates the more cohesive that method is to its class.
+     - A class in which each variable is used by each method is maximally cohesive
+     - Just the act of breaking large functions into smaller functions causes a proliferation of classes. Consider a large function with many variables declared within it. Let's say you want to extract one small part of that function into a separate function. However, the code you want to extract uses four of the variables declared in the function. Must you pass all four of those variables into the new function as arguments? Not at all! If we promoted those four variables to instance variables of the class, then we could extract the code without passing any variables at all. It would be easy to break the function up into small pieces. Unfortunately, this also means that our classes lose cohesion because they accumulate more and more instance variables that exist solely to allow a few functions to share them. But wait! If there are a few functions that want to share certain variables, doesn't that make them a class in their own right? Of course it does. When classes lose cohesion, split them!
+    
