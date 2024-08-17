@@ -5,6 +5,7 @@
 - [Chapter 4 - Comments](#chapter-4---comments)
 - [Chapter 5 - Formatting](#chapter-5---formatting)
 - [Chapter 6 - Objects and Data Structures](#chapter-6---objects-and-data-structures)
+- [Chapter 9 - Unit Tests](#chapter-9---unit-tests)
 
 
 
@@ -245,3 +246,40 @@ Overall functions should be short, well named and nicely organized.
          File scratchDir = opts.getScratchDir()
          final String outputDir = scratchDir.getAbsolutePath();
       ```
+# Chapter 9 - Unit Tests
+
+   - If you don't keep your tests clean, you will lose them. And without them, you lose the very thing that keeps your production code feasible
+   - The Build-Operate-Check pattern (Arrange Act Assert) is split into three parts:
+     - Step1: Build up the test data
+     - Step2: Operate on that test data
+     - Step3: Checks that the operation yielded the expected results
+     - Benefit: The vast majority of annoying detail has been eliminated. The tests get right to the point and use only the data types and functions that they truly need. Anyone who reads these tests should be able to work out what they do very quickly, without being misled or overwhelmed by details.
+   - Tests should be written to test one concept and minimize the number of asserts per concept
+     - Bad test example:
+     - ```java
+        public void testAddMonths() {
+          SerialDate d1 = SerialDate.createInstance(31, 5, 2004);
+          
+          SerialDate d2 = SerialDate.addMonths(1, d1);
+          assertEquals(30, d2.getDayOfMonth());
+          assertEquals(6, d2.getMonth());
+          assertEquals(2004, d2.getYYYY());
+          
+          SerialDate d3 = SerialDate.addMonths(2, d1);
+          assertEquals(31, d3.getDayOfMonth());
+          assertEquals(7, d3.getMonth());
+          assertEquals(2004, d3.getYYYY());
+            
+          SerialDate d4 = SerialDate.addMonths(1, SerialDate.addMonths(1, d1));
+          assertEquals(30, d4.getDayOfMonth());
+          assertEquals(7, d4.getMonth());
+          assertEquals(2004, d4.getYYYY());
+        } 
+       ``` 
+      - It's not multiple asserts in each section that causes the problem. Rather it is the fact that there is more than one concept being tested.
+      - ### Clean tests should follow five rules (F.I.R.S.T.)
+        - **F** -  Fast Tests should be fast. They should run quickly. When tests run slow, you won't want to run them frequently. IF you don't run them frequently, you won't find problems early enough to fix them easily. You won't feel as free to clean up the code. Eventually the code will begin to rot.
+        - **I** - Independent Tests should not depend on each other. One test should not set up the conditions for the next tests. You should be able to run each test independently and run the tests in any order you like. WHen tests depend on each other, then the first one to fail causes a cascade of downstream failures, making diagnosis difficult and hiding downstream defects.
+        - **R** - Repeatable Tests should be repeatable in any environment. You should be able to run the tests in the production environment, in the QA environment, and on your laptop while riding home on the train without a network. If your tests aren't repeatable in any environment, then you'll always have an execuse for why they fail. You'll also find yourself unable to run tests when the environment isn't available.
+        - **S** - Self-Validating The tests should have a boolean output. Either they pass or fail. You should not have to read through a log fail to tell whether the tests pass. If the tests aren't self-validating, then failure can become subjective and running the tests can require a manual evaluation.
+        - **T** - Timely the tests need to be written in a timely fashion. Unit tests should be written just before the production code that makes them pass. If you write tests after the production code. then you may find the production code to be hard to test. You may decide that some production code is too hard to test. You may not design the production code to be testable.
