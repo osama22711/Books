@@ -7,6 +7,18 @@
 - [Chapter 6 - Objects and Data Structures](#chapter-6---objects-and-data-structures)
 - [Chapter 9 - Unit Tests](#chapter-9---unit-tests)
 - [Chapter 10 - Classes](#chapter-10---classes)
+- [Chapter 11 - Systems](#chapter-11---systems)
+- [Chapter 12 - Emergence](#chapter-12---emergence)
+  - [Simple Design Rule 1: Runs All the Tests](#simple-design-rule-1-runs-all-the-tests)
+  - [Simple Design Rule 2: Refactoring](#simple-design-rule-2-refactoring)
+  - [Simple Design Rule 3: Expressive](#simple-design-rule-3-expressive)
+- [Chapter 17 - Smells and Heuristics](#chapter-17---smells-and-heuristics)
+  - [Comments](#comments)
+  - [Environment](#environment)
+  - [Functions](#functions)
+  - [General](#general)
+  - [Names](#names)
+  - [Tests](#tests)
 
 
 
@@ -308,3 +320,97 @@ Overall functions should be short, well named and nicely organized.
      - A class in which each variable is used by each method is maximally cohesive
      - Just the act of breaking large functions into smaller functions causes a proliferation of classes. Consider a large function with many variables declared within it. Let's say you want to extract one small part of that function into a separate function. However, the code you want to extract uses four of the variables declared in the function. Must you pass all four of those variables into the new function as arguments? Not at all! If we promoted those four variables to instance variables of the class, then we could extract the code without passing any variables at all. It would be easy to break the function up into small pieces. Unfortunately, this also means that our classes lose cohesion because they accumulate more and more instance variables that exist solely to allow a few functions to share them. But wait! If there are a few functions that want to share certain variables, doesn't that make them a class in their own right? Of course it does. When classes lose cohesion, split them!
     
+# Chapter 11 - Systems
+  - Software systems are unique compared to physical systems. Their architectures can grow incrementally, if we maintain the proper separation of concerns.
+
+# Chapter 12 - Emergence
+  - A design is "simple" if it follows these rules:
+    - Runs all the tests
+    - Contains no duplication
+    - Expresses the intent of the programmer
+    - Minimizes the number of classes and methods
+
+   ## Simple Design Rule 1: Runs All the Tests
+       - A system might have a perfect design on paper, but if there is no simple way to verify that the system actually works as intended, then all the paper effort is questionable.
+       - Systems that aren't testable aren't verifiable. Arguably, a system that cannot be verified should never be deployed.
+       - Should have:
+         - SRP: Single Responsibility Principle
+         - Loosely coupled
+         - DIP: Dependency Inversion Principle - Depends on abstractions
+   ## Simple Design Rule 2: Refactoring
+      - For each few lines of code we add, we pause and reflect on the new design.
+      - This is also where we apply the final three rules of simple design:
+        - Eliminate duplication
+        - Ensure expressiveness
+        - Minimize the number of classes and methods
+   ## Simple Design Rule 3: Expressive
+      - The most likely next person to read the code will be you.
+      - So take a little pride in your worksmanship. Spend a little time with each of your functions and classes. Choose better names, split large functions into smaller functions, and generally just take care of what you've created. Care is a precious resource
+      - Clean code is all about care.
+
+# Chapter 17 - Smells and Heuristics
+   - The list that follows includes many of Martin's smells and adds many more of Uncle Bob's. It also includes other pearls and heuristics that Uncle Bob uses.
+   ## Comments
+     1. Inappropriate Information
+        1. meta-data such as authors, last-modified date should not be a comment
+        2. Comments should be reserved for technical notes about the code and design.
+     2. Obsolete Comment
+        1. A comment that has gotten old, irrelevant, and incorrect is obsolete.
+     3. Redundant Comment
+        1. A comment is redundant if it describes something that adequately describes itself.
+        2. Comments should say things that code cannot say for itself.
+     4. Poorly Written Comment
+        1. A comment worth writing is worth writing well.
+     5. Commented-Out Code
+        1. The code sits there and rots, getting less and less relevant with every passing day.
+        2. When you see commented-out code, delete it! Don't worry, the source code control system still remembers it, If anyone really needs it, he or she can go back and check out a previous version. Don't suffer commented-out code to survive.
+   ## Environment
+      1. Build Requires More Than One Step
+         1. You should not need a sequence of arcane commands or context dependent scripts in order to build the individual elements.
+         2. You should be able to check out the system with ome simple command and then issue one other simple command to build it.
+      2. Tests Require More Than One Step
+         1. You should be able to run all unit tests with just one command
+   ## Functions
+      1. Too Many Arguments
+         1. More than three is very questionable and should be avoided with prejudice.
+      2. Output Arguments
+         1. Readers except arguments to be inputs, not outputs.
+      3. Flag Arguments
+         1. Boolean arguments loudly declare that function does more than one thing therefore, boolean input is not recommended.
+      4. Dead Function
+         1. Methods that are never called should be discarded 
+   ## General
+      1. Multiple Languages in One Source File
+         1. The ideal is for a rouce file to contain one, and only one, language
+         2. React???
+      2. Obvious Behavior Is Unimplemented
+         1. Following "The Principle of Least Surprise" any function or class should implement the behaviors that another programmer could reasonably expect.
+         2. When an obvious behavior is not implemented, readers and users of the code can no longer depend on their intuition about function names, They lose their trust in the original author and must fall back on reading the details of the code.
+      3. Incorrect Behavior at the Boundaries
+         1. Don't rely on your intuition. Lookf or every boundary condition and write a test for it
+         2. Don't trust your code, and confirm your code.
+      4. Overridden Safeties
+         1. Turning off certain compiler warnings (or all warnings!) is always risky
+         2. Turning off failing tests and telling yourself you'll get them to pass later is a bad as pretending your credit cards are free money.
+      5. Duplication
+         1. Coding becomes faster and less error prone because you have raised the abstraction level
+         2. Most of the design patterns that have appeared in the last fifteen years are simply well-known ways to eliminate duplication.
+      6. Code at Wrong Level Of Abstraction
+         1. Consider the following code:
+            ```java
+              public interface Stack {
+                Object pop() throws EmptyException
+                void push(Object o) throws FullException;
+                double percentFull;
+              }
+
+              class EmptyException extends Extension {}
+              class FullException extends Extension {}
+            ```
+         2. The `percentFull` function is at the wrong level of abstraction. Although there are many implementations of `Stack` where the concept of fullness is reasonable, there are other implementations that simply could not know how full they are. So the function would be better placed in a derivative interface such as `BoundedStack`
+      7. Base Classes Depending on THeir DErivatives
+         1. Deploying derivatives and bases in different jar files and making sure the base jar files know nothing about the contents of the derivative jar files allow us to deploy our systems in discrete and independent components.
+      8. Too Much Information
+         1. A well-defined interface does not offer very much functions to depend upon, so coupling is low.
+   ## Names
+   ## Tests
