@@ -331,22 +331,22 @@ Overall functions should be short, well named and nicely organized.
     - Minimizes the number of classes and methods
 
    ## Simple Design Rule 1: Runs All the Tests
-       - A system might have a perfect design on paper, but if there is no simple way to verify that the system actually works as intended, then all the paper effort is questionable.
-       - Systems that aren't testable aren't verifiable. Arguably, a system that cannot be verified should never be deployed.
-       - Should have:
+   - A system might have a perfect design on paper, but if there is no simple way to verify that the system actually works as intended, then all the paper effort is questionable.
+   - Systems that aren't testable aren't verifiable. Arguably, a system that cannot be verified should never be deployed.
+      - Should have:
          - SRP: Single Responsibility Principle
          - Loosely coupled
          - DIP: Dependency Inversion Principle - Depends on abstractions
    ## Simple Design Rule 2: Refactoring
-      - For each few lines of code we add, we pause and reflect on the new design.
-      - This is also where we apply the final three rules of simple design:
+   - For each few lines of code we add, we pause and reflect on the new design.
+   - This is also where we apply the final three rules of simple design:
         - Eliminate duplication
         - Ensure expressiveness
         - Minimize the number of classes and methods
    ## Simple Design Rule 3: Expressive
-      - The most likely next person to read the code will be you.
-      - So take a little pride in your worksmanship. Spend a little time with each of your functions and classes. Choose better names, split large functions into smaller functions, and generally just take care of what you've created. Care is a precious resource
-      - Clean code is all about care.
+   - The most likely next person to read the code will be you.
+   - So take a little pride in your worksmanship. Spend a little time with each of your functions and classes. Choose better names, split large functions into smaller functions, and generally just take care of what you've created. Care is a precious resource
+   - Clean code is all about care.
 
 # Chapter 17 - Smells and Heuristics
    - The list that follows includes many of Martin's smells and adds many more of Uncle Bob's. It also includes other pearls and heuristics that Uncle Bob uses.
@@ -452,14 +452,14 @@ Overall functions should be short, well named and nicely organized.
    20. Follow Standard Conventions
          1.  Every team should follow a coding standard based on common industry norms. This coding standard should specify things like where to declare instance variables; how to name classes, methods, and variables; where to put braces and son on. The team should not need a document to describe these conventions because their code provides the examples.
    ## Names
-   21. Choose Descriptive Names
+  1.  Choose Descriptive Names
          1. Names in software are 90 percent of what make software readable
-   22. Use Standard Nomenclature Where Possible
+  2. Use Standard Nomenclature Where Possible
          1. Names are easier to understand if they are based on existing conventions or usage. For example, if you are using the `DECORATOR` pattern, you should use the word `Decorator` in the names of the decorating classes. For example, `AutoHangupModemDecorator` might be the name of a class that decorates a `Modem` with the ability to automatically hang up at the end of a session.
    ## Tests
-   23. Insufficient Tests
+   1. Insufficient Tests
          1. The tests are insufficient so long as there are conditions that have not been explored by the tests or calculations that have not been validated.
-   24. Use a Coverage Tool
+   2.  Use a Coverage Tool
          1. They make it easy to find modules, classes, and functions that are insufficiently tested.
 
 
