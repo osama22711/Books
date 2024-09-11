@@ -351,51 +351,51 @@ Overall functions should be short, well named and nicely organized.
 # Chapter 17 - Smells and Heuristics
    - The list that follows includes many of Martin's smells and adds many more of Uncle Bob's. It also includes other pearls and heuristics that Uncle Bob uses.
    ## Comments
-     1. Inappropriate Information
+   1. Inappropriate Information
         1. meta-data such as authors, last-modified date should not be a comment
         2. Comments should be reserved for technical notes about the code and design.
-     2. Obsolete Comment
+   2. Obsolete Comment
         1. A comment that has gotten old, irrelevant, and incorrect is obsolete.
-     3. Redundant Comment
+   3. Redundant Comment
         1. A comment is redundant if it describes something that adequately describes itself.
         2. Comments should say things that code cannot say for itself.
-     4. Poorly Written Comment
+   4. Poorly Written Comment
         1. A comment worth writing is worth writing well.
-     5. Commented-Out Code
+   5. Commented-Out Code
         1. The code sits there and rots, getting less and less relevant with every passing day.
         2. When you see commented-out code, delete it! Don't worry, the source code control system still remembers it, If anyone really needs it, he or she can go back and check out a previous version. Don't suffer commented-out code to survive.
    ## Environment
-      1. Build Requires More Than One Step
+   1. Build Requires More Than One Step
          1. You should not need a sequence of arcane commands or context dependent scripts in order to build the individual elements.
          2. You should be able to check out the system with ome simple command and then issue one other simple command to build it.
-      2. Tests Require More Than One Step
+   2. Tests Require More Than One Step
          1. You should be able to run all unit tests with just one command
    ## Functions
-      1. Too Many Arguments
+   1. Too Many Arguments
          1. More than three is very questionable and should be avoided with prejudice.
-      2. Output Arguments
+   2. Output Arguments
          1. Readers except arguments to be inputs, not outputs.
-      3. Flag Arguments
+   3. Flag Arguments
          1. Boolean arguments loudly declare that function does more than one thing therefore, boolean input is not recommended.
-      4. Dead Function
+   4. Dead Function
          1. Methods that are never called should be discarded 
    ## General
-      1. Multiple Languages in One Source File
+   1. Multiple Languages in One Source File
          1. The ideal is for a rouce file to contain one, and only one, language
          2. React???
-      2. Obvious Behavior Is Unimplemented
+   2. Obvious Behavior Is Unimplemented
          1. Following "The Principle of Least Surprise" any function or class should implement the behaviors that another programmer could reasonably expect.
          2. When an obvious behavior is not implemented, readers and users of the code can no longer depend on their intuition about function names, They lose their trust in the original author and must fall back on reading the details of the code.
-      3. Incorrect Behavior at the Boundaries
+   3. Incorrect Behavior at the Boundaries
          1. Don't rely on your intuition. Lookf or every boundary condition and write a test for it
          2. Don't trust your code, and confirm your code.
-      4. Overridden Safeties
+   4. Overridden Safeties
          1. Turning off certain compiler warnings (or all warnings!) is always risky
          2. Turning off failing tests and telling yourself you'll get them to pass later is a bad as pretending your credit cards are free money.
-      5. Duplication
+   5. Duplication
          1. Coding becomes faster and less error prone because you have raised the abstraction level
          2. Most of the design patterns that have appeared in the last fifteen years are simply well-known ways to eliminate duplication.
-      6. Code at Wrong Level Of Abstraction
+   6. Code at Wrong Level Of Abstraction
          1. Consider the following code:
             ```java
               public interface Stack {
@@ -408,9 +408,60 @@ Overall functions should be short, well named and nicely organized.
               class FullException extends Extension {}
             ```
          2. The `percentFull` function is at the wrong level of abstraction. Although there are many implementations of `Stack` where the concept of fullness is reasonable, there are other implementations that simply could not know how full they are. So the function would be better placed in a derivative interface such as `BoundedStack`
-      7. Base Classes Depending on THeir DErivatives
+   7. Base Classes Depending on THeir DErivatives
          1. Deploying derivatives and bases in different jar files and making sure the base jar files know nothing about the contents of the derivative jar files allow us to deploy our systems in discrete and independent components.
-      8. Too Much Information
+   8. Too Much Information
          1. A well-defined interface does not offer very much functions to depend upon, so coupling is low.
+   9. Dead Code is code that isn't executed
+         1.  You find it in the body of an `if` statement that checks for a condition that can't happen
+         2.  You find it in the `catch` block of a `try` that never `throws`.
+         3.  You find it in little utility methods that are never called
+         4.  or `switch/case` conditions that never occur
+   10. Vertical Separation
+          1.  Variables and function should be defined close to where they are used.
+          2.  Local variables should be declared just above their first usage
+          3.  Private functions should be defined just below their first usage
+          4.  Finding a private function should just be a matter of scanning downward from the first usage.
+   11. Inconsistency
+          1.  If you do something a certain way, do all similar things in the same way. this goes back to the principle of least surprise.
+          2.  If within a particular function you use a variable named `response` to hold an `HttpServletResponse`, then use the same variable name consistently in the other functions that use `HttpServletResponse` objects. If you name a method ` processVerificationRequest`, then use a similar name, such as `processDeletionRequest`, for the methods that process other kinds of requests.
+          3.  Simple consistency like this, when reliably applied, can make code much easier to read and modify.
+   12. Clutter
+          1. Variables that aren't used
+          2. functions that are never called
+          3. comments that add no information
+          4. All these things are clutter and should be removed. Keep your source files clean, well organized and free of clutter.
+   13. Artificial Coupling
+         1.  Things that don't depend upon each other should not be artificially coupled. For example, general `enums` should not be contained within more specific classes because this forces the whole application to know about these more specific classes.
+   14. Feature Envy
+         1.  The methods of a class should be interested in the variables and functions of the class they belong to, and not the variables and functions of other classes.
+         2.  Feature Envy exposes the internals of one class to another
+   15. Selector Arguments
+         1.  It is better to have many functions than to pass some code into a function to select the behavior
+   16. Obscured Intent
+         1.  It is worth taking the time to make the intent of our code visible to our readers.
+   17. Misplaced Responsibility
+         1.  One of the most important decisions a software developer can make is where to put code.
+         2.  The principle of least surprise comes into play here. Code should be placed where a reader would naturally expect it to be.
+   18. Inappropriate Static
+         1.  Static functions should not operate on any particular objects and gets all it's data from it's arguments.
+   19. Understand the Algorithm
+         1.  Lots of very funny code is written because people don't take the time to understand the algorithm
+         2.  So before writing any code, understand the written one first.
+         3.  Often the best way to gain this knowledge and understanding is to refactor the function into something that is so clean and expressive that its obvious how it works.
+   20. Follow Standard Conventions
+         1.  Every team should follow a coding standard based on common industry norms. This coding standard should specify things like where to declare instance variables; how to name classes, methods, and variables; where to put braces and son on. The team should not need a document to describe these conventions because their code provides the examples.
    ## Names
+   21. Choose Descriptive Names
+         1. Names in software are 90 percent of what make software readable
+   22. Use Standard Nomenclature Where Possible
+         1. Names are easier to understand if they are based on existing conventions or usage. For example, if you are using the `DECORATOR` pattern, you should use the word `Decorator` in the names of the decorating classes. For example, `AutoHangupModemDecorator` might be the name of a class that decorates a `Modem` with the ability to automatically hang up at the end of a session.
    ## Tests
+   23. Insufficient Tests
+         1. The tests are insufficient so long as there are conditions that have not been explored by the tests or calculations that have not been validated.
+   24. Use a Coverage Tool
+         1. They make it easy to find modules, classes, and functions that are insufficiently tested.
+
+
+---
+> Book is done on `11/09/2024`
