@@ -17,5 +17,5 @@ List of books:
 
 1. ✅ [Head First Design Patterns](./Head_First_Design_patterns/)
 2. ✅ [Clean Code](./Clean_Code/)
-3. 🎦 [Designing Data Intensive Applications]()
+3. 🎦 [Designing Data Intensive Applications](./Designing_Data_Intensive_Applications/)
 
