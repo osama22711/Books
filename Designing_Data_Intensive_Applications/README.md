@@ -1,6 +1,9 @@
 # Info
 - Book: **Designing Data-Intensive Applications**
 - Started Reading: **05/10/2025**
+- Book cover:
+  
+  ![book-cover](./imgs/book-cover.png)
 
 # Table of Contents
 - [Info](#info)
@@ -15,6 +18,9 @@
   - [Chapter 1: Reliable, Scalable, and Maintainable Applications](#chapter-1-reliable-scalable-and-maintainable-applications)
     - [Reliability](#reliability)
     - [Scalability](#scalability)
+    - [Maintainability](#maintainability)
+    - [Summary](#summary)
+  - [Chapter 2: Data Models and Query Languages](#chapter-2-data-models-and-query-languages)
 
 
 # Back Matter
@@ -44,7 +50,7 @@ In this practical and comprehensive guide, author Martin Kleppmann helps you nav
   - The complexity of data
   - The speed at which its is changing
   
-  as opposed to **compute-intensive**, where CPU cycles are the bottlenech.
+  as opposed to **compute-intensive**, where CPU cycles are the bottleneck.
 - Book's purpose: Behind the rapid changes in technology, there are enduring principles that remain true, no matter which version of a particular tool you are using. If you understand those principles, you're in a position to see where each tool fits in, how to make good use of it, and how to avoid its pitfalls. That's where this book comes in.
 - Goal: is to help you navigate the diverse and fast-changing landscape of technologies for processing and storing data.
 - Outcome:
@@ -146,10 +152,98 @@ SELECT tweets.*, users.* FROM tweets
 
 The first version of Twitter used approach 1, but the systems struggled to keep up the the load of home timeline queries, so the company switched to approach 2. This works better because the average rate of published tweets is almost two orders of magnitude lower than the trate of home timeline reads, and so in this case it's preferable to do more work at write time and less at read time.
 
-However, the downside of approach 2 is that posting a tweet now requires alot of extra work. On avreage, a tweet is delivered to about 75 follower, so 4.7k tweets per second becomes 345k writes per second to the home time caches. But this average hides the fact that the number of followers per user varies wildly, and some user have over 30 million followers. This means that a signle tweet may result in over 30 million writes to home timelines! Doing this in a timely manner -- Twitter tries to deliver tweets to followers within five seconds -- is a signifact challenge.
+However, the downside of approach 2 is that posting a tweet now requires a lot of extra work. On average, a tweet is delivered to about 75 follower, so 4.7k tweets per second becomes 345k writes per second to the home time caches. But this average hides the fact that the number of followers per user varies wildly, and some user have over 30 million followers. This means that a single tweet may result in over 30 million writes to home timelines! Doing this in a timely manner -- Twitter tries to deliver tweets to followers within five seconds -- is a significant challenge.
 
-In the example of Twitter, the distribution of followers per user (maybe weighted by how often those users tweet) is a key load paramter for discussing scalability, since it determines the fan-out load. Your application may have very different characteristics, but you can apply similar principles to reasoning about its load.
+In the example of Twitter, the distribution of followers per user (maybe weighted by how often those users tweet) is a key load parameter for discussing scalability, since it determines the fan-out load. Your application may have very different characteristics, but you can apply similar principles to reasoning about its load.
 
-The final twist of the Twitter anecote: now that approach 2 is robusly implemented, Twitter is moving to a hybrid of both approaches. Most users' tweets continue to be fanned out to home timelines at the time when they are posted, but a small number of users with a very large number of followers (i.e., celebrities) are excepted from this fan-out. Tweets from any celebrities that a user may follow are fetches seperately and merged the user's home timeline when it's read. like in approach 1 (imo, to not have big uptime for celebrities and not to decrease customer satisfaction).
+The final twist of the Twitter anecdote: now that approach 2 is robustly implemented, Twitter is moving to a hybrid of both approaches. Most users' tweets continue to be fanned out to home timelines at the time when they are posted, but a small number of users with a very large number of followers (i.e., celebrities) are excepted from this fan-out. Tweets from any celebrities that a user may follow are fetches separately and merged the user's home timeline when it's read. like in approach 1 (imo, to not have big uptime for celebrities and not to decrease customer satisfaction).
 
 This hybrid approach is able to deliver consistently good performance. We will revisit this in chapter 12 after we have covered some more technical ground.
+
+When you increase a load parameter and keep the system resources (CPU, memory, network bandwidth, etc.) unchanged, how is the performance of your system affected?
+
+When you increase a load parameter, how much do you need to increase the resources if you want to keep performance unchanged?
+
+Both questions require performance numbers, so let's look briefly at describing the performance of a system
+
+The response time is what the client sees: besides the actual time to process the request (the service time), it includes network delays and queueing delays.
+
+Latency is the duration that a request is waiting to be handled
+
+High percentiles of response times, also known as tail latencies, are important because they directly affect users' experience of the service.
+For example, Amazon describes response time requirements for internal services in the terms of the 99.9th percentile, even though it only affects 1 in 1,000 requests.
+
+This is because the customers with the slowest requests are often those who have the most data on their accounts because they have made many purchases - that is, they're the most valuable customers.
+It's important to keep those customers happy by ensuring the website is fast for them: Amazon has also observed that 100 ms increase in response time reduces sales by 1%, and others report that a 1-second slowdown reduces a customer satisfaction metric by 16%
+
+On the other hand, optimizing the 99.99th percentile (the slowest 1 in 10,00 requests) was deemed too expensive and to not yield enough benefit for Amazon's purposes.
+
+Reducing response times at very hight percentiles is difficult because they are easily affected by random events outside of your control, and the benefits are diminishing.
+For example, percentiles are often used in service level objectives (SLOs) and service level agreements (SLAs) contracts that define the expected performance and availability of a service.
+
+An SLA may state that the service is considered to be up if it has a median response time of less than 200 ms and a 99th percentile under 1 s(if the response time is longer, it might as well be down), and the service may be required to be up at least 99.9% of the time.
+
+These metrics set expectations for clients of the service and allow customers to demand a refund if the SLA is not met.
+
+![It takes one slow backend call to slow the others](./imgs/one-needed-backend-call-to-slow-others.png)
+
+Some systems are elastic, meaning that they can automatically add computing resources when they detect a load increase, whereas other systems are scaled manually (a human analyzes the capacity and decides to add more machines to the system).
+
+An elastic system can be useful if load is highly unpredictable, but manually scaled systems are simple and may have fewer operational surprises.
+
+Common wisdom until recently was to keep your database on a single node (scale up) until scaling cost or high availability requirements forced you to make it distributed.
+
+The architecture of systems that operate at large scale is usually highly specific to the application - there is no such thing as generic, one size-fits-all scalable architecture (informally known as magic scaling sauce). The problem may be the volume of reads, the volume of writes, the volume of data to store, the complexity of the data, the response time requirements, the access patterns, or (usually) some mixture of all of these plus many more issues.
+
+For example, a system that is designed to handle 100,000 requests per second, each 1 kB in size, looks very different from a system that is designed for 3 requests per minute, each 2 GB in size - even though the two systems have the same data throughput
+
+### Maintainability
+
+It's well known that the majority of the cost of software is not in its initial development, but in its ongoing maintenance - fixing bugs, keeping its systems operational, investigating failures, adapting it to new platforms, modifying it for new use cases, repaying technical debt , and adding new features.
+
+We can and should design software in such a way that is hopefully minimize pain during maintenance, and thus avoid creating legacy software ourselves.
+
+To this end, we will pay particular attention to three design principles for software systems:
+
+1. Operability
+
+   Make it easy for operations teams to keep the system running smoothly
+
+2. Simplicity
+   
+   Make it easy for new engineers to understand the system, by removing as much complexity as possible from the system. (not this is not the same as simplicity of the user interface.)
+
+3. Evolvability
+
+   Make it easy for engineers to make changes to the system in the future, adapting it for unanticipated use cases as requirements change. Also known as extensibility, modifiability, or plasticity.
+
+Good operability means making routine tasks easy.
+
+Most discussions of these Agile techniques focus on a fairly small, local scale (a couple of source code files within the same application). 
+
+In this book, we search for ways
+of increasing agility on the level of a larger data system, perhaps consisting of several different applications or services with different characteristics. 
+
+For example, howwould you “refactor” Twitter’s architecture for assembling home timelines (“Describ
+ing Load” on page 11) from approach 1 to approach 2?
+
+### Summary
+
+In this chapter, we have explored some fundamental ways of thinking about data intensive applications. 
+
+These principles will guide us through the rest of the book,
+where we dive into deep technical detail.
+
+An application has to meet various requirements in order to be useful. There are functional requirements (what it should do, such as allowing data to be stored, retrieved, searched, and processed in various ways), and some nonfunctional requirements (general properties like security, reliability, compliance, scalability, compatibility, and maintainability). In this chapter we discussed reliability, scalability, and maintainability in detail.
+
+- Reliability means making systems work correctly, even when faults occur. Faults can be in hardware (typically random and uncorrelated), software (bugs are typically systematic and hard to deal with), and humans (who inevitably make mistakes from time to time). Fault-tolerance techniques can hide certain types of faults from the end user.
+
+- Scalability means having strategies for keeping performance good, even when load increases. In order to discuss scalability, we first need ways of describing load and performance quantitatively. We briefly looked at Twitter’s home timelines as an example of describing load, and response time percentiles as a way of measuring performance. In a scalable system, you can add processing capacity in order to remain reliable under high load.
+  
+- Maintainability has many facets, but in essence it’s about making life better for the engineering and operations teams who need to work with the system. Good abstrac tions can help reduce complexity and make the system easier to modify and adapt for new use cases. Good operability means having good visibility into the system’s health, and having effective ways of managing it.
+
+There is unfortunately no easy fix for making applications reliable, scalable, or maintainable. However, there are certain patterns and techniques that keep reappearing in different kinds of applications. 
+
+In the next few chapters we will take a look at some examples of data systems and analyze how they work toward those goals.
+
+## Chapter 2: Data Models and Query Languages
