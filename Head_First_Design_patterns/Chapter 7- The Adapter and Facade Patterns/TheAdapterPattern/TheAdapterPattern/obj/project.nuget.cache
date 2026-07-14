@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "rM+S5FZRDbrcVCQkWMZoAqml2MUW94EH5oRuH6xhSJcE0ofAAO8KBFxWjx8t6xtPGl/VxEid82ePJ7pY7/6HLQ==",
+  "dgSpecHash": "ocTE7SPzIlM=",
   "success": true,
-  "projectFilePath": "Z:\\Designning Projects\\Books\\Head_First_Design_patterns\\Chapter 7- The Adapter and Facade Patterns\\TheAdapterPattern\\TheAdapterPattern\\TheAdapterPattern.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\Repos\\Books\\Head_First_Design_patterns\\Chapter 7- The Adapter and Facade Patterns\\TheAdapterPattern\\TheAdapterPattern\\TheAdapterPattern.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.20\\microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.20\\microsoft.windowsdesktop.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.20\\microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.20\\microsoft.netcore.app.host.win-x64.7.0.20.nupkg.sha512"
+  ],
   "logs": []
 }

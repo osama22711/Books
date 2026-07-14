@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "DvEoEQzfdrk2iqbJ+10LY/nP24ylN79k0DMbwiGoAQLlxXgIlS35yhmsgnA0q8cJU6j2P68myHjwZ+nbj8Rn+Q==",
+  "dgSpecHash": "VOYTRp3kB5I=",
   "success": true,
-  "projectFilePath": "Z:\\Designning Projects\\Books\\Head_First_Design_patterns\\Chapter 14- The Mediator Pattern\\ChatApp\\ChatApp\\ChatApp.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\Repos\\Books\\Head_First_Design_patterns\\Chapter 14- The Mediator Pattern\\ChatApp\\ChatApp\\ChatApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.20\\microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.20\\microsoft.windowsdesktop.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.20\\microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.20\\microsoft.netcore.app.host.win-x64.7.0.20.nupkg.sha512"
+  ],
   "logs": []
 }

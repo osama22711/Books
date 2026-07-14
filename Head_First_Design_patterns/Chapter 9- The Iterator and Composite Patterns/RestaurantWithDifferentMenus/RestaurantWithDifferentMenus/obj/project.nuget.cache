@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "IZ0FILmiSl/bFmtdPRwiqZ49J6tSkBQLQp+L69kCcG4QWqqOt3kJzjzYJXHeTwPEmJCfC6Q6Q4Ju1QevVAbGGA==",
+  "dgSpecHash": "z8t/31rTj+E=",
   "success": true,
-  "projectFilePath": "Z:\\Designning Projects\\Books\\Head_First_Design_patterns\\Chapter 9- The Iterator and Composite Patterns\\RestaurantWithDifferentMenus\\RestaurantWithDifferentMenus\\RestaurantWithDifferentMenus.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\Repos\\Books\\Head_First_Design_patterns\\Chapter 9- The Iterator and Composite Patterns\\RestaurantWithDifferentMenus\\RestaurantWithDifferentMenus\\RestaurantWithDifferentMenus.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.20\\microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.20\\microsoft.windowsdesktop.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.20\\microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.20\\microsoft.netcore.app.host.win-x64.7.0.20.nupkg.sha512"
+  ],
   "logs": []
 }

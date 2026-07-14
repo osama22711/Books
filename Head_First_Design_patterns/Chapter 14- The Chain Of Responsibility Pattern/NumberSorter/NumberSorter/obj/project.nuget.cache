@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Zf1heJUR44PLb0dFptXm7KnilYpHoafpQBY9MYl8bI99vMgfv//xIqZ8TnUfSskHMMelzF18Ts+9kPIEdh6SJw==",
+  "dgSpecHash": "SFkcLjzSXi4=",
   "success": true,
-  "projectFilePath": "Z:\\Designning Projects\\Books\\Head_First_Design_patterns\\Chapter 14- The Chain Of Responsibility Pattern\\NumberSorter\\NumberSorter\\NumberSorter.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\Repos\\Books\\Head_First_Design_patterns\\Chapter 14- The Chain Of Responsibility Pattern\\NumberSorter\\NumberSorter\\NumberSorter.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.20\\microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.20\\microsoft.windowsdesktop.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.20\\microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\OSAMA\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.20\\microsoft.netcore.app.host.win-x64.7.0.20.nupkg.sha512"
+  ],
   "logs": []
 }
