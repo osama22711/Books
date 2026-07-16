@@ -29,9 +29,30 @@
     - [Query languages for data](#query-languages-for-data)
     - [Graph model](#graph-model)
     - [Difference between Graph and Network models](#difference-between-graph-and-network-models)
-    - [Summary:](#summary-1)
-    - [Takeway:](#takeway)
+    - [Summary](#summary-1)
+    - [Takeway](#takeway)
   - [Chapter 3: Storage and Retrieval](#chapter-3-storage-and-retrieval)
+    - [Two types of database workloads](#two-types-of-database-workloads)
+    - [How OLTP Databases Store Data](#how-oltp-databases-store-data)
+      - [Index](#index)
+      - [Hash Index](#hash-index)
+      - [Clustered and non-clustered indexes](#clustered-and-non-clustered-indexes)
+      - [Segments](#segments)
+      - [Compaction](#compaction)
+      - [SSTables (Sorted string table)](#sstables-sorted-string-table)
+      - [Memtables](#memtables)
+      - [LSM Trees (Log Structured Merge Trees)](#lsm-trees-log-structured-merge-trees)
+      - [B-Trees (Balanced Trees)](#b-trees-balanced-trees)
+      - [Secondary Indexes](#secondary-indexes)
+      - [In-Memory Databases](#in-memory-databases)
+    - [How OLAP Databases Store Data](#how-olap-databases-store-data)
+      - [Data Warehouses](#data-warehouses)
+      - [ETL](#etl)
+      - [The Mental Model](#the-mental-model)
+      - [Star Schema](#star-schema)
+      - [Materialized View and Data Cubes](#materialized-view-and-data-cubes)
+    - [Summary](#summary-2)
+  - [Chapter 4: Encoding and Evolution](#chapter-4-encoding-and-evolution)
 
 
 # Back Matter
@@ -469,7 +490,7 @@ You specify the relationship pattern, and the database finds the path.
 
 Basically graph is schema-less and declarative
 
-### Summary:
+### Summary
 - Data models are a huge subject, and in this chapter we have taken a quick look at a broad variety of different models. We didn’t have space to go into all the details of each model, but hopefully the overview has been enough to whet your appetite to find out more about the model that best fits your application’s requirements.
 - Historically, data started out being represented as one big tree (the hierarchical model), but that wasn’t good for representing many-to-many relationships, so the relational model was invented to solve that problem. More recently, developers found that some applications don’t fit well in the relational model either. New nonrelational “NoSQL” datastores have diverged in two main directions:
   - Document databases target use cases where data comes in self-contained docu
@@ -484,7 +505,7 @@ unmentioned. To give just a few brief examples:
   - Specialized scientific/big-data processing systems
   - Information retrieval / **search index model** will be covered later.....
 
-### Takeway:
+### Takeway
 - Relational databases are best when data is highly interconnected and requires joins.
 - Document databases are best when data naturally forms self-contained hierarchical aggregates. 
 - Graph databases are best when relationships themselves are the primary focus.
@@ -495,3 +516,392 @@ unmentioned. To give just a few brief examples:
 - Graph → Flexible Relationship Graphs
 
 ## Chapter 3: Storage and Retrieval
+This chapter explains how databases store and retrieve data
+
+### Two types of database workloads
+- OLTP (Online Transaction Processing) - The "Doing" System
+  - What it does: Handles day-to-day, real-time operations. It processes thousands of tiny, fast transactions simultaneously.
+  - Common actions: INSERT, UPDATE, and DELETE (creating a new order, updating a customer's address, refunding a purchase).
+  - Who uses it: Cashiers, bank tellers, customer service reps, and end-users on apps/websites.
+  - Data focus: Current, granular data (right now, this second).
+  - Database design: Highly normalized (many linked tables) to avoid duplicate data and ensure speed.
+  - **Example**: When you buy a coffee using an app, the OLTP system instantly deducts your balance, logs the order, and updates the store's inventory.
+- OLAP (Online Analytical Processing) - The "Thinking" System
+  - What it does: Analyzes massive amounts of historical data to find trends, patterns, and insights for business decisions.
+  - Common actions: SELECT and AGGREGATE (running complex queries like SUM, AVG, and GROUP BY over millions of rows).
+  - Who uses it: Data analysts, business intelligence teams, and executives.
+  - Data focus: Historical, aggregated data (what happened last month, last year, or over 5 years).
+  - Database design: Denormalized (flat, wide tables with duplicate data, often structured as a "Star Schema") to make complex queries run faster.
+  - **Example**: The coffee chain's VP uses an OLAP system to see that iced coffee sales increased by 15% in the summer across all stores in Texas, so they decide to order more ice machines.
+
+Why this matters?
+
+Because one database architecture is rarely optimal for both, The chapter then asks:
+- "How should we store data for OLTP?" 
+- "How should we store data for OLAP?"
+
+### How OLTP Databases Store Data
+Suppose we build our own simple database
+
+```On every write -> append to file```
+
+example:
+
+```
+user1 -> Ahmed
+user2 -> Sara
+user1 -> Ahmed Ali
+```
+
+The database is just a log with a couple of appends, very simple.
+
+Disk likes sequential writes (to write at end) and is very fast doing so, but appending may be bad when finding data enquires
+
+We would need to scan entire file, and that would be O(N) which becomes impossible at scale
+
+Here is where Indexes come to place.
+
+#### Index
+
+To solve retrieval speed we create **INDEX** which is similar to a table of contents for a book, and is simply data about the data.
+
+```
+Indexes speed up reads
+Indexes slow down writes
+```
+
+Every storage engine is balancing this tradeoff
+
+#### Hash Index
+
+First storage engine idea is to keep ```Key -> Disk Position```
+
+Example:
+
+```
+user1 -> byte 100
+user2 -> byte 400
+user3 -> byte 900
+```
+
+stored in a hash map, and on lookup it's something like this:
+
+```
+user2 -> byte 400 -> read value
+```
+
+Nearly O(1)
+
+The downside is that hashing destroys ordering e.g. ```Find users 100-1000```
+
+if user 100 is stored on byte xxx then user 101 is stored on byte yyy, then the hard disk would need to spin a lot to get the users.
+
+- user1 might hash to byte 100.
+- user2 might hash to byte 9,000,000,000 (because hashes are random-looking).
+
+Today, we use Solid State Drives (SSDs), which have no moving parts like Hard Disks. There is no "head" and no "spinning." Accessing byte 100 and byte 9 billion takes the exact same electrical time (microseconds).
+
+Because of SSDs, random access is no longer a big deal. But here is the trap:
+- The concept of "hashing destroys ordering" is still 100% correct—even on SSDs!
+- Why? Because even on an SSD, if your hash index scatters data randomly, the database still has to make millions of separate tiny read requests to the SSD to collect 1,000 scattered users.
+- If the data were stored in order (sorted by user ID), the database could send one single sequential read request saying "give me bytes 100 to 1000" and the SSD streams it back in one go, which is vastly faster than 1,000 tiny random reads.
+
+![Hash map representation](imgs/hashmap-representation.png)
+
+#### Clustered and non-clustered indexes
+Clustered Index: Determines the physical order of data on disk—like a dictionary where words and definitions sit together. You get only one per table because rows can only be sorted one way. Lookups and range queries (BETWEEN) are extremely fast, but inserting random values in the middle is slow (page splits). Best practice: use an auto-incrementing ID so new rows go at the end. In MySQL InnoDB, the primary key is the clustered index.
+
+Non-Clustered Index: A separate B-Tree that stores only the indexed key and a pointer to the full row—like a textbook index that says "see page 412." You can have many per table. Lookups require two steps (find pointer, then fetch row), making them slightly slower. However, they don't affect physical row order, so inserts are faster regardless of key value. Used for foreign keys, emails, or search columns.
+
+
+
+#### Segments
+Logs can grow forever, segmenting is about splitting those logs into a smaller segments
+
+```
+segment1
+segment2
+segment3
+```
+
+When one become large, close the segment and open another
+
+#### Compaction
+Over time this can happen:
+
+```
+user1 -> Ahmed
+
+user1 -> Ahmed Ali
+
+user1 -> Ahmed A.
+```
+
+Older versions become useless
+
+Compaction removes obsolete entries, so the result will be only ```user1 -> Ahmed A```
+
+![Compaction](imgs/compaction.png)
+
+#### SSTables (Sorted string table)
+What if segment was sorted? then it's a SSTable
+
+instead of:
+```
+D
+A
+C
+B
+```
+
+Store:
+```
+A
+B
+C
+D
+```
+
+Benefits:
+- Binary search: sorted data is easier to locate
+- Efficient Range queries e.g. 100-1000 becomes easy.
+- Sparse Indexes: Need far fewer index entries, since:
+  ```
+  100 -> offset
+  200 -> offset
+  300 -> offset
+  ```
+  instead of every key
+
+#### Memtables
+How do we contiguously write into a sorted file? We don't because writing directly to disk is slow. Even with SSDs, it takes thousands of times longer to write to disk than to write to RAM (memory).
+
+The Memtable is an in-memory data structure (usually a balanced binary tree like a Red-Black Tree or a Skip List) that holds your most recent writes.
+
+Here is exactly how it works in real-time:
+1. User writes data: You update your profile picture.
+2. Stored in RAM: The database instantly inserts this update into the Memtable (sorted by your User ID). This takes less than 1 millisecond.
+3. Ack to User: The database sends back a 200 OK response to your app saying "Update successful!"
+4. Memtable grows: Over the next few minutes, thousands of other users write data, and all of it piles up in this Memtable in RAM.
+
+when the Memtable reaches a certain size (say, 128 MB), the database does a Flush
+1. It freezes the current Memtable (stops accepting new writes to it).
+2. It instantly creates a brand-new, empty Memtable in RAM for new incoming writes (so your app never experiences downtime).
+3. Meanwhile, in the background, it takes that frozen Memtable (which is already perfectly sorted in memory) and writes it to disk as an SSTable.
+4. Once the SSTable is safely saved, the database deletes the frozen Memtable from RAM to free up space.
+
+The full lifecycle of it:
+1. User writes ```user5 -> "Alice"```.
+2. Database writes ```user5 -> "Alice"``` to the Write-Ahead Log (for crash safety).
+3. Database inserts ```user5 -> "Alice"``` into the Memtable in RAM.
+4. User gets a "Success!" message.
+5. Memtable fills up with millions of writes.
+6. Background process flushes the Memtable to disk as an SSTable.
+7. Memtable is cleared to make room for new data.
+
+So when it fills, it flushes to a disk and create a new `SSTable`.
+
+#### LSM Trees (Log Structured Merge Trees)
+Now combine everything:
+```
+Memtables + SSTables + Compaction
+```
+
+This becomes LSM Tree (Log structured Merge tree)
+
+Flow:
+```
+Write -> Memtable -> Flush -> SSTable -> Compaction -> Merged SSTables
+```
+![Compaction and merging process](imgs/compaction-and-merge-process.png)
+
+The Complete Lookup Flowchart:
+```
+Query: Find "user150"
+  │
+  ▼
+Check Memtable (RAM) ────► Found? ──► YES ──► Return instantly!
+  │ (Not found)
+  ▼
+Check Bloom Filter of SSTable #5 (newest) ──► "NO" ──► Skip it!
+  │
+  ▼
+Check Bloom Filter of SSTable #4 ──► "MAYBE" ──► Open this file.
+  │
+  ▼
+Look at Sparse Index of SSTable #4 ──► "user150 is in Block 2"
+  │
+  ▼
+Read Block 2 from disk into memory.
+  │
+  ▼
+Binary Search Block 2 for "user150" ──► Found! Return the value.
+  (Stop; ignore older SSTables #3, #2, #1)
+```
+![LSM Trees Lookup process](imgs/lsm-lookup.png)
+
+Advantage is that it has excellent writes because it uses memory-first
+
+Problems:
+- A read may require checking MemTable, SSTable A, SSTable B, SSTable C
+- Compactions are also expensive
+
+Databases using LSM Ideas:
+- Cassandra
+- HBase
+- LevelDB
+- RocksDB
+
+#### B-Trees (Balanced Trees)
+The second major storage-engine family says that instead of "Write first, organize later", it says ```"Keep data organized at all times"```
+
+it keeps all the data in ONE single, massive, perfectly organized file, so you can find any piece of data in exactly 3 or 4 disk reads.
+
+A B-Tree is a hierarchical index that looks exactly like an upside-down tree. It consists of two types of "pages" (blocks of fixed size, say 4KB) stored on disk:
+- Root Page (The top of the tree).
+- Branch Pages (The middle levels).
+- Leaf Pages (The very bottom, where the actual data lives).
+
+How it works:
+Let's say you have a B-Tree index on user_id, and you are looking for user150. Here is the journey:
+
+1. The Root Page: The database reads the very first page of the file (the Root) into memory. It contains a sorted list of "ranges":
+   ```
+    [user1 - user100] -> Go to Page 2
+    [user101 - user200] -> Go to Page 3
+    [user201 - user300] -> Go to Page 4
+   ```
+    The database looks at user150 and says: "That falls in the 101-200 range. I need to go to Page 3." (1 disk read so far).
+2. The Branch Page: The database reads Page 3 (a Branch page) from disk. It has a more detailed list:
+   ```
+    [user101 - user120] -> Go to Page 7
+    [user121 - user140] -> Go to Page 8
+    [user141 - user160] -> Go to Page 9
+   ```
+    It finds user150 in the 141-160 range and says: "I need to go to Page 9." (2 disk reads so far).
+3. The Leaf Page: The database reads Page 9 (a Leaf page) from disk. This page contains the actual rows of data:
+   ```
+    user141: "Alice"
+    user142: "Bob"
+    ...
+    user150: "Charlie"   <--- FOUND IT!
+    ...
+    user160: "Zara"
+   ```
+    The database reads the row and returns it. (3 disk reads total).
+
+B-Trees use a Write-Ahead Log (WAL) just like LSM Trees. Before touching any page on disk, the database writes the intended change to a log. If it crashes, it replays the log to recover.
+
+![B-Tree and LSM Tree Comparison](imgs/comparison-b-and-lsm-trees.png)
+
+B-Trees keep empty space inside each page (say, 50% full) so that when you insert user155, there is room to put it without having to split the page immediately. Over time, as you delete data, pages become half-empty. This is called **fragmentation**, and the B-Tree needs periodic maintenance (VACUUM in PostgreSQL or OPTIMIZE in MySQL) to shrink it back down. LSM Trees don't have this problem because compaction cleans everything up perfectly.
+
+#### Secondary Indexes
+Until now we have discussed primary-key indexes e.g. user_id but users search by many attributes (email, country, name ,age)
+
+These  are secondary indexes, a separate index for fields other than the primary key.
+
+#### In-Memory Databases
+Some systems keep most data in RAM e.g. Redis, Memcached
+
+Benefits is that its a very low latency, but tradeoff is that RAM is expensive
+
+### How OLAP Databases Store Data
+OLTP stores data in a "Row-Oriented" way  e.g.
+```
+[1, Alice, Shirt, $20, Texas, Jan 1] [2, Bob, Hat, $15, Texas, Jan 1] [3, ...]
+```
+
+whereas OLAP stores data in a "Column-Oriented" way e.g.
+```
+File 1 (user_id):    [1, 2, 3, 4, 5, ...... 1,000,000,000]
+File 2 (name):       [Alice, Bob, Charlie, ...... ]
+File 3 (product):    [Shirt, Hat, Shoes, ...... ]
+File 4 (price):      [$20, $15, $30, ...... ]
+File 5 (store):      [Texas, Texas, California, ...... ]
+File 6 (date):       [Jan 1, Jan 1, Jan 2, ...... ]
+```
+Now, when you ask: "What is the AVERAGE price?"
+
+The database ignores all the other files, opens only the `price` file, and scans just that one column from start to finish. It reads 1 billion numbers (4 GB of data) instead of 1 billion rows (40 GB of data). That is 10x less disk I/O right out of the gate!
+
+#### Data Warehouses
+Data Warehouuses is often created from production OLTP database using ETL for the purpose of doing analytical work
+
+```
+Production Database (OLTP)
+        |
+        |
+       ETL
+        |
+        V
+ Data Warehouse (OLAP)
+```
+
+#### ETL
+ETL stands for "Extract", "Transform", and "Load"
+
+1. Extract: read production data
+   - Orders
+   - Customers
+   - Products
+2. Transform: clean and reshape
+   - Remove duplicates
+   - Convert currencies
+   - Fix formats
+3. Load: put results into the warehouse
+
+![ETL Process](imgs/etl-process.png)
+
+#### The Mental Model
+Think of a hospital
+1. OLTP is doctors treating patients (real-time work)
+2. Date Warehouse is records archive of historical data
+3. OLAP is researchers asking
+   1. How many patients had disease X?
+   2. What is the survival rate?
+   3. Which treatments worked best?
+
+Analytics happen on the achieve, not while doctors are performing surgery.
+
+
+#### Star Schema
+A Star Schema has only two types of tables:
+- Fact Table: The measurements or events (numbers you want to add up). One row = one event.
+  - e.g. Every single sales transaction.
+- Dimension Tables: The descriptions or context (the "who, what, where, when").
+  - e.g. Customers, Products, Stores, Dates.
+
+```
+
+         Customer
+             |
+Product ---Sales--- Store
+             |
+           Time
+```
+
+Then the `Snowflake Schema` is simply a Star Schema that has been "normalized."
+
+
+#### Materialized View and Data Cubes
+A materialized view is a query result that is precomputed and stored on disk. Instead of recalculating an expensive aggregation every time (e.g., revenue by country), the database reads the stored result directly. This makes analytical queries much faster but requires extra storage and maintenance whenever underlying data changes.
+
+A data cube extends the idea of materialized views by storing many precomputed aggregations across multiple dimensions such as product, country, and year. It enables extremely fast OLAP queries because results are already calculated. The tradeoff is higher storage cost and reduced flexibility for unexpected analytical questions.
+
+
+### Summary
+- In this chapter we tried to get to the bottom of how databases handle storage and retrieval. What happens when you store data in a database, and what does the data base do when you query for the data again later?
+-  On a high level, we saw that storage engines fall into two broad categories: those optimized for transaction processing (OLTP), and those optimized for analytics (OLAP). There are big differences between the access patterns in those use cases:
+   -  OLTP systems are typically user-facing, which means that they may see a huge volume of requests. In order to handle the load, applications usually only touch a small number of records in each query. The application requests records using some kind of key, and the storage engine uses an index to find the data for the requested key. Disk seek time is often the bottleneck here.
+   -  Data warehouses and similar analytic systems are less well known, because they are primarily used by business analysts, not by end users. They handle a much lower volume of queries than OLTP systems, but each query is typically very demanding, requiring many millions of records to be scanned in a short time. Disk bandwidth (not seek time) is often the bottleneck here, and column oriented storage is an increasingly popular solution for this kind of workload.
+- On the OLTP side, we saw storage engines from two main schools of thought:
+  - The log-structured school, which only permits appending to files and deleting obsolete files, but never updates a file that has been written. Bitcask, SSTables, LSM-trees, LevelDB, Cassandra, HBase, Lucene, and others belong to this group.
+  - The update-in-place school, which treats the disk as a set of fixed-size pages that can be overwritten. B-trees are the biggest example of this philosophy, being used in all major relational databases and also many nonrelational ones.
+
+Log-structured storage engines are a comparatively recent development. Their key
+idea is that they systematically turn random-access writes into sequential writes on
+disk, which enables higher write throughput due to the performance characteristics
+of hard drives and SSDs.
+
+## Chapter 4: Encoding and Evolution
