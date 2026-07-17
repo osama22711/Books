@@ -59,6 +59,7 @@
     - [The Schema Registry and the "Data Contract"](#the-schema-registry-and-the-data-contract)
     - [Where Data Flows (The Three Architectures)](#where-data-flows-the-three-architectures)
 - [Part 2: Distributed Data](#part-2-distributed-data)
+  - [Chapter 5: Replication](#chapter-5-replication)
 
 
 # Back Matter
@@ -1031,3 +1032,5 @@ Two ways data is distributed across multiple nodes (machines):
    - Splitting a big database into smaller subsets called partitions so that different partitions can be assigned to different nodes (also known as sharding). We discuss partitioning in Chapter 6.
 
 ![Partition and Replication Diagram](imgs/replication-and-partition-diagram.png)
+
+## Chapter 5: Replication
