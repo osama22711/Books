@@ -58,6 +58,7 @@
     - [The Technical Deep-Dive (Thrift/Protobuf vs. Avro)](#the-technical-deep-dive-thriftprotobuf-vs-avro)
     - [The Schema Registry and the "Data Contract"](#the-schema-registry-and-the-data-contract)
     - [Where Data Flows (The Three Architectures)](#where-data-flows-the-three-architectures)
+- [Part 2: Distributed Data](#part-2-distributed-data)
 
 
 # Back Matter
@@ -1005,3 +1006,28 @@ Encoding is meaningless without context. Kleppmann distinguishes where the data 
     - This is the most extreme case. The producer sends a message to the broker, and the consumer might not read it for hours, days, or weeks (e.g., an overnight analytics job).
     - Because the producer and consumer are completely decoupled in time, you cannot use REST-style versioning (you can't ask the producer to re-send the message in a different format).
     - The Priority: Forward Compatibility is absolutely critical here. The consumer that runs tonight might be an old version, but the producer ran this morning with a new schema. The old consumer must survive. This is exactly why Kafka and Confluent heavily push Avro with Schema Registry. It guarantees that even if a producer dies after sending its new format, the sleeping consumer will wake up and resolve the schema differences.
+
+# Part 2: Distributed Data
+In Part I of this book, we discussed aspects of data systems that apply when data is stored on a single machine. Now, in Part II, we move up a level and ask: what happens if multiple machines are involved in storage and retrieval of data?
+
+There are various reasons why you might want to distribute a database across multiple machines:
+1. **Scalability**:
+If your data volume, read load, or write load grows bigger than a single machine can handle, you can potentially spread the load across multiple machines. 
+2. **Fault tolerance/high availability**:
+If your application needs to continue working even if one machine (or several machines, or the network, or an entire datacenter) goes down, you can use multiple machines to give you redundancy. When one fails, another one can take over.
+3. **Latency**:
+If you have users around the world, you might want to have servers at various locations worldwide so that each user can be served from a datacenter that is geographically close to them. That avoids the users having to wait for network packets to travel halfway around the world.
+
+Types of scaling an application:
+1. Vertical scaling (scaling up): adding more power to the machine e.g. CPU / RAM etc..
+2. Shared-memory: system where multiple processors or cores access the same pool of memory
+3. Shared-disk architecture: several machines with shared disk
+4. Shared-nothing (horizontal scaling or scaling out): Several machines separated and have nothing shared in between
+
+Two ways data is distributed across multiple nodes (machines):
+1. Replication
+   - Keeping a copy of the same data on several different nodes, potentially in different locations. Replication provides redundancy: if some nodes are unavailable, the data can still be served from the remaining nodes. Replication can also help improve performance. We discuss replication in Chapter 5.
+2. Partitioning
+   - Splitting a big database into smaller subsets called partitions so that different partitions can be assigned to different nodes (also known as sharding). We discuss partitioning in Chapter 6.
+
+![Partition and Replication Diagram](imgs/replication-and-partition-diagram.png)
