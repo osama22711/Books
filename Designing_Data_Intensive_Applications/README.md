@@ -53,6 +53,11 @@
       - [Materialized View and Data Cubes](#materialized-view-and-data-cubes)
     - [Summary](#summary-2)
   - [Chapter 4: Encoding and Evolution](#chapter-4-encoding-and-evolution)
+    - [The inevitability of Change and the Two Types of Compatibility](#the-inevitability-of-change-and-the-two-types-of-compatibility)
+    - [The Three Generations of Encoding Formats (and their Fatal Flaws)](#the-three-generations-of-encoding-formats-and-their-fatal-flaws)
+    - [The Technical Deep-Dive (Thrift/Protobuf vs. Avro)](#the-technical-deep-dive-thriftprotobuf-vs-avro)
+    - [The Schema Registry and the "Data Contract"](#the-schema-registry-and-the-data-contract)
+    - [Where Data Flows (The Three Architectures)](#where-data-flows-the-three-architectures)
 
 
 # Back Matter
@@ -905,3 +910,98 @@ disk, which enables higher write throughput due to the performance characteristi
 of hard drives and SSDs.
 
 ## Chapter 4: Encoding and Evolution
+Applications inevitably change over time. Features are added or modified as new products are launched, user requirements become better understood, or business circumstances change
+
+### The inevitability of Change and the Two Types of Compatibility
+Kleppmann starts with a harsh reality: Server-side applications are rarely ever completely stopped, upgraded, and restarted all at once. We use rolling upgrades (phased rollouts) to reduce risk.
+
+Because of this, when you change your data format (your schema), old code and new code will run simultaneously. This forces you to bake compatibility into your encoding from Day 1.
+
+1. **Backward Compatibility** (The Non-Negotiable): 
+   - Newer code must be able to read data that was written by older code. If you add a new field to your schema, older code didn't know about it. To be backward compatible, the encoding must allow the new reader to supply a default value for that missing field. This protects your database: you can update your app, but it must still read the old rows sitting in your storage.
+2. **Forward Compatibility** (The Harder One): 
+   - Older code must be able to read data that was written by newer code. This is much harder. If a new version adds a field, the old reader must ignore that field and still process the rest of the record without crashing. This protects your consumers: your old, cached batch-job might still be running when a producer publishes a new data format.
+
+The Golden Rule: If you want to be able to roll back a deployment quickly, you must support both directions simultaneously.
+
+### The Three Generations of Encoding Formats (and their Fatal Flaws)
+Kleppmann divides encoding into three eras. Understanding the flaws of the early eras explains why we tolerate the complexity of binary schemas.
+
+1. **Generation 1: Language-Specific Formats** (Java Serialization, Python Pickle, Ruby Marshal)
+   - The Trap: They are convenient for the programmer because you just call `object.writeToFile()`.
+   - The Flaws: 
+     - They break forward/backward compatibility catastrophically. 
+     - They expose the internal memory layout of the object (class names, method signatures). 
+     - If you rename a variable, old code cannot read it. 
+     - Worse, they are notoriously security holes (deserialization attacks where a malicious byte-stream executes arbitrary code) and are completely useless if your Java service talks to a Python service.
+2. **Generation 2: Textual Formats** (JSON, XML, CSV)
+   - The Pro: 
+     - Human-readable. 
+     - Great for public-facing APIs where a developer on the frontend needs to debug.
+   - The Flaws:
+     - Ambiguity: JSON doesn't know the difference between an integer and a floating-point number.
+     - Binary Bloat: To send the string {"user_id": 123}, you send the bytes for the keys ("user_id") over the network every single time. This wastes massive bandwidth at scale.
+     - The CSV Disaster: CSV doesn't even have a schema. If a new version adds a column in the middle, old code will parse the columns completely wrong without throwing an error—it just maps the wrong data to the wrong variable. This is a silent data corruption bug.
+   - Technology: API Gateway
+3. **Generation 3: Binary Schema-Driven Formats** (Thrift, Protobuf, Avro)
+   - These exist to solve the bloat, ambiguity, and compatibility of textual formats while remaining language-agnostic.
+   - Technology: Azure Service Bus
+
+### The Technical Deep-Dive (Thrift/Protobuf vs. Avro)
+1. Thrift & Protocol Buffers (The "Tagged" Approach)
+   - The schema assigns a fixed numeric field tag to every field (e.g., `user_id = 1`, `name = 2`).
+   - The binary data is a sequence of `[Tag, Type, Length, Value]`.
+   - How compatibility works: If a new reader gets a tag it doesn't recognize (e.g., Tag 5), it simply skips those bytes. If an old reader reads data with a new Tag 5, it also skips it.
+   - The Critical Catch (The "Reserved" Keyword): If you remove a field, you must permanently mark that tag as reserved. Why? Because a new version of your code might write data using Tag 1 for a completely different meaning. If you reuse Tag 1, an old reader expecting the old field will decode the data using the wrong type, resulting in corrupted, unreadable data. Reserved tags last forever.
+   - ![Protocol Buffers Message Pack](imgs/protocol-buffers-message-pack.png)
+2. Apache Avro (The "Schema Resolution" Approach - The Game Changer)
+   - Avro does not use numeric tags. It has no integers attached to the fields.
+   - The binary data contains only the values separated by delimiters. It does not contain the field names or types in the data itself.
+   - How compatibility works: The reader has its own schema. The writer embeds the writer's schema ID. The reader fetches the writer's schema, compares it to its own, and performs a schema resolution by matching field names. If a field is missing, it uses a default value defined in the reader's schema.
+   - The Superpower of Avro: Because there are no tags, field order does not matter. The binary byte-stream just expects values in the order of the writer's schema; the reader reorders them based on name matching. Also, you can freely add or remove fields without tracking a numeric database of tags. This makes Avro ideal for heterogeneous data pipelines (like Kafka) where thousands of different applications produce data, and you don't want to maintain a global registry of tag numbers.
+   - ![Avro Message Pack](imgs/avro-message-pack.png)
+   - ![Avro Schema Matching](imgs/avro-schema-matching.png)
+
+### The Schema Registry and the "Data Contract"
+
+A common misconception is that Avro doesn't send the schema across the wire. It doesn't, but both sides must have the schema. How?
+
+- Before deploying a producer, you upload your schema to a Schema Registry (a centralized server).
+- The producer gets a unique Schema ID (e.g., `123`).
+- When the producer serializes a record, it prepends the binary payload with `[Schema ID 123][Binary Data]`.
+- When the consumer receives the data, it extracts ID `123`, downloads that specific schema version from the Registry, and runs the resolution algorithm against its own local schema.
+
+Why this matters for Evolution:
+This creates a **Data Contract**. You aren't just sending bytes; you are explicitly stating which version of the contract you used to write the data. This allows you to run a rolling upgrade safely:
+1. Update the consumer to use Schema v2. It can still read v1 (Backward).
+2. Update the producer to write Schema v2. Consumers still running v1 ignore new fields (Forward).
+3. If the producer upgrade fails and rolls back to v1, the new consumers already running v2 can still read the old v1 data (Backward again).
+
+![Schema Registry Diagram](imgs/schema-registry-diagram.png)
+
+Kleppmann includes a subtle but devastating detail regarding nullability.
+
+When adding a new, required field to a schema, you break backward compatibility because old data doesn't have that field.
+To add a field safely, you must:
+
+1. Define it with a default value in the schema (e.g., "default": 0 or "default": null).
+2. Deploy the code that knows about this default.
+3. Only after that code is running and handling the default correctly, can you change the application logic to stop treating it as a default and start using real data.
+
+If you skip step 1 and just add a field without a default, your database becomes unreadable during a rolling upgrade, causing a full-site outage.
+
+### Where Data Flows (The Three Architectures)
+Encoding is meaningless without context. Kleppmann distinguishes where the data goes, because each architecture prioritizes compatibility differently
+
+1. Architecture 1: **Dataflow via Databases**
+    - In a database, the data outlives your application code. A row written 5 years ago might be read by today's freshly deployed code.
+    - The Priority: Backward Compatibility is mandatory. Your new code must know how to read old data. If your code can't supply a default value for a missing old field, you cannot deploy.
+    - The Rewrite Problem: If you change your Avro schema drastically, you might need to run a database rewrite (migration) where you read all old data and write it back in the new format. Until that migration is complete, your code must handle both.
+2. Architecture 2: **Dataflow via Services** (REST/RPC)
+    - Network requests are dynamic. The client initiates a request, the server processes it, and returns a response.
+    - The REST (JSON) dynamic: REST APIs often don't enforce schemas strictly, which means compatibility is ad-hoc (documentation-based). If you change a JSON field, you usually just version the entire API endpoint (e.g., /v2/getUser).
+    - The gRPC (Protobuf) dynamic: Since it uses tagged fields, old clients and new servers can communicate seamlessly as long as the tags remain stable. Here, Forward and Backward compatibility are achieved by the server ignoring unknown request fields from a new client, and the client ignoring unknown response fields from a new server.
+3. Architecture 3: **Dataflow via Asynchronous Messaging** (Kafka / Azure Service Bus)
+    - This is the most extreme case. The producer sends a message to the broker, and the consumer might not read it for hours, days, or weeks (e.g., an overnight analytics job).
+    - Because the producer and consumer are completely decoupled in time, you cannot use REST-style versioning (you can't ask the producer to re-send the message in a different format).
+    - The Priority: Forward Compatibility is absolutely critical here. The consumer that runs tonight might be an old version, but the producer ran this morning with a new schema. The old consumer must survive. This is exactly why Kafka and Confluent heavily push Avro with Schema Registry. It guarantees that even if a producer dies after sending its new format, the sleeping consumer will wake up and resolve the schema differences.
