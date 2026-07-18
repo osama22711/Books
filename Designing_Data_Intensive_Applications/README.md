@@ -60,6 +60,15 @@
     - [Where Data Flows (The Three Architectures)](#where-data-flows-the-three-architectures)
 - [Part 2: Distributed Data](#part-2-distributed-data)
   - [Chapter 5: Replication](#chapter-5-replication)
+    - [Single Leader Replication](#single-leader-replication)
+      - [Synchronous vs. Asynchronous](#synchronous-vs-asynchronous)
+      - [Setting Up New Followers](#setting-up-new-followers)
+      - [Handling Node Outages](#handling-node-outages)
+      - [Implementation of Replication Logs](#implementation-of-replication-logs)
+      - [Problems with Replication Lag](#problems-with-replication-lag)
+    - [Multi-Leader Replication](#multi-leader-replication)
+    - [Leaderless Replication](#leaderless-replication)
+  - [Chapter 6: Partitioning](#chapter-6-partitioning)
 
 
 # Back Matter
@@ -1034,3 +1043,80 @@ Two ways data is distributed across multiple nodes (machines):
 ![Partition and Replication Diagram](imgs/replication-and-partition-diagram.png)
 
 ## Chapter 5: Replication
+The goal of replication is to keep a copy of the same data on multiple machines . This is done to achieve a few critical goals:
+1. Reduce Latency: Keep data geographically close to your users.
+2. Increase Availability: The system can continue to work even if some parts fail.
+3. Increase Read Throughput: Spread the load of read queries across many replicas.
+
+The chapter explores three main algorithms for replicating changes: single-leader, multi-leader, and leaderless replication
+
+### Single Leader Replication
+This is the most common solution, also known as master-slave or primary-secondary replication.
+- **How it works**: One node is designated the leader. All write requests must go to it. The leader writes the new data to its local storage and also sends the data change to all followers in a replication log or change stream .
+- **Reads**: Clients can read data from either the leader or any of the followers. This is a key advantage, as it allows the system to scale out to handle a high volume of read requests
+
+![Leader-based replication](imgs/leader-based-replication.png)
+
+#### Synchronous vs. Asynchronous
+1. **Synchronous**: The leader waits for a follower to confirm it has received the write before reporting success to the user. 
+     - The advantage is that the follower is guaranteed to have an up-to-date copy. 
+     - The disadvantage is that if the synchronous follower fails, the write cannot be processed.
+2. **Semi-synchronous**: A practical middle-ground. One follower is synchronous, and the others are asynchronous
+    ![Semi sync replication](imgs/semi-sync-replication.png)
+3. **Asynchronous**: The leader sends the write to the follower but does not wait for a response. 
+     - The advantage is that the leader can continue processing writes even if all followers have fallen behind. 
+     - The disadvantage is that if the leader fails, any writes that haven't been replicated are lost
+
+#### Setting Up New Followers
+Adding a new follower can be done without downtime by taking a consistent snapshot of the leader's database and copying it to the new follower. The new follower then connects to the leader and requests all changes that happened since the snapshot.
+
+#### Handling Node Outages
+1. **Follower Failure**: Follower can easily recover by looking at its log to find the last transaction it processed before the fault and requesting the data changes it missed
+2. **Leader Failure**: This is a tricky process called failover. It involves determining the leader has failed, choosing a new leader (usually the follower with the most up-to-date data), and reconfiguring the system
+     - **Split Brain**: A dangerous scenario where two nodes believe they are the leader. This can lead to data loss or corruption if both accept writes
+
+#### Implementation of Replication Logs
+How does the leader send data changes to its followers? The chapter discusses several methods:
+1. **Statement-based Replication**: The leader logs every write request (e.g., INSERT, UPDATE, DELETE) and sends that statement log to its followers . This is generally not used today as it has problems with non-deterministic functions like NOW() or RAND().
+2. **Write-Ahead Log (WAL) Shipping**: The leader sends the exact same low-level WAL (the log of byte changes to the storage engine) to its followers. This couples the leader and follower to the same storage engine and database version.
+3. **Logical (Row-Based) Log Replication**: This decouples the replication log from the storage engine. It sends a sequence of records describing writes at the row level (e.g., "insert a row with these values"). This is more flexible and can allow the leader and follower to use different storage engines or database versions.
+4. **Trigger-based Replication**: A trigger lets you register custom application code that automatically executes when a data change occurs.
+
+#### Problems with Replication Lag
+The delays in asynchronous replication create a "replication lag," leading to several consistency anomalies.
+1. **Reading Your Own Writes**: A user might write data to the leader, but when they immediately query a follower (which is lagging), they won't see their own update . This is also called read-after-write consistency.
+   - Solution: For data the user has modified, read it from the leader instead of a follower.
+   - ![Read-after-write replication problem](imgs/read-after-write-replication-problem.png)
+2. **Monotonic Reads**: A user might make multiple reads, and because they are routed to different followers with different lag, the data appears to go "back in time".
+   - Solution: Ensure a user always reads from the same replica (e.g., by hashing the user ID).
+   - ![Monotonic Reads Replication Problem](imgs/monotonic-reads-replication-problem.png)
+3. **Consistent Prefix Reads**: If a series of writes are causally dependent, a follower might process them in the wrong order.
+   - Solution: Ensure that any writes with a causal relationship are written to the same partition.
+   - ![Consistent Prefix Reads Replication Problem](imgs/consistent-prefix-reads-replication-problem.png)
+
+### Multi-Leader Replication
+This is a natural solution for systems that span multiple datacenters, where single-leader would introduce high latency for writes.
+![Multi-Leader replication](imgs/multi-leader-replication.png)
+1. **Advantages**: Better performance (writes can be handled locally), higher tolerance for datacenter outages, and tolerance for network problems between datacenters
+2. **Biggest Challenge: Write Conflicts** If two users modify the same data in different datacenters concurrently, a conflict occurs
+   - **Conflict Avoidance**: The simplest strategy. Ensure that all writes for a particular record always go through the same leader (e.g., routing a user's requests to their "home" datacenter)
+   - **Conflict Resolution**: When conflicts happen, they must be resolved. Common strategies include "Last Write Wins" (LWW, which is simple but can cause data loss), merging values, or using custom application logic to resolve the conflict
+3. **Replication Topologies**: Multi-leader systems can have various topologies (communication paths)
+   - The most general is all-to-all, where every leader sends its writes to every other leader
+   - MySQL uses a circular topology.
+   - There is also a star topology
+   - ![Multi-leader replication topologies](imgs/multi-leader-replication-topologies.png)
+
+### Leaderless Replication
+In this approach, any replica can directly accept writes from clients . This is used in systems like Cassandra and Amazon Dynamo therefore called Dynamo-style
+   - **Writing**: Clients send writes to several nodes in parallel. A write is considered successful if confirmed by a certain number (w) of nodes.
+   - **Reading**: Clients also read from several nodes in parallel. A read is considered successful if responded to by a certain number (r) of nodes. If `w + r > n` (the total number of replicas), the read set will overlap with the write set, ensuring you get the latest version.
+     - ![Read Quorum](imgs/read-quorum.png)
+   - **Handling Stale Data**:
+     - **Read Repair**: When a client reads from multiple nodes, it can detect stale replicas and send a request to write the new value to them
+       - ![Read-Repair-Stale-Data](imgs/read-repair-stale-data-leaderless.png)
+     - **Anti-Entropy**: A background process that constantly looks for and repairs differences in data between replicas
+   - **Detecting Concurrent Writes**: This is where the concept of a `version vector` comes in. It's a collection of version numbers from all replicas that allows the system to distinguish between overwrites and concurrent writes
+     - ![Concurrent writes flowchart](imgs/concurrent-writes-flowchart.png)
+     - ![Concurrent writes diagram](imgs/concurrent-writes-diagram.png)
+## Chapter 6: Partitioning
