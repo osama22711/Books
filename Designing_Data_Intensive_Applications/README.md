@@ -69,6 +69,12 @@
     - [Multi-Leader Replication](#multi-leader-replication)
     - [Leaderless Replication](#leaderless-replication)
   - [Chapter 6: Partitioning](#chapter-6-partitioning)
+    - [Why Partitioning is Essential](#why-partitioning-is-essential)
+    - [Two Main Approaches to Partitioning](#two-main-approaches-to-partitioning)
+    - [The Challenge of Secondary Indexes](#the-challenge-of-secondary-indexes)
+    - [Rebalancing Partitions](#rebalancing-partitions)
+    - [Request Routing](#request-routing)
+  - [Chapter 7: Transactions](#chapter-7-transactions)
 
 
 # Back Matter
@@ -1119,4 +1125,65 @@ In this approach, any replica can directly accept writes from clients . This is 
    - **Detecting Concurrent Writes**: This is where the concept of a `version vector` comes in. It's a collection of version numbers from all replicas that allows the system to distinguish between overwrites and concurrent writes
      - ![Concurrent writes flowchart](imgs/concurrent-writes-flowchart.png)
      - ![Concurrent writes diagram](imgs/concurrent-writes-diagram.png)
+
 ## Chapter 6: Partitioning
+Partitioning (also known as sharding), addresses a core challenge of distributed systems: what happens when your data is too large for a single machine? The solution is to break it into smaller, manageable pieces and distribute them across many nodes
+
+![Replication and Partitioning](imgs/replication-and-partition-diagram2.png)
+
+### Why Partitioning is Essential
+The primary goal of partitioning is scalability. By splitting a dataset, we can:
+1. Distribute storage: No single machine needs to hold the entire dataset.
+2. Parallelize processing: Queries and writes can be handled by many nodes simultaneously, increasing throughput.
+
+This is often combined with replication (from Chapter 5), where each partition's data is copied across multiple nodes for fault tolerance.
+
+### Two Main Approaches to Partitioning
+The book presents two primary strategies for partitioning key-value data, each with distinct trade-offs
+
+| Strategy                    | Description                                                                                        | Pros                                                                          | Cons                                                                                                 | Examples                                     |
+| --------------------------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| Partitioning by Key Range   | Assigns a continuous range of keys to each partition (like an encyclopedia's volumes)              | Enables efficient range scans (e.g., querying keys between A and B)           | Prone to hot spots if the data distribution is uneven (e.g., all writes target the latest range)     | Bigtable, HBase, RethinkDB                   |
+| Partitioning by Hash of Key | Uses a hash function to deterministically map each key to a partition. This spreads data uniformly | Balances the load effectively, avoiding skew and hot spots for most use cases | Breaks range queries because keys that are near each other are scattered across different partitions | Cassandra, MongoDB (hash sharding), DynamoDB |
+
+Even with hashing, a skewed workload (where a single key is extremely popular, like a celebrity's profile on social media) can create a hot spot. One strategy to mitigate this is to add a random suffix to the key, splitting the load for that key across multiple partitions
+
+![Key Range Partitioning Strategy](imgs/key-range-partitioning-strategy.png)
+![Hash Key Partitioning Strategy](imgs/hash-key-partitioning-strategy.png)
+
+### The Challenge of Secondary Indexes
+A significant complexity arises with secondary indexes (indexes on non-primary-key fields)
+
+| Index Type                                 | Description                                                                                              | Pros                                                                           | Cons                                                                                                                                           |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Document-partitioned Indexes (Local Index) | Each data partition maintains its own separate secondary index, covering only the data in that partition | Simple to maintain and update, as data and index are on the same node          | Reads can be slow and expensive, often requiring a scatter/gather request to query all partitions                                              |
+| Term-partitioned Indexes (Global Index)    | Builds a single, global secondary index that is partitioned separately from the primary data             | More efficient reads, as the index can route the query to a specific partition | Complicates writes, as a single data update may require updating multiple index partitions, often needing asynchronous updates for performance |
+
+![Document Partitioned Indexes](imgs/document-partitioned-indexes.png)
+![Term Partitioned Indexes](imgs/term-partitioned-indexes.png)
+
+### Rebalancing Partitions
+When the number of nodes in a cluster changes (to handle more load or replace a failed machine), partitions must be rebalanced—moved between nodes to restore balance. Good rebalancing should distribute the load fairly, minimize data movement, and not disrupt normal operations
+
+![Rebalancing](imgs/rebalancing.png)
+
+The book details several strategies:
+1. **Fixed Number of Partitions**: 
+     - Create many more partitions than nodes upfront, then distribute them across the cluster. When a new node joins, it can "steal" a few partitions from existing nodes. This strategy is simple but has a pre-determined upper limit
+2. **Dynamic Partitioning**:
+     - Partitions are automatically split and merged as the data grows or shrinks (common with key-range partitioning). It's more flexible but complex to implement. A key piece of advice: avoid naive hashing like `hash(key) mod N`, as adding or removing a node changes the hash for almost all keys, leading to massive data migration
+
+### Request Routing
+Finally, once data is partitioned across many nodes, the system needs to know how to route a client's request to the correct partition. This is a service discovery problem. 
+
+Common approaches include:
+- Forwarding Requests: Clients can contact any node, which will forward the request to the right one.
+- Routing Tier: A dedicated layer acts as a partition-aware load balancer.
+- Direct Client Connection: Clients are aware of the partition scheme and connect directly.
+
+Systems often use a coordination service like ZooKeeper to maintain the authoritative mapping of partitions to nodes, which is then used by routing tiers or clients.
+
+![Partitioning Request Routing Methods](imgs/partitioning-request-routing-methods.png)
+![Zookeeper Request Routing method](imgs/zookeeper-request-routing-method.png)
+
+## Chapter 7: Transactions
