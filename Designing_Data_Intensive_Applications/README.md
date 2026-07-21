@@ -75,6 +75,24 @@
     - [Rebalancing Partitions](#rebalancing-partitions)
     - [Request Routing](#request-routing)
   - [Chapter 7: Transactions](#chapter-7-transactions)
+    - [The Problem Transactions Solve](#the-problem-transactions-solve)
+    - [The ACID Guarantees](#the-acid-guarantees)
+      - [Atomicity (Abortability)](#atomicity-abortability)
+      - [Consistency (Application-Defined rules)](#consistency-application-defined-rules)
+      - [Isolation (Concurrency Control)](#isolation-concurrency-control)
+      - [Durability (Persistence)](#durability-persistence)
+    - [Concurrency Problems and Weak Isolation Levels](#concurrency-problems-and-weak-isolation-levels)
+      - [Dirty Reads](#dirty-reads)
+      - [Dirty Writes](#dirty-writes)
+      - [Lost Updates](#lost-updates)
+      - [Read Skew (Non-Repeatable Reads)](#read-skew-non-repeatable-reads)
+      - [Write Skew](#write-skew)
+      - [Phantoms](#phantoms)
+    - [Achieving Strong Isolation (Serializability)](#achieving-strong-isolation-serializability)
+      - [Two-Phase Locking (2PL)](#two-phase-locking-2pl)
+      - [Serializable Snapshot Isolation (SSI)](#serializable-snapshot-isolation-ssi)
+    - [Stored Procedures and Transactions](#stored-procedures-and-transactions)
+  - [Chapter 8: The Trouble with Distributed Systems](#chapter-8-the-trouble-with-distributed-systems)
 
 
 # Back Matter
@@ -1187,3 +1205,517 @@ Systems often use a coordination service like ZooKeeper to maintain the authorit
 ![Zookeeper Request Routing method](imgs/zookeeper-request-routing-method.png)
 
 ## Chapter 7: Transactions
+
+### The Problem Transactions Solve
+**The Core Problem**: In any data system, things go wrong. Hardware fails, networks drop, software crashes, and multiple users access the same data simultaneously. Without a structured way to handle these failures, your application can end up with corrupted, inconsistent, or partially updated data.
+
+**The Solution (Transactions)**: A transaction is a way for an application to group several reads and writes into a single logical unit of work. The database provides a crucial guarantee: either all operations in the transaction are completed successfully, or none of them are.
+
+Kleppmann emphasizes a key point: "Transactions are not a law of nature. They were created with a purpose: to simplify the programming model for applications." Without transactions, application developers would need to implement complex error-handling logic to check for every possible race condition, partial failure, and concurrency anomaly.
+
+### The ACID Guarantees
+ACID stands for Atomicity, Consistency, Isolation, and Durability. But Kleppmann warns us: these terms are often misunderstood and oversold.
+
+#### Atomicity (Abortability)
+**Definition**: Atomicity ensures that a transaction is treated as a single, indivisible unit. If any operation within the transaction fails, the entire transaction is aborted, and all changes made so far are rolled back.
+
+**The Reality**: Kleppmann suggests that "abortability" is a better name than "atomicity." It doesn't mean the transaction is somehow "indivisible" in a physics sense; it means that if something goes wrong, the database aborts the transaction and undoes everything it did.
+
+Example: Money Transfer
+```SQL
+-- Transaction: Transfer $100 from Alice to Bob
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE user = 'Alice';
+UPDATE accounts SET balance = balance + 100 WHERE user = 'Bob';
+COMMIT;
+```
+
+What Happens If Something Fails:
+| Scenario                                                                               | Atomicity Guarantee                                                      |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| The first `UPDATE` succeeds, but the second fails (e.g., Bob's account doesn't exist). | The database rolls back Alice's debit. Neither account is changed.       |
+| The database crashes after the first `UPDATE` but before the second.                   | When the database restarts, it rolls back Alice's debit (using the WAL). |
+| Everything succeeds                                                                    | Both updates are committed atomically.                                   |
+
+**Without Atomicity**: If the second UPDATE fails, Alice loses $100 and Bob gains nothing. The system is in an inconsistent state, and the user has no easy way to recover.
+
+How Atomicity Works Under the Hood:
+1. Before making any changes, the database writes the "before" state to the Write-Ahead Log (WAL).
+2. On commit, the database writes a "commit" record to the WAL.
+3. If a crash occurs before the commit record is written, the database can use the WAL to roll back (undo) the incomplete changes during crash recovery.
+
+![Atomicity](imgs/atomicity.png)
+
+#### Consistency (Application-Defined rules)
+**Definition**: Consistency is a property that ensures that your data respects certain invariants (rules) defined by your application.
+
+**The Reality**: Kleppmann makes a crucial distinction: "Consistency is not a property of the database alone; it's a property of the application." The database can only enforce some consistency rules (like foreign key constraints, uniqueness, and check constraints). For complex business rules, the application must uphold consistency itself.
+
+Example: The "On-Call Doctor" Invariant
+```SQL
+-- Business rule: At least one doctor must be on call at all times
+-- This is NOT a constraint the database can enforce directly
+-- (You can't write a CHECK constraint that ensures COUNT >= 1 across rows)
+```
+
+Types of Consistency:
+| Type                  | Example                                         | Who Enforces It?                             |
+| --------------------- | ----------------------------------------------- | -------------------------------------------- |
+| Referential Integrity | A `user_id` in `orders` must exist in `users`   | Database (foreign key constraint)            |
+| Uniqueness            | Two users can't have the same `email`           | Database (unique constraint)                 |
+| Business Logic        | "At least one doctor must be on call"           | Application (with serializable transactions) |
+| Causal Consistency    | If I reply to a comment, the comment must exist | Database (with proper ordering)              |
+
+**The CAP Confusion**: Kleppmann notes that the "C" in ACID has nothing to do with the "C" in CAP (Consistency in the sense of linearizability). They are historically unrelated terms that happen to share the same name.
+
+#### Isolation (Concurrency Control)
+**Definition**: Isolation is about what happens when multiple transactions execute at the same time and access the same data. The goal is to make concurrent transactions appear as if they were running one after another (serially).
+
+**The Ideal**: Serializable Isolation means that the result of executing concurrent transactions is the same as if they were executed serially (one after another) in some order.
+
+**The Reality**: Full serializability is expensive. Databases offer weaker isolation levels as a performance trade-off, but these come with risks.
+
+Example: The Race Condition
+```SQL
+-- Two users try to book the last seat on a flight
+-- Transaction A
+BEGIN;
+SELECT COUNT(*) FROM seats WHERE flight_id = 123 AND booked = false; -- returns 1
+UPDATE seats SET booked = true WHERE flight_id = 123 AND seat_number = '12A';
+COMMIT;
+
+-- Transaction B (concurrent)
+BEGIN;
+SELECT COUNT(*) FROM seats WHERE flight_id = 123 AND booked = false; -- returns 1
+UPDATE seats SET booked = true WHERE flight_id = 123 AND seat_number = '12A';
+COMMIT;
+```
+**The Problem**: Both transactions see the seat as available and both book it. The seat is double-booked.
+
+The Fix (Isolation):
+- Without Isolation: The last transaction overwrites the first (Lost Update).
+- With Isolation: The second transaction waits or aborts.
+
+![Race condition](imgs/race-condition.png)
+
+#### Durability (Persistence)
+**Definition**: Durability is the promise that once a transaction has committed, its data will not be lost, even in the event of a power outage, crash, or hardware failure.
+
+How It Works (Under the Hood):
+1. **Write-Ahead Log (WAL)**: Before any change is written to the database, it's first written to the WAL (a sequential log on disk).
+2. **Flushing to Disk**: When the transaction commits, the database waits for the WAL to be safely written to disk (fsync).
+3. **Lazy Writes**: The actual data pages on disk may be updated later (lazily), but the WAL ensures that even if the database crashes, it can replay the WAL to recover committed changes.
+
+The Catch (Replication): With asynchronous replication, durability is weaker because writes may be lost if the leader crashes before replicating to followers.
+
+### Concurrency Problems and Weak Isolation Levels
+
+#### Dirty Reads
+Definition: A dirty read occurs when one transaction reads data that has been written by another transaction that has not yet committed.
+
+```SQL
+-- Transaction A (updates Alice's balance)
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE user = 'Alice';
+-- Transaction A doesn't commit yet
+
+-- Transaction B (reads Alice's balance)
+BEGIN;
+SELECT balance FROM accounts WHERE user = 'Alice'; -- Reads the updated balance ($900)
+-- Transaction B uses this balance for something...
+COMMIT;
+
+-- Transaction A (rolls back)
+ROLLBACK; -- Balance returns to $1000
+```
+
+Why Dirty Reads Are Bad:
+| Problem           | Explanation                                                                                                                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Invalid Decisions | Transaction B made a decision based on data that was never committed. If Transaction B used that balance to approve a loan or make a trade, it would be acting on invalid information. |
+| Cascading Aborts  | If Transaction A aborts, Transaction B's decision might need to be undone as well. This creates a cascading effect that's hard to manage.                                              |
+
+Prevention: Read Committed
+
+The Read Committed isolation level (the default in many databases) prevents dirty reads. It ensures that a transaction can only read data that has been committed. Under the hood, this is often implemented by:
+- **Row-Level Locks (Pessimistic)**: Writers hold an exclusive lock on the row until commit, preventing readers from seeing uncommitted data.
+- **Multi-Version Concurrency Control (MVCC)**: The database maintains multiple versions of the row. Readers see the version that was committed before the transaction began.
+
+![No Dirty Reads](imgs/no-dirty-reads.png)
+
+#### Dirty Writes
+**Definition**: A dirty write occurs when one transaction overwrites data that another transaction has written but not yet committed.
+
+```SQL
+-- Transaction A (updates Alice's balance)
+BEGIN;
+UPDATE accounts SET balance = 1000 WHERE user = 'Alice'; -- Sets balance to $1000
+
+-- Transaction B (updates Alice's balance)
+BEGIN;
+UPDATE accounts SET balance = 2000 WHERE user = 'Alice'; -- Overwrites A's write!
+COMMIT;
+
+-- Transaction A (rolls back)
+ROLLBACK; -- Now balance is rolled back to what? 
+-- The database must undo A's changes, but B already overwrote them.
+-- Without dirty write prevention, this is ambiguous and can lead to corruption.
+```
+
+Why Dirty Writes Are Bad:
+- Lost Updates: The first write is lost because the second overwrites it.
+- Ambiguous Rollback: If Transaction A rolls back, the database doesn't know what the "correct" state is. It can't simply revert to A's previous value because B's write is now the current state.
+
+![Dirty writes](imgs/dirty-writes.png)
+
+Prevention: Dirty Writes Are Almost Always Prevented
+
+Dirty writes are so dangerous that almost all databases prevent them, even at the weakest isolation levels. They do this using:
+- Row-Level Locks: Writers hold an exclusive lock on the row until commit. Other transactions that want to write the same row must wait.
+
+#### Lost Updates
+**Definition**: A lost update occurs when two transactions read a value, modify it, and write it back. The second write overwrites the first, losing the first transaction's change.
+
+```SQL
+-- Scenario: Two users simultaneously increment a view counter
+
+-- Transaction A
+BEGIN;
+SELECT views FROM page WHERE id = 1; -- views = 10
+-- (Application calculates: 10 + 1 = 11)
+UPDATE page SET views = 11 WHERE id = 1;
+COMMIT;
+
+-- Transaction B (concurrent)
+BEGIN;
+SELECT views FROM page WHERE id = 1; -- views = 10 (A hasn't committed yet)
+-- (Application calculates: 10 + 1 = 12)
+UPDATE page SET views = 12 WHERE id = 1; -- Overwrites A's update!
+COMMIT;
+```
+
+Result: The counter should be 11, but it's 12. Transaction A's increment is lost.
+
+Why Lost Updates Happen:
+- The transactions don't conflict on writes (they write the same row, but not at the exact same time).
+- They conflict on the read-modify-write cycle.
+- Without coordination, the second transaction's write overwrites the first.
+
+Prevention:
+| Strategy            | How It Works                                                                                 | Example                                                                         |
+| ------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Atomic Operations   | The database handles the read-modify-write as a single, indivisible operation.               | `UPDATE page SET views = views + 1 WHERE id = 1;`                               |
+| Explicit Locking    | Application locks the row before reading.                                                    | `SELECT views FROM page WHERE id = 1 FOR UPDATE;`                               |
+| Optimistic Locking  | Use a version number to detect conflicts.                                                    | UPDATE page SET views = 11, version = version + 1 WHERE id = 1 AND version = 5; |
+| Automatic Detection | Some implementations of Snapshot Isolation automatically detect lost updates at commit time. | PostgreSQL's `REPEATABLE READ` with `SERIALIZABLE` setting.                     |
+
+#### Read Skew (Non-Repeatable Reads)
+**Definition**: A read skew occurs when a transaction reads the same object at different points in time and gets different values because another transaction has committed changes in between.
+
+```SQL
+-- Transaction A (Generating a report)
+BEGIN;
+SELECT SUM(balance) FROM accounts WHERE type = 'checking'; -- Reads $10,000
+-- [Another transaction commits: A transfer of $500 from checking to savings]
+SELECT SUM(balance) FROM accounts WHERE type = 'savings'; -- Reads $10,000
+COMMIT;
+
+-- Transaction B (Transfer money)
+BEGIN;
+UPDATE accounts SET balance = balance - 500 WHERE id = 'checking_1';
+UPDATE accounts SET balance = balance + 500 WHERE id = 'savings_1';
+COMMIT;
+```
+
+The Problem:
+- The first `SUM` reads the checking balance before the transfer ($10,000).
+- The second `SUM` reads the savings balance after the transfer ($10,000).
+- The report shows the total balance as $20,000, but it should be $19,500 ($10,000 + $9,500).
+
+Why This is Bad:
+- The report is **inconsistent**—it's neither a snapshot of the state before the transfer (should be $10,000 + $10,000 = $20,000) nor after the transfer (should be $9,500 + $10,500 = $20,000).
+- This is a temporary inconsistency, but if the report is used for decision-making, it can lead to errors.
+
+![Read Skew](imgs/read-skew.png)
+
+Prevention: Snapshot Isolation
+
+**Snapshot Isolation** provides a consistent snapshot of the database as of the time the transaction began. This is implemented using **Multi-Version Concurrency Control (MVCC)**.
+
+How MVCC Works:
+1. Each transaction sees a consistent snapshot of the database at its start time.
+2. Writes create new versions of rows (not in-place updates).
+3. Readers read the version that was current when the transaction began.
+4. This prevents non-repeatable reads because the same query always returns the same data.
+
+Example in PostgresSQL:
+
+```SQL
+-- PostgreSQL's REPEATABLE READ provides Snapshot Isolation
+-- Transaction A
+BEGIN ISOLATION LEVEL REPEATABLE READ;
+SELECT SUM(balance) FROM accounts WHERE type = 'checking'; -- Returns $10,000
+-- Transaction B commits a transfer (doesn't affect A)
+SELECT SUM(balance) FROM accounts WHERE type = 'savings'; -- Still returns $10,000 (as it was at the start)
+COMMIT;
+```
+
+![Snapshot Isolation](imgs/snapshot-isolation.png)
+
+#### Write Skew
+**Definition**: Write skew occurs when a transaction reads a set of objects, makes a decision based on that read, and writes a change. The premise of the decision becomes false due to a concurrent transaction's actions, even though no single object is overwritten.
+
+Why It's Sneaky:
+- It doesn't violate lower isolation levels (no dirty reads, no lost updates, no non-repeatable reads).
+- It only appears if you understand the business logic constraints.
+- It's a logical corruption, not a technical one.
+
+The Classic Example: On-Call Doctors
+
+```SQL
+-- Business rule: At least one doctor must be on call for each shift.
+-- There are 2 doctors assigned to night shift.
+-- Two doctors decide to take a break at the same time.
+
+-- Transaction A (Doctor A takes a break)
+BEGIN;
+SELECT COUNT(*) FROM doctors 
+WHERE on_call = true AND shift = 'night'; -- Returns 2 (A and B are on call)
+-- Decides: "I can go off call because there are 2 doctors on call"
+UPDATE doctors SET on_call = false WHERE id = 'A';
+COMMIT;
+
+-- Transaction B (Doctor B takes a break) - CONCURRENT
+BEGIN;
+SELECT COUNT(*) FROM doctors 
+WHERE on_call = true AND shift = 'night'; -- Returns 2 (A and B are on call)
+-- Decides: "I can go off call because there are 2 doctors on call"
+UPDATE doctors SET on_call = false WHERE id = 'B';
+COMMIT;
+```
+
+The Result:
+- Both transactions see 2 doctors on call.
+- Both decide they can go off call.
+- After both commit, no doctors are on call for night shift.
+- Business rule broken (and the hospital is left with no night coverage!).
+
+Why It's Not Prevented by Lower Isolation Levels:
+| Anomaly              | Does it happen? | Why?                                                                                    |
+| -------------------- | --------------- | --------------------------------------------------------------------------------------- |
+| Dirty Reads          | No              | Both transactions read committed data.                                                  |
+| Lost Updates         | No              | They updated Different rows (A and B)                                                   |
+| Non-Repeatable Reads | No              | The count didn't change during each transaction (it only changed after both committed). |
+| Phantoms             | No              | No new rows were inserted; rows were updated.                                           |
+
+The Fix: Serializable Isolation
+
+Only **Serializable Isolation** (either 2PL or SSI) can prevent write skew. The database detects that Transaction A's read of the count is stale because Transaction B's write affects the same condition (`on_call=true AND shift='night'`).
+
+#### Phantoms
+**Definition**: A phantom occurs when a transaction reads objects that match a search condition, and another transaction inserts, updates, or deletes objects that would change the result of that search.
+
+Example: Booking a Meeting Room
+```SQL
+-- Business rule: A meeting room can only be booked once per time slot.
+-- Transaction A (Book room 123 for July 21, 2026)
+BEGIN;
+SELECT COUNT(*) FROM bookings 
+WHERE room_id = 123 AND date = '2026-07-21'; -- Returns 0 (room is free)
+-- Decides: "Room is free, I'll book it"
+INSERT INTO bookings (room_id, date, user_id) VALUES (123, '2026-07-21', 456);
+COMMIT;
+
+-- Transaction B (Concurrent booking for the same room/date)
+BEGIN;
+SELECT COUNT(*) FROM bookings 
+WHERE room_id = 123 AND date = '2026-07-21'; -- Returns 0 (A hasn't committed yet)
+-- Decides: "Room is free, I'll book it"
+INSERT INTO bookings (room_id, date, user_id) VALUES (123, '2026-07-21', 789);
+COMMIT;
+```
+
+The Result: Two bookings for the same room on the same date. Double-booking!
+
+Why Phantoms Are Different:
+
+The `SELECT` query didn't find any rows to lock. There were no rows matching the condition (`room_id=123 AND date='2026-07-21'`) at the time of the read. Row-level locks are useless here because there are no rows to lock.
+
+Preventing Phantoms:
+| Strategy                              | How It Works                                                                                                                                                                                        |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Range Locks (Predicate Locks)         | Lock the condition itself (e.g., `room_id=123 AND date='2026-07-21'`), even if no rows currently match it. Any INSERT that matches the condition must wait.                                         |
+| Index-Range Locks                     | Lock the range of rows in an index that would contain the matching rows. For example, if there's an index on `(room_id, date)`, lock all rows with `room_id=123` and the next possible date values. |
+| Serializable Snapshot Isolation (SSI) | SSI detects phantoms by tracking read dependencies. If a transaction reads a condition, and another transaction commits an insert that matches that condition, the first transaction is aborted.    |
+
+### Achieving Strong Isolation (Serializability)
+Serializability guarantees that the result of concurrent transactions is the same as if they were executed serially, one after another.
+
+#### Two-Phase Locking (2PL)
+**The Core Idea**: Use locks to prevent conflicts. Any transaction that reads an object acquires a shared lock (multiple readers allowed). Any transaction that writes an object acquires an exclusive lock (only one writer allowed).
+
+The "Two Phase" Rule:
+1. Growing Phase: A transaction can acquire locks but cannot release any.
+2. Shrinking Phase: A transaction can release locks but cannot acquire any new ones.
+
+In practice, most databases hold locks until the transaction commits or aborts (strict 2PL).
+
+Example (Serializable Transaction with 2PL):
+```SQL
+-- Transaction A (Doctor A takes a break)
+BEGIN ISOLATION LEVEL SERIALIZABLE;
+SELECT COUNT(*) FROM doctors 
+WHERE on_call = true AND shift = 'night' LOCK IN SHARE MODE; -- Acquires shared lock on the range
+-- Acquires shared lock on all rows that match the condition
+UPDATE doctors SET on_call = false WHERE id = 'A'; -- Tries to acquire exclusive lock on row A
+-- If row A already has a shared lock (from another reader), Transaction A waits.
+COMMIT; -- Releases all locks
+
+-- Transaction B (Doctor B takes a break) - CONCURRENT
+BEGIN ISOLATION LEVEL SERIALIZABLE;
+SELECT COUNT(*) FROM doctors 
+WHERE on_call = true AND shift = 'night' LOCK IN SHARE MODE; -- Acquires shared lock on the range
+-- Acquires shared lock on all rows that match the condition
+UPDATE doctors SET on_call = false WHERE id = 'B'; -- Tries to acquire exclusive lock on row B
+-- If row B already has a shared lock, Transaction B waits.
+COMMIT; -- Releases all locks
+```
+1. How 2PL Prevents Write Skew:
+2. Transaction A acquires a shared lock on the range of `on_call=true AND shift='night'`.
+3. Transaction B acquires a shared lock on the same range.
+4. Transaction A tries to acquire an exclusive lock on row A. It must wait because Transaction B holds a shared lock on the range.
+5. Transaction B tries to acquire an exclusive lock on row B. It must wait because Transaction A holds a shared lock on the range.
+6. Deadlock! The database detects the deadlock and aborts one transaction.
+7. The surviving transaction commits, and the aborted transaction retries.
+
+The Cost of 2PL:
+- **Performance**: Locking reduces concurrency. Transactions wait for locks, leading to higher latency and lower throughput.
+- **Deadlocks**: Transactions can deadlock, requiring retry logic in the application.
+- **Complexity**: The lock manager must track all locks, which adds overhead.
+
+When to Use 2PL:
+- When conflicts are frequent (retries would be expensive anyway).
+- When you need guaranteed safety with no retries (e.g., banking).
+- When you can afford the performance cost.
+
+#### Serializable Snapshot Isolation (SSI)
+**The Core Idea**: SSI is an optimistic approach. Transactions run on Snapshot Isolation (reading a consistent snapshot) but at commit time, the database checks if any concurrent transactions would cause a serialization conflict. If so, the transaction is aborted and must be retried.
+
+The Innovation: SSI was considered impossible for a long time. In 2008, researchers (Cahill et al.) showed that SSI could be implemented with good performance by tracking read and write dependencies.
+
+How SSI Works (Under the Hood):
+1. **Read-Write Dependency**: Transaction A reads an object that Transaction B later writes.
+   - Why it matters: If Transaction A reads a value that becomes stale because B changes it, A's decision might be based on outdated information.
+   - Detection: A keeps track of which rows it read. At commit time, SSI checks if any of those rows have been modified by a committed transaction after A started.
+2. **Write-Read Dependency**: Transaction A writes an object that Transaction B later reads.
+   - Why it matters: If A writes a value that B reads, the order matters (A should happen before B).
+   - Detection: SSI tracks which rows were written and checks if they were read by a transaction that started after the write.
+3. Write-Write Dependency: Transaction A writes an object that Transaction B also writes.
+   - Why it matters: Lost updates.
+   - Detection: Snapshot Isolation automatically detects this (lost update prevention).
+
+The SSI Algorithm (Simplified):
+```
+Transaction T starts:
+  - Assign a timestamp T_start
+  - Create a snapshot of the database as of T_start
+
+During Transaction T:
+  - For each READ R of object X:
+    * Track this read dependency: R -> X
+  - For each WRITE W of object X:
+    * Track this write dependency: X -> W
+
+At Commit Time:
+  - For each read dependency R:
+    * Check if any transaction U (with T_start < U_start < T_commit) has modified X and committed
+    * If yes: ABORT T (Read-Write conflict)
+  - For each write dependency W:
+    * Check if any transaction U (with T_start < U_start < T_commit) has read X and committed
+    * If yes: ABORT T (Write-Read conflict)
+  - For each write dependency W:
+    * Check if any transaction U (with T_start < U_start < T_commit) has written X and committed
+    * If yes: ABORT T (Write-Write conflict)
+  - If no conflicts: COMMIT T
+```
+
+Example: Preventing Write Skew with SSI
+
+```SQL
+-- Transaction A (Doctor A takes a break)
+BEGIN ISOLATION LEVEL SERIALIZABLE; -- PostgreSQL's SERIALIZABLE uses SSI
+SELECT COUNT(*) FROM doctors 
+WHERE on_call = true AND shift = 'night'; -- Returns 2
+-- SSI tracks: Transaction A READs rows matching condition
+UPDATE doctors SET on_call = false WHERE id = 'A';
+COMMIT; -- Checks conflicts...
+
+-- Transaction B (Doctor B takes a break) - CONCURRENT
+BEGIN ISOLATION LEVEL SERIALIZABLE;
+SELECT COUNT(*) FROM doctors 
+WHERE on_call = true AND shift = 'night'; -- Returns 2
+-- SSI tracks: Transaction B READs rows matching condition
+UPDATE doctors SET on_call = false WHERE id = 'B';
+COMMIT; -- Checks conflicts...
+```
+
+At Commit Time for Transaction A:
+- SSI checks: Did any concurrent transaction modify rows that A read?
+- Transaction B modified row B (which was in A's read set).
+- Conflict detected! Transaction A is aborted.
+
+At Commit Time for Transaction B:
+- Transaction B sees a conflict (Transaction A modified row A, which was in B's read set).
+- Conflict detected! Transaction B is aborted.
+
+Result: One transaction aborts, the other commits. The business rule is preserved.
+
+The Cost of SSI:
+- **Aborts**: If conflicts are frequent, many transactions will be aborted and retried, hurting performance.
+- **False Positives**: SSI may abort transactions that wouldn't actually cause a serialization violation in practice.
+- **Complexity**: The conflict detection logic adds overhead.
+
+When to Use SSI:
+- When conflicts are rare (the default assumption for most web applications).
+- When you need high concurrency with strong consistency.
+- When you can handle retries in your application code.
+
+![SSI Transaction](imgs/ssi-transaction.png)
+
+Comparison: 2PL vs. SSI
+| Aspect      | Two-Phase Locking (2PL)                  | Serializable Snapshot Isolation (SSI)           |
+| ----------- | ---------------------------------------- | ----------------------------------------------- |
+| Philosophy  | Pessimistic (prevent conflicts)          | Optimistic (detect conflicts at commit)         |
+| Locking     | Uses locks; transactions block           | No locking; transactions proceed                |
+| Deadlocks   | Can occur                                | Impossible (no locks)                           |
+| Aborts      | Rare (due to deadlocks)                  | Common (due to conflicts)                       |
+| Performance | Drops under high contention              | Drops under high contention (aborts)            |
+| Retry Logic | Needed for deadlocks                     | Required for aborts                             |
+| Complexity  | Lock manager complexity                  | Dependency tracking complexity                  |
+| Best For    | Frequent conflicts, low retry tolerance  | Rare conflicts, high concurrency needs          |
+| Examples    | MySQL (with SERIALIZABLE), MS SQL Server | PostgreSQL (SERIALIZABLE), CockroachDB, Spanner |
+
+### Stored Procedures and Transactions
+a stored procedure is a powerful tool for executing a transaction entirely on the database server. Instead of an application making multiple round-trips to the database to perform a series of operations, it can send a single command that executes a complete, predefined "unit of work"
+
+The key relationship lies in how stored procedures handle transaction control. They are naturally suited to encapsulate complex business logic that must be atomic . For instance, a stored procedure can manage a money transfer by:
+1. Starting a transaction.
+2. Debiting one account.
+3. Crediting another account.
+4. Committing the transaction only if both steps succeed.
+
+By managing the `BEGIN TRANSACTION` and `COMMIT` or `ROLLBACK` logic itself, the stored procedure ensures that all operations are treated as a single, atomic unit. This removes the responsibility from the application code and helps guarantee data integrity
+
+![Stored Procedure execution plan](imgs/stored-procedures-execution-plan.png)
+
+They are often chosen for transaction-heavy applications for several reasons:
+1. **Performance**: Stored procedures are precompiled, and their execution plan is cached, which can lead to faster execution than sending ad-hoc SQL queries from an application. This is especially beneficial for reducing network traffic, as only the procedure name and parameters are sent across the network .
+2. **Encapsulation**: They provide an abstraction layer, hiding the underlying table schemas from the application. This means business logic can be modified within the procedure without requiring changes to the application code, making maintenance easier .
+3. **Security**: Access to tables can be restricted, and permissions to execute specific stored procedures can be granted instead. This provides a more controlled and secure interface to the data.
+
+Despite their benefits, there are significant drawbacks that align with the modern, distributed application design principles discussed in the book:
+1. **Database Tie-in**: They are written in a database-specific procedural language (e.g., PL/SQL, T-SQL), which tightly couples your business logic to a particular database vendor. Migrating to a different database becomes incredibly difficult .
+2. **Scaling Challenges**: Database servers are often the most difficult and expensive part of a system to scale. Placing heavy business logic in stored procedures shifts the processing load to the database tier, which can create a bottleneck. Modern "shared-nothing" architectures prefer to keep the application tier stateless and scale that horizontally .
+3. **Maintainability**: Versioning, testing, and debugging stored procedures is often more challenging than managing application code. This can lead to slower development cycles and increased operational complexity over time.
+
+## Chapter 8: The Trouble with Distributed Systems
