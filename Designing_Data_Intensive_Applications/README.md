@@ -93,6 +93,13 @@
       - [Serializable Snapshot Isolation (SSI)](#serializable-snapshot-isolation-ssi)
     - [Stored Procedures and Transactions](#stored-procedures-and-transactions)
   - [Chapter 8: The Trouble with Distributed Systems](#chapter-8-the-trouble-with-distributed-systems)
+    - [Faults and Partial Failures](#faults-and-partial-failures)
+    - [Unreliable Networks](#unreliable-networks)
+    - [Unreliable Clocks](#unreliable-clocks)
+    - [Process Pauses](#process-pauses)
+    - [Knowledge, Truth, and Lies](#knowledge-truth-and-lies)
+    - [System Models and Reality](#system-models-and-reality)
+  - [Chapter 9: Consistency and Consensus](#chapter-9-consistency-and-consensus)
 
 
 # Back Matter
@@ -1719,3 +1726,75 @@ Despite their benefits, there are significant drawbacks that align with the mode
 3. **Maintainability**: Versioning, testing, and debugging stored procedures is often more challenging than managing application code. This can lead to slower development cycles and increased operational complexity over time.
 
 ## Chapter 8: The Trouble with Distributed Systems
+We now face the messy physical world. The core message is that in a distributed system, anything that can go wrong, will go wrong, and we must build systems that tolerate this chaos
+
+### Faults and Partial Failures
+On a single computer, things are usually predictable: it either works, or it crashes completely. In a distributed system, we face partial failures—where some parts break unpredictably while others keep working. This non-determinism is the defining challenge . In a cloud environment with thousands of nodes, it is reasonable to assume that something is always broken, requiring us to build fault-tolerance into our software from the start
+
+### Unreliable Networks
+The network is the primary communication channel in a shared-nothing system. It is an asynchronous packet network where messages can be lost, delayed, duplicated, or arrive out of order. When you send a request and get no response, you can't tell why:
+
+| Possible Issue   | Description                                                                                 |
+| ---------------- | ------------------------------------------------------------------------------------------- |
+| Request Lost     | The message never reached the recipient (e.g., a network cable was unplugged).              |
+| Node Dead        | The remote node has crashed or is powered off.                                              |
+| Node Paused      | The remote node is temporarily unresponsive (e.g., due to a long garbage collection pause). |
+| Response Lost    | The remote node processed the request, but the reply was lost on the network.               |
+| Response Delayed | The remote node processed the request, but the response is stuck in a queue.                |
+
+The only reliable way to deal with this uncertainty is **timeouts**. The key challenge is choosing the right timeout duration. A timeout that is too short can cause a node to be falsely declared dead, which may lead to work being performed twice or, during high load, a cascading failure as the failed node's responsibilities are transferred elsewhere
+
+### Unreliable Clocks
+We assume clocks are accurate, but in distributed systems, they are notoriously unreliable. Computers have two types of clocks:
+1. **Time-of-Day Clock**: Returns the current wall-clock time. It can be reset backwards if it's out of sync with an NTP server, making it dangerous for measuring elapsed time.
+2. **Monotonic Clock**: Always moves forward. It's suitable for measuring time intervals (e.g., timeouts), but its absolute value is meaningless.
+
+Even with NTP, clock synchronization is tricky. Clocks can drift, and leaps like leap seconds can cause issues. For ordering events, logical clocks (based on counters) are safer than physical time-of-day clocks. Last Write Wins (LWW) conflict resolution, which relies on timestamps, is fundamentally flawed with inaccurate clocks . For example, a node with a lagging clock cannot overwrite a value from a node with a fast clock until the skew between them has elapsed.
+
+![Drifting Clock](imgs/drifting-clock.png)
+
+Google Spanner tackles this with its TrueTime API, which returns a confidence interval for timestamps. To ensure consistency, Spanner waits for the uncertainty of this interval to pass before committing a read-write transaction . This is the only practical way to use physical clocks for global ordering, and it requires atomic clocks or GPS receivers in each data center
+
+### Process Pauses
+A process can be paused for many reasons: a **garbage collection** (GC) stop-the-world event, waiting for I/O, or a virtual machine being paused during a live migration . From the perspective of other nodes, a paused node may appear dead. If the paused node is a leader, its leadership lease might expire, causing another node to be elected. When the paused node resumes, it might incorrectly believe it is still the leader, leading to split brain and severe data corruption.
+
+![Process pause](imgs/process-pause.png)
+
+A common solution is fencing, where the old leader must obtain a "fencing token" (e.g., an incrementing number) to perform actions. If another node now holds a higher-numbered token, the old leader's requests with a lower token can be rejected
+
+![Fencing Token](imgs/fencing-token.png)
+
+### Knowledge, Truth, and Lies
+A node cannot simply trust its own judgment about the system's state. The network is unreliable, and clocks can be wrong. We need algorithms to determine the truth. In a distributed system, truth is defined by a **majority** (quorum). If a majority of nodes agree on a value, that becomes the truth.
+
+This leads to the concept of **Byzantine faults**, where nodes may act maliciously or arbitrarily, possibly to deceive others. Most systems assume that nodes are honest but faulty, and thus don't handle Byzantine faults.
+
+### System Models and Reality
+Algorithms make assumptions, but reality often breaks those assumptions.
+1. **The Synchronous Model** (The Dream)
+   - **The Assumption**: The system is predictable. It assumes that the network delay, process pauses, and clock drift are all bounded (have a fixed maximum). For example, it assumes that a message sent from Node A to Node B will definitely arrive in less than 5 seconds.
+   - **The Reality**: This is completely unrealistic. On the real internet, a network cable can be accidentally cut, a router can get overloaded, or a server can freeze for 30 seconds due to garbage collection. You cannot guarantee a strict maximum delay in a global system.
+   - **Why we mention it**: We only bring it up to say "This doesn't exist in practice." If you build a system assuming fixed time bounds, it will fail spectacularly under real-world network spikes.
+2. **The Asynchronous Model** (The Nightmare)
+   - **The Assumption**: The system is completely chaotic. It assumes no time bounds at all. A message might take 1 millisecond, 1 hour, or never arrive. Clocks might be completely out of sync. You cannot use timeouts to determine if a node is dead because a node might just be incredibly slow.
+   - **The Reality**: This is how the internet actually works in theory. You cannot mathematically guarantee a maximum delay.
+   - **The Terrible Catch (FLP Result)**: Kleppmann mentions a famous computer science proof called the **FLP result**. It proves that in a purely asynchronous system where even a single node can crash, it is mathematically impossible to achieve consensus (getting all nodes to agree on a value). If you cannot trust timeouts, you can never know if a node is dead or just slow, so you can never safely elect a leader or commit a transaction across nodes.
+3. **The Partially Synchronous Model** (The Real World)
+   - **The Assumption**: This is the practical, realistic model. It assumes that the system behaves synchronously (within bounds) most of the time, but sometimes it behaves asynchronously (goes out of bounds) during network hiccups, clock skew, or pauses.
+   - **The Reality**: This perfectly matches the real world. 99.9% of the time, your network messages arrive within 100ms. But 0.1% of the time, a network partition happens and messages take 10 seconds.
+   - **Why this is the "Goldilocks" model**: We can build algorithms (like Raft or Paxos, covered in Chapter 9) that work assuming partial synchrony.
+     - They run fast and assume things are synchronous.
+     - When a timeout occurs (because reality broke the bounds), they just wait, retry, or trigger a leader election.
+     - Crucially, they don't rely on a fixed time limit to be correct; they only rely on timeouts to trigger an action.
+
+Besides timing, we also have to model how nodes break. This is called the "Fault Model":
+
+| Fault Model      | What it assumes                                                                                     | Example                                                                                  |
+| ---------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Crash-Stop       | A node simply stops working and never comes back.                                                   | A server catches fire and burns down.                                                    |
+| Crash-Recovery   | A node crashes, but eventually reboots and recovers its state from disk.                            | A server runs out of memory, restarts in 2 minutes, and reads the WAL (Write-Ahead Log). |
+| Byzantine Faults | A node does anything maliciously, randomly, or incorrectly—even lying to other nodes to trick them. | A hacked server sends false "I am the leader" messages to confuse the system.            |
+
+Most real-world distributed databases (like PostgreSQL, Kafka, MongoDB) assume Crash-Recovery. They assume nodes are honest (they don't lie) but flaky (they might turn off). They explicitly do not handle Byzantine faults. If a hacker compromises a node, the whole system is at risk. (Systems like blockchain or military-grade aerospace software handle Byzantine faults, but that is extremely rare and slow).
+
+## Chapter 9: Consistency and Consensus
