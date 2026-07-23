@@ -110,6 +110,11 @@
     - [Batch Processing vs. Online Systems](#batch-processing-vs-online-systems)
     - [The Unix Philosophy: An Analog for Batch](#the-unix-philosophy-an-analog-for-batch)
     - [MapReduce and Distributed Filesystems](#mapreduce-and-distributed-filesystems)
+    - [Beyond MapReduce: Dataflow Engines](#beyond-mapreduce-dataflow-engines)
+    - [Graph and Iterative Processing with Pregel](#graph-and-iterative-processing-with-pregel)
+    - [High-Level APIs and Languages](#high-level-apis-and-languages)
+    - [Summary](#summary-3)
+  - [Chapter 11: Stream Processing](#chapter-11-stream-processing)
 
 
 # Back Matter
@@ -2051,5 +2056,57 @@ A MapReduce job is defined by two primary functions:
 
 This whole process relies on a **Shuffle and Sort** step, where the framework moves and organizes the data from the mappers to the reducers so that all the values for a given key are processed together.
 
+The sort phase ensures that all values for a given key are grouped together and ordered. This allows the reducer to process the data in a single pass, without needing to store all values in memory—a crucial property for handling massive datasets.
+
 ![Map Reduce Job](imgs/map-reduce-job.png)
 
+MapReduce is designed to be highly fault-tolerant. If a task (map or reduce) fails, the framework simply re-executes it on another node. This is possible because MapReduce relies on immutable input data and deterministic operations. If a mapper re-runs, it will produce the same output. The framework's master node, however, is assumed not to fail.
+
+A key strength of MapReduce is its ability to perform joins and groupings on massive datasets. The primary method is the reduce-side join, which is often implemented as a sort-merge join.
+
+1. **Reduce-Side Join (Sort-Merge Join)**
+   - This is a flexible join strategy that can handle any type of join (inner, outer, etc.) without assumptions about the data's organization.
+   - The mapper reads records from different datasets. For each record, it extracts the join key and emits it along with the record's value, tagging the value to indicate its source (e.g., "user" or "order").
+   - The framework groups all records with the same key and sorts them. This brings together all related data for a key in a single reducer.
+   - The reducer receives the key and a sorted list of all values from the different datasets. It performs a merge on these sorted lists to produce the final joined records.
+
+![Sort-Merge Join](imgs/sort-merge-join.png)
+
+**Secondary Sort**: A common optimization is to use a secondary sort, where the values are also sorted. For example, you could ensure that for a given user ID, the reducer always sees the user's profile record before their activity events.
+
+2. **Map-Side Joins**
+   - If certain assumptions can be made about the input data, you can perform joins on the map side, which is faster as it avoids the shuffle and sort phases. The chapter discusses three types:
+     - **Broadcast Hash Join**: Used when one dataset is small enough to fit in memory. Each mapper loads the small dataset into a hash table and then scans the large dataset, performing lookups for each record.
+     - **Partitioned Hash Join**: If both datasets are partitioned in the same way (e.g., by the same key range), the hash join can be applied independently to each partition.
+     - **Map-Side Merge Join**: If the datasets are both partitioned and sorted by the join key, a mapper can read both sorted files and merge them sequentially, which is extremely efficient.
+
+A major challenge in grouping operations is skew, where one key (like a celebrity's user ID) has a huge amount of data, causing one reducer to be overloaded. To compensate, frameworks use techniques like:
+   - **Skewed Joins**: A sampling job first identifies "hot keys". The join then sends records for the hot key to multiple reducers at random, replicating the other side of the join to all those reducers for that key.
+   - **Sharded Joins**: Hot keys are specified explicitly, and the join handles them similarly by splitting them across multiple reducers.
+
+**The Materialization Problem**: MapReduce writes the output of every stage to HDFS before the next stage can start. This ensures fault tolerance but makes multi-stage jobs slow. Dataflow engines avoid this by pipelining stages and storing intermediate results in memory, reducing disk I/O.
+
+### Beyond MapReduce: Dataflow Engines
+While MapReduce was revolutionary, it has significant limitations. For complex, multi-stage jobs, it forces intermediate results to be written to disk between every stage, making it slow and inflexible.
+
+To address this, dataflow engines like Apache Spark, Apache Flink, and Apache Tez emerged. Their key improvements include:
+- **Memory-Centric Processing**: They can store intermediate results in memory, dramatically speeding up multi-stage jobs.
+- **Flexible Operator Graphs**: Instead of a rigid map-reduce structure, they allow any directed acyclic graph (DAG) of operators (map, filter, join, group-by, etc.).
+- **Eliminating Unnecessary Sorts**: Dataflow engines can skip sorting if it's not needed for a particular operation, saving time.
+
+### Graph and Iterative Processing with Pregel
+For graph algorithms like PageRank, which require iterative processing, MapReduce is inefficient because it requires passing the entire graph state between stages.
+
+The Pregel model (popularized by Google) addresses this with a "think like a vertex" approach. Computation happens in a series of supersteps. In each superstep, a user-defined function is invoked for every vertex, which can:
+- Process messages sent to it in the previous superstep.
+- Modify the vertex's state.
+- Send messages to other vertices to be received in the next superstep.
+At the end of each superstep, a barrier synchronizes all workers. This model is efficient for iterative graph processing as it keeps the graph and computation on the same machine and only passes messages between iterations.
+
+### High-Level APIs and Languages
+To make these powerful but complex systems more accessible, high-level APIs and languages like Hive, Pig, and Spark SQL were developed. These tools allow developers to express data processing logic in a more declarative way (similar to SQL), and the system automatically optimizes the execution plan, choosing efficient join algorithms and execution strategies. This represents a shift toward making batch processing more interactive and user-friendly.
+
+### Summary 
+Chapter 10 shows that the journey from Unix tools to MapReduce to modern dataflow engines is a story of scaling up the principles of simplicity, composability, and fault tolerance to the realm of massive datasets. Understanding this evolution is key to grasping how modern data infrastructure enables large-scale analytics, ETL, and machine learning feature generation.
+
+## Chapter 11: Stream Processing
