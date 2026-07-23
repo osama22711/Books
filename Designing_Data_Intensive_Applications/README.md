@@ -105,6 +105,8 @@
     - [The Cost of Linearizability](#the-cost-of-linearizability)
     - [Ordering and Causality](#ordering-and-causality)
     - [Distributed Transactions and Consensus](#distributed-transactions-and-consensus)
+- [Part 3: Derived Data](#part-3-derived-data)
+  - [Chapter 10: Batch Processing](#chapter-10-batch-processing)
 
 
 # Back Matter
@@ -2001,3 +2003,14 @@ But they cannot detect concurrent events.
 **Vector Clocks** (arrays of counters) solve this—they tell you if two events are truly independent (concurrent) or causally related.
 
 This is critical for databases to detect write conflicts in multi-leader or leaderless replication. Without them, you can't reliably merge concurrent updates.
+
+# Part 3: Derived Data
+While Parts 1 and 2 focus on how a single database works and handles distribution, Part 3 looks at how multiple different data systems are integrated into a real-world, large-scale application architecture
+
+Part 3 is built on a crucial distinction between two types of data systems:
+- **Systems of Record (Source of Truth)**: These hold the authoritative, original version of your data. When new data is created, it is first written here. This is the primary, normalized source of truth.
+- **Derived Data Systems**: These contain data that is created by transforming or processing data from a System of Record. If you lose this data, you can recreate it from the original source.
+
+Common examples of derived data include caches, indexes, and materialized views. This data is technically redundant, but it is essential for achieving good read performance in complex applications. e.g. Redis
+
+## Chapter 10: Batch Processing
