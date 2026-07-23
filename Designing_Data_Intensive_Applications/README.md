@@ -2031,6 +2031,12 @@ The chapter starts by distinguishing batch processing from the online systems di
 2. **Batch Processing (Offline)**: Batch systems take a large, fixed dataset as input, run a job, and produce an output. Jobs can run for minutes to days, and no user is waiting for an immediate response. The primary metric is throughput—how much data can be processed in a given time.
 3. **Stream Processing (Near-real-time)**: This sits between online and batch. Stream jobs consume events and produce outputs shortly after the events happen, giving them lower latency than batch jobs. This is such an important topic it gets its own chapter (Chapter 11).
 
+| System Type           | Also Known As          | Key Characteristic                                                                      | Primary Metric                                                   | Example                                 |
+| :-------------------- | :--------------------- | :-------------------------------------------------------------------------------------- | :--------------------------------------------------------------- | :-------------------------------------- |
+| **Services**          | Online systems         | Waits for a request and sends a response back as quickly as possible.                   | **Response time** and availability.                              | A web server or database.               |
+| **Batch Processing**  | Offline systems        | Takes a large amount of input data, runs a job to process it, and produces output data. | **Throughput** (how much data can be processed in a given time). | A daily ETL job or an analytics report. |
+| **Stream Processing** | Near-real-time systems | Operates on events shortly after they happen.                                           | Low latency, lower than batch processing.                        | A real-time fraud detection system.     |
+
 ### The Unix Philosophy: An Analog for Batch
 Before diving into complex distributed systems, the chapter pays homage to the elegant simplicity of Unix tools. It uses a classic example of analyzing web server logs:
 
@@ -2053,6 +2059,10 @@ A MapReduce job resembles a Unix pipeline but runs on a distributed file system 
 A MapReduce job is defined by two primary functions:
 1. **Mapper**: This function is called on each input record. It is a pure function that extracts a key-value pair from the record. It produces a collection of intermediate key-value pairs.
 2. **Reducer**: The MapReduce framework automatically groups all values associated with the same key and passes them to the reducer. The reducer's job is to process this list of values for a key (e.g., summing them) and output the final result.
+
+Key Optimizations:
+- **Combiner** (*Optional*): A "mini-reducer" that runs on the map side *before* the shuffle phase. It performs a local aggregation (e.g., summing local counts), significantly reducing the amount of data that needs to be transferred over the network. *Note: Combiners are only safe for associative and commutative operations like `sum` or `max`.*
+- **Partitioner**: Determines which reducer receives each key. The default is a hash partitioner (`hash(key) mod R`). You can implement a custom partitioner (e.g., for range-based partitioning or to handle data skew).
 
 This whole process relies on a **Shuffle and Sort** step, where the framework moves and organizes the data from the mappers to the reducers so that all the values for a given key are processed together.
 
