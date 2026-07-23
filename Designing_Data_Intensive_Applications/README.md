@@ -100,6 +100,11 @@
     - [Knowledge, Truth, and Lies](#knowledge-truth-and-lies)
     - [System Models and Reality](#system-models-and-reality)
   - [Chapter 9: Consistency and Consensus](#chapter-9-consistency-and-consensus)
+    - [Consistency Guarantees](#consistency-guarantees)
+    - [Linearizability (Strong Consistency)](#linearizability-strong-consistency)
+    - [The Cost of Linearizability](#the-cost-of-linearizability)
+    - [Ordering and Causality](#ordering-and-causality)
+    - [Distributed Transactions and Consensus](#distributed-transactions-and-consensus)
 
 
 # Back Matter
@@ -1798,3 +1803,201 @@ Besides timing, we also have to model how nodes break. This is called the "Fault
 Most real-world distributed databases (like PostgreSQL, Kafka, MongoDB) assume Crash-Recovery. They assume nodes are honest (they don't lie) but flaky (they might turn off). They explicitly do not handle Byzantine faults. If a hacker compromises a node, the whole system is at risk. (Systems like blockchain or military-grade aerospace software handle Byzantine faults, but that is extremely rare and slow).
 
 ## Chapter 9: Consistency and Consensus
+The core mission of this chapter is to find a way for multiple nodes in a system to agree on something, even when things are going wrong. This is the consensus problem, and it's the foundation for building fault-tolerant systems
+
+### Consistency Guarantees
+The chapter opens by revisiting the idea of eventual consistency, where replicas will converge to the same state if you stop writing to them. Kleppmann points out that this is a very weak guarantee because it doesn't specify when the system will converge. For many applications, this unpredictability makes it hard to write correct code
+
+To address this, he introduces stronger consistency models that come with better performance and fault-tolerance trade-offs. The most important of these is Linearizability.
+
+### Linearizability (Strong Consistency)
+Linearizability is the strongest consistency model. It makes a replicated system act as if there's only a single copy of the data, and every operation on it is atomic. It is a "recency guarantee": once a write completes, any subsequent read (from any client) must return that new value.
+
+To understand its importance, consider a classic example: a sports website. If Alice sees the final score and tells Bob, Bob then refreshes his own screen. In a linearizable system, Bob's refresh must show the final score Alice just saw. If it shows an old score (because it read from a stale replica), the system is not linearizable.
+
+This distinction is crucial:
+
+- **Linearizability** is a recency guarantee on reads and writes of a single object (like a key-value register).
+- **Serializability** is an isolation property for transactions that ensures a set of reads and writes happen as if in a serial order. It does not guarantee that the order corresponds to real-world time.
+
+A system can be both, which is known as strict serializability.
+
+The chapter explains that linearizability is critical for features like distributed locking and leader election, and for enforcing uniqueness constraints . Systems like Apache ZooKeeper and etcd, which are often used for these purposes, are linearizable.
+
+![Linearizability](imgs/linearizability.png)
+
+### The Cost of Linearizability
+While powerful, linearizability comes at a high cost, which is highlighted by the famous CAP Theorem.
+
+The theorem states that in the face of a network partition, a distributed system must choose between:
+
+- **Consistency (C)**: Linearizability, which means the system cannot process requests if it can't guarantee a consistent view, making it unavailable.
+- **Availability (A)**: The ability to process requests, which means the system must give up linearizability and become eventually consistent.
+
+Kleppmann is critical of the CAP theorem, describing it as "unhelpful" because it's narrow and often misunderstood, but it effectively illustrates this fundamental trade-off. The choice is between a system that is safe but might be unavailable, and one that is available but might be inconsistent.
+
+### Ordering and Causality
+The book then explores the relationship between consistency and ordering. Linearizability imposes a total order on operations, meaning there is a single, globally agreed timeline for all events.
+
+However, for many applications, a **partial order** is sufficient, which is where **causality** comes in. If event A causes event B (e.g., I post a photo, then my friend comments on it), the system must show A before B. This is **causal consistency**, which is weaker and more performant than linearizability.
+
+To implement this, systems often use tools like **version vectors** to track causal dependencies.
+
+### Distributed Transactions and Consensus
+A distributed transaction is a transaction that involves multiple independent nodes (databases, partitions, or services). You need this when a single operation spans multiple systems.
+
+On a single node, atomicity is achieved via the Write-Ahead Log (WAL). If the node crashes mid-transaction, it reads the WAL on restart and either commits or rolls back.
+
+In a distributed system, the problem is coordination:
+- Node A has successfully written its part of the transaction.
+- Node B has successfully written its part.
+- Node C crashes before writing.
+
+The Question: How do all nodes agree on whether to commit or abort, especially when one node is down?
+
+This is the Atomic Commit Problem. You cannot simply rely on a single node's WAL because the crash might happen after some nodes have already committed, leaving the system in an inconsistent state.
+
+Two-Phase Commit (2PC) is the classic algorithm for atomic commit in a distributed system. It uses a single coordinator node to orchestrate the process across multiple participants.
+
+1. The Voting Phase (Prepare)
+   - **Prepare Request**: The coordinator sends a `PREPARE` request to all participants.
+   - **Participants Vote**: Each participant checks if it can commit the transaction (e.g., does it have the data, is it valid, are there conflicts?). If yes, it writes the "prepared" state to its WAL (guaranteeing it can commit later) and responds `YES`. If no, it responds `NO`.
+2. The Decision Phase (Commit/Abort)
+   - **Coordinator Decides**: The coordinator collects all votes.
+     - **If all votes are YES**: The coordinator writes `COMMIT` to its own WAL and sends a `COMMIT` request to all participants.
+     - **If any vote is NO, or if a vote times out**: The coordinator writes `ABORT` to its WAL and sends an `ABORT` request to all participants.
+   - **Participants Execute**: Participants wait for the coordinator's decision.
+     - On `COMMIT`: They apply the transaction and release locks.
+     - On `ABORT`: They roll back and release locks.
+
+```
+Coordinator               Participant A               Participant B
+    │                           │                           │
+    │─── PREPARE ──────────────▶│                           │
+    │─────────────────────────────── PREPARE ──────────────▶│
+    │                           │                           │
+    │                           │ (Votes YES)               │
+    │◀─── YES ──────────────────│                           │
+    │                           │                           │
+    │                           │                           │ (Votes YES)
+    │◀───────────────────────────────────── YES ────────────│
+    │                           │                           │
+    │ (All YES → COMMIT)        │                           │
+    │                           │                           │
+    │─── COMMIT ───────────────▶│                           │
+    │────────────────────────────────── COMMIT ────────────▶│
+    │                           │                           │
+    │                           │ (Commits)                 │
+    │◀─── ACK ──────────────────│                           │
+    │                           │                           │
+    │                           │                           │ (Commits)
+    │◀────────────────────────────────── ACK ───────────────│
+    │                           │                           │
+    ▼                           ▼                           ▼
+  Complete                   Complete                   Complete
+```
+
+![2PC Flow](imgs/2pc-flow.png)
+
+The major flaw is that **2PC is a blocking protocol**. Once a participant has voted `YES` in Phase 1, it enters a prepared state. In this state, the participant holds all locks on the data (pessimistic locks) and waits for the coordinator's decision in Phase 2.
+
+**The Nightmare Scenario**: What if the coordinator crashes after everyone has voted `YES` but before sending the final `COMMIT` or `ABORT`?
+
+- The participants are stuck in the prepared state.
+- They cannot commit (because they haven't received the order).
+- They cannot abort (because they promised they could commit).
+- They hold locks indefinitely, blocking all other transactions.
+- The system is deadlocked.
+
+![2PC Nightmare Scenario](imgs/2pc-nightmare-scenario.png)
+
+Why This Is Worse Than a Single-Node Crash:
+In a single-node system, you restart the node and read the WAL to recover. In a distributed system, the coordinator might be permanently dead. Without the coordinator's decision, the participants have no way to resolve the transaction.
+
+The Only Fix (Manual Intervention): A human must step in, check the logs, and manually decide to force a commit or rollback. This can take hours.
+
+Because 2PC is blocking and depends on a single coordinator (a single point of failure), modern distributed systems use Consensus Algorithms like Raft, Paxos, or ZooKeeper's Zab.
+
+Consensus is the problem of getting multiple nodes to agree on a single value, even if some nodes fail.
+
+A consensus algorithm must guarantee:
+1. **Uniform Agreement**: All nodes decide on the same value.
+2. **Integrity**: No node decides twice (or on a value that wasn't proposed).
+3. **Validity**: If a node decides on a value, it must have been proposed by some node.
+4. **Termination**: Every non-faulty node eventually decides (no infinite waiting).
+
+**Key Insight**: Consensus algorithms are **non-blocking**. If a leader fails, the system holds an election and the remaining nodes agree on a new leader. Transactions can proceed without manual intervention.
+
+How it works:
+1. **Leader Election**
+   - **Terms**: Raft divides time into terms (like election periods). Each term starts with an election.
+   - **Nodes have states**:
+     - **Follower**: All nodes start as followers. They just accept log entries from the leader.
+     - **Candidate**: If a follower doesn't hear from the leader within a random timeout, it becomes a candidate and starts an election.
+     - **Leader**: The candidate that gets a majority of votes becomes the leader.
+   - **Randomized Timeouts**: Raft uses random election timeouts to minimize the chance of split votes. This is crucial—it avoids the "split brain" problem we saw with 2PC's single coordinator.
+2. **Log Replication (The Consensus Mechanism)**
+   - The leader accepts client requests and appends them to its own log as an entry.
+   - The leader then sends `AppendEntries` RPCs to all followers, sending the new entry.
+   - The Critical Rule: A follower writes the entry to its log but does not apply it yet. It only acknowledges it.
+   - Commit: The leader waits until a majority of followers have acknowledged the entry.
+     - Once a majority acknowledges, the leader marks the entry as committed.
+     - The leader then applies the committed entry to its state machine and notifies the client of success.
+     - In the next `AppendEntries` heartbeat, the leader tells the followers that the entry is committed, and the followers apply it.
+
+Why This Is Non-Blocking:
+- If the leader fails after a majority has acknowledged but before applying, the new leader (elected by the majority) will have that log entry. The new leader makes sure it is committed.
+- **No 2PC-style "prepared" waiting**: If a node crashes, the rest of the cluster forms a majority and continues.
+
+```
+Client Request → Leader
+                   │
+                   ├── Appends entry to local log (uncommitted)
+                   │
+                   ├── AppendEntries RPC (entry) → Follower 1 (ack)
+                   ├── AppendEntries RPC (entry) → Follower 2 (ack)
+                   ├── AppendEntries RPC (entry) → Follower 3 (no response/crash)
+                   │
+                   │ (Majority achieved: Leader + Follower 1 = 2/3)
+                   │
+                   ▼
+                Leader commits entry
+                   │
+                   ├── Applies to state machine (writes to DB)
+                   ├── Responds to Client: "Success"
+                   │
+                   │ (Next heartbeat)
+                   │
+                   ├── AppendEntries (committed index) → Follower 1
+                   ├── AppendEntries (committed index) → Follower 2 (ack)
+                   └── Follower 3 (recovered) catches up
+```                   
+
+Consensus vs. 2PC: The Decisive Differences
+| Aspect              | Two-Phase Commit (2PC)                                     | Raft / Paxos (Consensus)                                      |
+| ------------------- | ---------------------------------------------------------- | ------------------------------------------------------------- |
+| Fault Tolerance     | Blocking: If coordinator fails, participants wait forever. | Non-blocking: If leader fails, a new leader is elected.       |
+| Decision Process    | Single coordinator decides.                                | Majority of nodes decide.                                     |
+| Locks               | Holds locks in "prepared" state.                           | Minimal locking; writes are replicated before application.    |
+| Failure Handling    | Requires manual intervention (human).                      | Automatic failover via leader election.                       |
+| Complexity          | Simpler to implement, but fragile in production.           | Complex, but robust.                                          |
+| Network Requirement | Assumes reliable, predictable network (Synchronous model). | Works under partial synchrony (handles timeouts and retries). |
+
+**Total Order**: Every operation has a single, globally agreed position in time. (Linearizability). Requires consensus (Raft/Paxos).
+
+**Partial Order**: Some operations are concurrent (incomparable). The system only enforces order where there's a causal link. (Causal Consistency). Requires version vectors but not consensus.
+
+The "Game" Analogy:
+- **Total Order**: Every move in a chess game is timestamped globally. Everyone sees move 1, then move 2, then move 3.
+- **Partial Order**: Like a collaborative document. If you edit paragraph 1 and I edit paragraph 2 simultaneously, those edits are concurrent (no order needed). But if I reply to your specific sentence, that edit must come after yours.
+
+In distributed systems, we can't trust physical clocks.
+
+**Lamport timestamps** are simple counters that order events causally (if A causes B, A has a smaller number).
+But they cannot detect concurrent events.
+
+![Lamport timestamps](imgs/lamport-timestamps.png)
+
+**Vector Clocks** (arrays of counters) solve this—they tell you if two events are truly independent (concurrent) or causally related.
+
+This is critical for databases to detect write conflicts in multi-leader or leaderless replication. Without them, you can't reliably merge concurrent updates.
