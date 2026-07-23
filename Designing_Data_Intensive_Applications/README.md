@@ -107,6 +107,9 @@
     - [Distributed Transactions and Consensus](#distributed-transactions-and-consensus)
 - [Part 3: Derived Data](#part-3-derived-data)
   - [Chapter 10: Batch Processing](#chapter-10-batch-processing)
+    - [Batch Processing vs. Online Systems](#batch-processing-vs-online-systems)
+    - [The Unix Philosophy: An Analog for Batch](#the-unix-philosophy-an-analog-for-batch)
+    - [MapReduce and Distributed Filesystems](#mapreduce-and-distributed-filesystems)
 
 
 # Back Matter
@@ -2014,3 +2017,39 @@ Part 3 is built on a crucial distinction between two types of data systems:
 Common examples of derived data include caches, indexes, and materialized views. This data is technically redundant, but it is essential for achieving good read performance in complex applications. e.g. Redis
 
 ## Chapter 10: Batch Processing
+The chapter marks a significant shift. After spending the first half of the book on online systems (where we wait for a response), we dive into the world of offline, high-volume data processing. It explores the philosophy, history, and evolution of the systems that turn raw data into valuable insights.
+
+### Batch Processing vs. Online Systems
+The chapter starts by distinguishing batch processing from the online systems discussed earlier. It introduces a spectrum of three different system types:
+
+1. **Services (Online)**: These are your standard request/response systems. You send a request, and a response is generated, typically in milliseconds. The key metric is response time and availability. Examples are web servers and databases.
+2. **Batch Processing (Offline)**: Batch systems take a large, fixed dataset as input, run a job, and produce an output. Jobs can run for minutes to days, and no user is waiting for an immediate response. The primary metric is throughput—how much data can be processed in a given time.
+3. **Stream Processing (Near-real-time)**: This sits between online and batch. Stream jobs consume events and produce outputs shortly after the events happen, giving them lower latency than batch jobs. This is such an important topic it gets its own chapter (Chapter 11).
+
+### The Unix Philosophy: An Analog for Batch
+Before diving into complex distributed systems, the chapter pays homage to the elegant simplicity of Unix tools. It uses a classic example of analyzing web server logs:
+
+`cat /var/log/nginx/access.log | awk '{print $7}' | sort | uniq -c | sort -r -n | head -n 5`
+
+This command chain illustrates a powerful philosophy for batch processing:
+- **Uniform Interface**: Every program uses the same interface (stdin/stdout), making it easy to pipe data between them
+- **Separation of Logic and Wiring**: Small tools each do one thing well, and you combine them by connecting input and output streams
+- **Transparency**: Because input files are generally immutable, you can experiment, try different options, and debug easily by examining the output at any stage of the pipeline
+
+This Unix approach is a microcosm of what we aim for with distributed systems: simple, composable, reliable tools.
+
+### MapReduce and Distributed Filesystems
+The chapter then introduces the MapReduce programming model, which applied the Unix philosophy of simplicity and composability to massive datasets distributed across thousands of machines. Its elegance lies in abstracting away the complexities of parallelization, network communication, and failure handling.
+
+A MapReduce job resembles a Unix pipeline but runs on a distributed file system like HDFS (Hadoop Distributed File System).
+- HDFS is a shared-nothing filesystem where data is stored on local disks and replicated across machines for fault tolerance.
+- The framework's design is deeply tied to the principle of "moving computation to the data" to minimize expensive network transfers.
+
+A MapReduce job is defined by two primary functions:
+1. **Mapper**: This function is called on each input record. It is a pure function that extracts a key-value pair from the record. It produces a collection of intermediate key-value pairs.
+2. **Reducer**: The MapReduce framework automatically groups all values associated with the same key and passes them to the reducer. The reducer's job is to process this list of values for a key (e.g., summing them) and output the final result.
+
+This whole process relies on a **Shuffle and Sort** step, where the framework moves and organizes the data from the mappers to the reducers so that all the values for a given key are processed together.
+
+![Map Reduce Job](imgs/map-reduce-job.png)
+
