@@ -2,8 +2,8 @@
 - Book: **Designing Data-Intensive Applications**
 - Started Reading: **05/10/2025**
 - Book cover:
-  
   ![book-cover](./imgs/book-cover.png)
+- Great YouTube Playlist: [Designing Data-Intensive Applications Youtube Playlist](https://www.youtube.com/playlist?list=PL2yiJZFhIp9IkVtKJq8wgEwSElY6HrsDJ)
 
 # Table of Contents
 - [Info](#info)
