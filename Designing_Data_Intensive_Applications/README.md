@@ -115,6 +115,16 @@
     - [High-Level APIs and Languages](#high-level-apis-and-languages)
     - [Summary](#summary-3)
   - [Chapter 11: Stream Processing](#chapter-11-stream-processing)
+    - [Transmitting Event Streams](#transmitting-event-streams)
+      - [The Problem with Polling](#the-problem-with-polling)
+      - [Messaging Systems](#messaging-systems)
+    - [Databases and Streams](#databases-and-streams)
+      - [The Problem of Dual Writes](#the-problem-of-dual-writes)
+      - [Change Data Capture (CDC)](#change-data-capture-cdc)
+      - [Event Sourcing](#event-sourcing)
+    - [Processing Streams](#processing-streams)
+    - [Summary](#summary-4)
+  - [Chapter 12: The Future of Data Systems](#chapter-12-the-future-of-data-systems)
 
 
 # Back Matter
@@ -2120,3 +2130,150 @@ To make these powerful but complex systems more accessible, high-level APIs and 
 Chapter 10 shows that the journey from Unix tools to MapReduce to modern dataflow engines is a story of scaling up the principles of simplicity, composability, and fault tolerance to the realm of massive datasets. Understanding this evolution is key to grasping how modern data infrastructure enables large-scale analytics, ETL, and machine learning feature generation.
 
 ## Chapter 11: Stream Processing
+The core idea is to move away from processing data in fixed time chunks (like daily batch jobs) and instead process events as they happen, dramatically reducing the delay between input and output.
+
+The chapter is structured around three main areas: how to transmit event streams, the relationship between streams and databases, and how to process streams
+
+### Transmitting Event Streams
+In stream processing, a record is called an event. It is a small, self-contained, immutable object containing details of an occurrence, often with a timestamp. An event is generated once by a producer (or publisher) and can be processed by multiple consumers (or subscribers). Related events are usually grouped into a topic or stream.
+
+#### The Problem with Polling
+
+A simple approach to connecting producers and consumers is to have producers write events to a datastore and consumers periodically poll for new events. However, for low-latency, continual processing, polling becomes expensive: the more often you poll, the higher the overhead, as most requests return no new data. It's better for consumers to be notified when new events appear.
+
+#### Messaging Systems
+
+Specialized tools called message brokers (or message queues) have been developed to deliver event notifications. They act as intermediaries: producers write messages to the broker, and consumers read from it.
+
+Message brokers come in two main flavors:
+
+| Feature         | Direct/AMQP-style Brokers (e.g., RabbitMQ, ActiveMQ)             | Log-based Brokers (e.g., Apache Kafka, Amazon Kinesis)                    |
+| --------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Message Storage | Messages are consumed and deleted.                               | Events are stored in an append-only log for a period of time.             |
+| Ordering        | Not guaranteed across the system.                                | Guaranteed ordering within each partition.                                |
+| Consumer State  | Consumers acknowledge messages.                                  | Consumers track their offset (position in the log).                       |
+| Fault Tolerance | Requires application code to handle failures.                    | Replication ensures fault tolerance.                                      |
+| Use Case        | When messages are expensive to process and order isn't critical. | High-throughput scenarios where ordering and replayability are important. |
+
+Log-based brokers like Kafka are built for high throughput and allow consumers to "rewind" and replay messages, which is powerful for debugging and recovery.
+
+When multiple consumers read messages in the same topic, two main patterns of
+messaging are used:
+1. **Load Balancing**: Each message is delivered to one of the consumers, so the consumers can share the work of processing the messages in the topic.
+2. **Fan-out**: Each message is delivered to all of the consumers.
+
+![Message Systems Patterns](imgs/message-systems-patterns.png)
+
+In order to ensure that the message is not lost, message brokers use acknowledgments: a client must explicitly tell the broker when it has finished processing a message so that the broker can remove it from the queue.
+
+![Message Systems Acknowledgement](imgs/message-systems-acknowledgements.png)
+
+### Databases and Streams
+This section explores the powerful bidirectional relationship between databases (which maintain a persistent state) and event streams.
+
+#### The Problem of Dual Writes
+When an application updates multiple systems—like a database, a search index, and a cache—it often performs dual writes. This is error-prone; race conditions can lead to inconsistent states if one write fails.
+
+The better approach is to designate one system as the leader (e.g., the database) and make others followers that derive their state from it.
+
+#### Change Data Capture (CDC)
+Problem with **dual writes** (in which is the application code explicitly writes to each of the systems when data changes: for example, first writing to the database, then updating the search index, then invalidating the cache entries or even performing those writes concurrently)
+is that derived data systems can be out of sync
+
+![Derived data systems out of sync](imgs/derived-systems-out-of-sync.png)
+
+Change Data Capture (CDC) is the process of observing all data changes written to a database and extracting them as a stream of events. By capturing changes from the database's commit log, CDC turns a passive database into an event stream that can be used to update derived data systems like caches, search indexes, or analytics systems.
+
+- **Implementation**: Log-based message brokers like Kafka are ideal for delivering CDC events as they maintain the original order of changes. Tools like Debezium (for MySQL/PostgreSQL) automate this process.
+- **Snapshots**: To manage disk space and bootstrap new followers, CDC uses a snapshot of the database at a specific log position. Changes after that snapshot are then applied from the log.
+
+![Message Systems CDC](imgs/message-systems-cdc.png)
+
+#### Event Sourcing
+Event Sourcing is a related but distinct concept where the application state itself is stored as an append-only log of all events. The current state is derived by replaying this event log. This is similar to accounting, where transactions are never altered but corrected with new entries.
+- **Benefits**: Immutable logs provide a powerful audit trail, make it easy to recover from bugs, and preserve historical data for analytics. For example, a customer adding and removing an item from a cart generates two events. Even though the cart's final state is empty, the log records the customer's interest.
+- **Concurrency Control**: Event sourcing simplifies concurrency control. Instead of complex multi-object transactions, a single event encapsulates a user action, requiring only an atomic append to the log. If the log and application state are partitioned in the same way (e.g., by customer), single-threaded processing per partition eliminates concurrency issues.
+
+### Processing Streams
+Stream processing is used in many domains:
+1. **Monitoring**: Fraud detection, trading systems, and manufacturing alerts
+2. **Real-Time Analytics**: Metrics aggregation for dashboards, detecting trends, and computing rolling averages
+3. **Complex Event Processing (CEP)**: Detecting patterns in streams, e.g., "user clicked 3 ads in 10 seconds" for ad fraud detection
+
+A central challenge in stream processing is dealing with time:
+- **Event Time**: When the event actually occurred (embedded in the data as a timestamp).
+- **Processing Time**: When the event is processed by the system.
+
+![Event and Processing Time](imgs/event-and-processing-time.png)
+
+Events can arrive out of order due to network delays, making processing based on event time difficult. To manage this, systems use:
+1. **Windowing**: Breaking the stream into finite chunks for aggregation. Types include:
+   - **Tumbling Windows**: Fixed, non-overlapping intervals (e.g., 1-minute aggregates).
+      ```
+        Event time    User
+        10:00:05      Ali
+        10:01:20      Sara
+        10:04:55      Omar
+        10:05:10      Ali
+      ```
+      ```
+        Window 1: 10:00:00 - 10:05:00
+        Window 2: 10:05:00 - 10:10:00
+      ```
+      The first three events go into Window 1:
+      ```
+        10:00:05
+        10:01:20
+        10:04:55
+      ```
+   - **Sliding Windows**: Overlapping intervals for smoother trends.
+   - **Session Windows**: Activity-based windows that close after a period of inactivity.
+2. **Watermarks**: Heuristic markers indicating when all events for a time window are expected to have arrived. They trigger computations despite possible late arrivals.
+     ```
+        Window size = 5 minutes
+        Allowed lateness = 2 minutes
+
+        If the latest event time seen is: 10:07
+        Then the watermark is roughply: 10:05
+        Because: 10:07 - 2 minutes = 10:05
+     ```
+
+Joins are a core building block for creating enriched event streams. They can be of several types:
+- **Stream-Stream Joins (window)**: Combining two streams using windowing (e.g., clickstream and purchase events).
+- **Stream-Table Joins (stream enrichments)**: Enriching a stream with static data from a database (e.g., user profiles).
+- **Table-Table Joins (materialized view maintenance)**: Maintaining dynamic tables updated by streams (e.g., real-time inventory).
+
+Use stream joining when you need real-time correlation, such as:
+- matching orders with payments
+- matching ad impressions with clicks
+- matching login attempts with fraud alerts
+- matching ride requests with available drivers
+- building customer profiles from multiple real-time streams
+- optimizing supply chain management with related live events
+
+Stream processors often need to maintain state (e.g., counters, aggregates, or join data). This state must be fault-tolerant to survive crashes.
+- **Local State**: Stored in processing nodes (e.g., in-memory hash tables) for fast access.
+- **Fault Tolerance**: Achieved through periodic checkpointing (also called distributed snapshots), which save the state to durable storage. If a node fails, it can recover its state from the latest checkpoint.
+- **Exactly-Once Semantics**: The goal is to process each event exactly once, avoiding duplicates or missed events. This is achieved through a combination of checkpointing, idempotent operations, and transactional protocols. At-Least-Once processing (where events may be processed more than once) is easier but can lead to duplicates.
+
+**Microbatching**: break the continuous, infinite stream into small, discrete blocks of data and process each block like a miniature batch job
+
+**Checkpointing**: Periodically save a snapshot of the entire state of a stream processor to durable storage
+
+### Summary
+In this chapter we have discussed event streams, what purposes they serve, and how to process them. In some ways, stream processing is very much like the batch processing we discussed in Chapter 10, but done continuously on unbounded (never ending) streams rather than on a fixed-size input. From this perspective, message brokers and event logs serve as the streaming equivalent of a filesystem.
+
+We spent some time comparing two types of message brokers:
+1. **AMQP/JMS-style message broker**
+   - The broker assigns individual messages to consumers, and consumers acknowledge individual messages when they have been successfully processed. Messages are deleted from the broker once they have been acknowledged.
+2. **Log-based message broker**
+   - The broker assigns all messages in a partition to the same consumer node, and always delivers messages in the same order. Parallelism is achieved through partitioning, and consumers track their progress by checkpointing the offset of the last message they have processed. The broker retains messages on disk, so it is possible to jump back and reread old messages if necessary.
+
+We distinguished three types of joins that may appear in stream processes:
+- **Stream-stream joins**
+- **Stream-table joins**
+- **Table-table joins**
+
+Finally, we discussed techniques for achieving fault tolerance and exactly-once semantics in a stream processor. As with batch processing, we need to discard the partial output of any failed tasks. However, since a stream process is long-running and produces output continuously, we can’t simply discard all output. Instead, a finer-grained recovery mechanism can be used, based on microbatching, checkpointing, transactions, or idempotent writes. 
+
+## Chapter 12: The Future of Data Systems
