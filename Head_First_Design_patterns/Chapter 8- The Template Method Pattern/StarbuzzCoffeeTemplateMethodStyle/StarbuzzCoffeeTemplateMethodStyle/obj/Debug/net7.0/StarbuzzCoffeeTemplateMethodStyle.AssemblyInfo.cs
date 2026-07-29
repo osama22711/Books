@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StarbuzzCoffeeTemplateMethodStyle")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+516f0413493da48f7e4cd9d7cb6bb9417f23a8b7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+28186fc1c551209dc0007cbdb7c12d8e33447bc6")]
 [assembly: System.Reflection.AssemblyProductAttribute("StarbuzzCoffeeTemplateMethodStyle")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StarbuzzCoffeeTemplateMethodStyle")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
