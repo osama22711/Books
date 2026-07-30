@@ -48,3 +48,14 @@ Eric Ries applies a similar lean logic to startups. Instead of building a full p
 | Problem handling     | Buffer with inventory              | Expose and solve root causes |
 
 # 1. Vision
+## Start
+- The Lean Startup asks people to start measuring their productivity differently. Because startups often accidentally build something nobody wants, it doesn’t matter much if they do it on time and on budget. The goal of a startup is to figure out the right thing to build—the thing customers want and will pay for—as quickly as possible.
+- The Lean Startup method, in contrast, is designed to teach you how to drive a startup. Instead of making complex plans that are based on a lot of assumptions, you can make constant adjustments with a steering wheel called the Build-Measure-Learn feedback loop. Through this process of steering, we can learn when and if it’s time to make a sharp turn called a pivot or whether we should persevere along our current path. Once we have an engine that’s revved up, the Lean Startup offers methods to scale and grow the business with maximum acceleration.
+- Startups also have a true north, a destination in mind: creating a thriving and world-changing business. I call that a startup’s vision. To achieve that vision, startups employ a strategy, which includes a business model, a product road map, a point of view about partners and competitors, and ideas about who the customer will be. The product is the end result of this strategy
+![Startup Framework](imgs/startup-framework.png)
+- The engine is running, acquiring new customers and serving existing ones; we are tuning, trying to improve our product, marketing, and operations; and we are steering, deciding if and when to pivot. The challenge of entrepreneurship is to balance all these activities. Even the smallest startup faces the challenge of supporting existing customers while trying to innovate.
+- In general management, a failure to deliver
+results is due to either a failure to plan adequately or a failure to execute
+properly
+
+## Define

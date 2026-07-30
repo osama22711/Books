@@ -3,7 +3,7 @@ Table Of Contents
 - [Emoji - Meaning](#emoji---meaning)
 - [Books](#books)
   - [Software](#software)
-  - [Startup](#startup)
+  - [Business](#business)
 
 
 # Emoji - Meaning
@@ -23,5 +23,5 @@ Categories:
 3. ✅ [Designing Data Intensive Applications](./Designing_Data_Intensive_Applications/)
 4. 🎦 [System Design Use Cases](./System_Design_Use_Cases/)
 
-## Startup
+## Business
 1. 🎦 [The Learn Startup](./The_Lean_Startup)
