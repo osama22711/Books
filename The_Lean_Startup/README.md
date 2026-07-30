@@ -28,4 +28,23 @@ The Introduction does five crucial things:
      - **Accelerate**: techniques to speed the loop up, like small batches and growth engines. 
    - He frames the book as a practical roadmap for turning chaos and uncertainty into a structured, scientific quest for a sustainable business.
 
-# Vision
+# The lean startup and Toyota's production system
+To better understand The Lean Startup, it is useful to compare it with earlier production systems such as: 
+
+1. **Ford’s mass production** (Just-In-Case)
+   - Focused on producing standardized products in very large quantities through assembly lines and repetitive tasks, which made mass production highly efficient.
+2. **Toyota’s lean manufacturing** (Just-In-Time)
+   - Developed a different philosophy: eliminating waste, shortening lead times, and using Just-in-Time production, where only what is needed is made when it is needed.
+
+Eric Ries applies a similar lean logic to startups. Instead of building a full product based on assumptions, entrepreneurs should test ideas quickly, learn from real customers, and decide whether to continue or change direction. In this way, The Lean Startup transforms lean manufacturing from a factory method into a business learning method.
+
+| Aspect               | Ford (Traditional Mass Production) | Toyota (TPS)                 |
+| -------------------- | ---------------------------------- | ---------------------------- |
+| Inventory            | High                               | Low                          |
+| Production           | Push system                        | Pull system                  |
+| Variety              | Limited                            | More flexible                |
+| Focus                | Volume and scale                   | Efficiency and quality       |
+| Inventory philosophy | Just-in-Case                       | Just-in-Time                 |
+| Problem handling     | Buffer with inventory              | Expose and solve root causes |
+
+# 1. Vision
