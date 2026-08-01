@@ -21,7 +21,8 @@ Categories:
 1. ✅ [Head First Design Patterns](./Head_First_Design_patterns/)
 2. ✅ [Clean Code](./Clean_Code/)
 3. ✅ [Designing Data Intensive Applications](./Designing_Data_Intensive_Applications/)
-4. 🎦 [System Design Use Cases](./System_Design_Use_Cases/)
+4. 🎦 [AI Driven Development Notes](./AI_Driven_Development_Notes/)
+5. 🎦 [System Design Use Cases](./System_Design_Use_Cases/)
 
 ## Business
 1. 🎦 [The Learn Startup](./The_Lean_Startup)
