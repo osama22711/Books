@@ -59,3 +59,34 @@ results is due to either a failure to plan adequately or a failure to execute
 properly
 
 ## Define
+Eric Ries gets precise about the core actors and institutions his methodology is designed for. He argues that before you can manage something effectively, you must first define it correctly.
+
+1. **Who is an Entrepreneur?**
+
+   Ries breaks the common stereotype of the lone genius in a garage. He gives a functional, inclusive definition:
+
+   > An entrepreneur is anyone who works within a human institution to create new products and services under conditions of extreme uncertainty.
+
+   This means entrepreneurship is a role, not a title. It applies to:
+   - The two founders in a garage (the classic startup).
+   - The intrapreneur inside a large corporation launching a new division.
+   - A government employee creating a new citizen service.
+   - A non-profit leader testing a new way to solve a social problem.
+
+   If you are creating something new where the outcome is deeply uncertain, you are an entrepreneur, and you need a management discipline built for that context.
+
+2. **What is a Startup?**
+
+   Building on that, he defines a startup not by its size or industry, but by its context:
+
+   > A startup is a human institution designed to create a new product or service under conditions of extreme uncertainty.
+
+   He breaks this definition down into three critical parts:
+
+   1. **Human Institution**: A startup is not just a product, a piece of code, or a cool idea. It's the people, the culture, the routines, and the coordination between them. You have to manage the institution, not just build the product. This is why management matters.
+   2. **New Product or Service (Innovation)**: The goal is to create something genuinely new—an innovation. This distinguishes a startup from an established business that is simply executing a known, proven business model (like opening a new franchise location). The startup is searching for what to build; the established company is executing on how to build it.
+   3. **Extreme Uncertainty**: This is the most crucial element. This is not just "risk," where you might know the odds. In extreme uncertainty, you don't know who the customer is, what the product should look like, or even what the right business model is. You can't calculate probabilities because you don't yet know the key variables. Traditional planning tools (five-year forecasts, detailed business plans) create a dangerous illusion of control in this environment.
+
+Because a startup is fundamentally different from a large company executing a known model, it can't simply borrow management tools from established firms. Those tools are designed for execution, but a startup is engaged in a search—a search for a **repeatable, sustainable business model**.
+
+## Learn
