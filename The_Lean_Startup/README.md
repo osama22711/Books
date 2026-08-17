@@ -243,3 +243,35 @@ Ries returns to IMVU to show how innovation accounting transformed their decisio
 Measurement is not a neutral activity. Bad metrics actively mislead startups into wasting time and money. Good metrics—actionable, accessible, auditable, and cohort-based—turn the Build-Measure-Learn loop into a reliable instrument for steering. Innovation accounting gives you the discipline to know whether you are truly making progress or simply fooling yourself.
 
 ## Pivot (or Persevere)
+After the MVP has been built and the metrics have been measured, the startup reaches a moment of truth: Should we pivot or persevere? This chapter is the culmination of everything in Part Two. It is the decision point that determines whether all that validated learning actually changes the course of the company—or is simply ignored.
+
+A **persevere** decision means the data suggests the current strategy is working well enough. The engine of growth is improving, customers are engaging, and the leap-of-faith assumptions are being validated. In that case, the team doubles down: optimize, refine, and scale.
+
+A **pivot** is different. It is not a random change or a desperate flail. Ries defines it as:
+> A structured course correction designed to test a new fundamental hypothesis about the product, strategy, or engine of growth.
+
+The pivot is a recognition that while the current strategy is not working, the startup has gained valuable knowledge. That knowledge can be used to make a substantive change—to one or more core assumptions—without abandoning the entire vision. The vision may remain; the strategy to reach it changes.
+
+**Pivoting is emotionally difficult**. Founders often interpret the need to pivot as personal failure. They have publicly committed to a plan, invested months of work, and perhaps even raised money based on it. Vanity metrics can make things worse: if total users or total revenue are still rising, it is easy to convince yourself the strategy is working, even if cohort analysis shows the engine is actually deteriorating. Ries calls this "the land of the living dead"—a startup that is not growing but not dead, slowly consuming resources while achieving no real progress.
+
+The antidote is to rely on innovation accounting. The three milestones from Chapter 7—baseline, tune, and pivot or persevere—give you a disciplined framework for the decision. If the tuning experiments are not producing meaningful improvements in the actionable metrics, the data is telling you to pivot. Listening to that data is what separates successful startups from zombies.
+
+A powerful reframing in this chapter: the "runway" of a startup is traditionally defined as the number of months until the money runs out. Ries argues that is the wrong metric. The true measure of runway is the number of pivots you can still make. If you have enough cash to run only one more experiment, you have very little runway—even if that cash would last six months. The goal is to get through the Build-Measure-Learn loop as fast as possible so you can make more pivots before running out of resources.
+
+Ries provides a taxonomy of common pivots, each representing a different kind of structured change:
+- Zoom-in Pivot: A single feature becomes the whole product.
+- Zoom-out Pivot: The current product becomes one feature of a larger product.
+- Customer Segment Pivot: The product finds traction with a different set of customers than originally intended.
+- Customer Need Pivot: The team discovers a more important problem for the same customers.
+- Platform Pivot: Shifting from a single application to a platform that others can build on, or vice versa.
+- Business Architecture Pivot: Moving between high-margin/low-volume and low-margin/high-volume models (or the reverse).
+- Value Capture Pivot: Changing how the company monetizes—subscription, advertising, freemium, etc.
+- Engine of Growth Pivot: Switching between the sticky, viral, and paid growth engines (which are explained later in Part Three).
+- Channel Pivot: Changing the distribution channel through which the product reaches customers.
+- Technology Pivot: Delivering the same solution with a radically different technology that is cheaper or faster.
+
+Each of these is not a random guess. It is a new hypothesis to be tested through the same Build-Measure-Learn loop.
+
+**Pivoting is not failure**. It is the disciplined application of learning. The real failure is refusing to pivot when the evidence demands it—or pivoting so chaotically that no learning accumulates. The pivot is the bridge between what you thought was true and what you now know is true. It is the mechanism by which a startup changes direction without losing its vision. By the end of this chapter, the Build-Measure-Learn loop is complete. You have leaped, tested, measured, and decided. Now the question becomes: how do you speed up that loop and grow? That is the subject of Part Three: Accelerate.
+
+# 3. Accelerate
