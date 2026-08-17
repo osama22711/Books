@@ -148,3 +148,98 @@ Crucially, Ries does not advocate experimentation for its own sake. The experime
 The experiment is the atomic unit of the Lean Startup. It takes the grand leap of faith and breaks it down into a testable piece that can be run immediately, often without building any scalable technology
 
 # 2. Steer
+With the philosophy of Part One established, Part Two begins the practical work of steering. Chapter 5 tackles the very first step of the Build-Measure-Learn loop: the leap. This is the moment when you move from a grand vision to a concrete set of assumptions that can be tested empirically.
+
+## Leap
+Every startup begins with a vision, and that vision is built on a set of beliefs about the future—beliefs about who the customer is, what they need, how they behave, and how the business will grow. Ries calls these leap-of-faith assumptions because they are taken on faith initially; they are the riskiest elements of the plan, and if they are wrong, the entire venture collapses.
+
+The purpose of the leap is not to prove the vision right; it is to identify the most critical assumptions and then design experiments to validate or invalidate them as quickly as possible.
+
+Ries reiterates and deepens the two fundamental leaps of faith introduced in Chapter 3:
+1. **The Value Hypothesis**: Does the product or service actually deliver value to customers once they are using it? This is about retention, engagement, and solving a real problem. If customers don't find value, they won't come back.
+2. **The Growth Hypothesis**: How will the product or service spread to a larger number of customers? This is about the engine of growth—word of mouth, viral loops, paid acquisition, etc. You need to know not just that some people like it, but that there is a systematic way to reach many more.
+
+Every startup must eventually validate both hypotheses. But early on, the priority is to test the riskiest assumption first. Often that is the value hypothesis; there is no point in figuring out how to grow something nobody wants.
+
+A common trap is to spend months or years refining the vision, writing business plans, and conducting market research before ever putting anything in front of a real customer. Ries calls this "analysis paralysis"—the illusion that more planning reduces risk. In reality, the only way to reduce uncertainty is to gather empirical data from real customers. The leap is not an academic exercise; it is a commitment to action.
+
+Ries borrows a principle from Toyota's lean manufacturing: genchi gembutsu, which translates roughly to "go and see for yourself." In the context of a startup, this means you cannot rely on secondhand reports, surveys, or market research alone. You must get out of the building and observe real customers in their natural environment. This is a direct echo of Steve Blank's customer development methodology, which Ries integrates deeply.
+
+The reason is simple: customers often cannot articulate what they want, and their actual behavior frequently contradicts their stated preferences. Only by observing them firsthand—watching them struggle, improvise, or ignore your product—can you truly understand their needs.
+
+A leap-of-faith assumption is too vague to test. It must be translated into a concrete, falsifiable hypothesis. For example:
+- **Vague assumption**: "Customers will want a social network for dog owners."
+- **Falsifiable hypothesis**: "At least 20% of dog owners who are shown a simple landing page for a dog-owner social network will sign up for early access within one week."
+
+This specificity forces you to make a prediction and creates a clear benchmark for success or failure. It is the foundation of the Build-Measure-Learn loop: you build something small (an MVP), measure the actual behavior against your prediction, and then learn whether to pivot or persevere.
+
+![Build Measure Learn Loop](imgs/build-measure-learn-loop.png)
+
+you cannot skip the leap. Before building anything, you must articulate the assumptions behind your vision, identify which is the riskiest, and turn it into a testable hypothesis. Then—and only then—can you design the first experiment (which will lead naturally into Chapter 6's discussion of the Minimum Viable Product). The leap is the bridge from vision to action, and the rest of the Build-Measure-Learn loop exists to validate that leap as quickly and cheaply as possible.
+
+## Test
+Ries defines the MVP as:
+> That version of a new product which allows a team to collect the maximum amount of validated learning about customers with the least effort.
+
+This is not the same as "the smallest possible product." It’s not a cheap, half-baked version of the final vision. It is the fastest way to start the Build-Measure-Learn loop and test a specific hypothesis. The goal is not to build a product; the goal is to learn whether the product should be built.
+
+An MVP can take many forms:
+- A simple landing page that explains the idea and measures sign-ups.
+- A video that demonstrates how a future product would work.
+- A concierge service where a human manually performs the service that software would eventually automate.
+- A "Wizard of Oz" prototype where the user sees a functioning front-end, but the back-end is done manually behind the scenes.
+
+In every case, the MVP is designed to answer the riskiest question first: Does anyone actually want this?
+
+**The Dropbox Video: A Classic Example**
+
+Ries uses Dropbox as a perfect illustration. Drew Houston faced a massive technical challenge: building the software to sync files across devices would take a long time and require complex infrastructure. But the riskiest assumption was not whether he could build it—it was whether people wanted effortless file synchronization badly enough to use it.
+
+So Houston created a three-minute video that demonstrated exactly how the product would work, aimed at early adopters who understood the problem. He put it online. The result: the beta waiting list exploded from 5,000 to 75,000 people overnight. That video was an MVP. It didn't sync a single file, but it validated the value hypothesis with real customer behavior (sign-ups), not just opinion.
+
+**The Concierge MVP: Food on the Table**
+
+Ries also highlights the "concierge" MVP through the story of Food on the Table. The founder, Manuel Rosso, wanted to build a service that helped families plan meals and find grocery deals. Instead of building software first, he started with a single customer: a busy mother. He manually collected her grocery list, found coupons, planned meals for her, and delivered the results personally. He did this for one customer, then a few more, all by hand.
+
+This was not scalable. It was slow, labor-intensive, and messy. But it produced deep, validated learning about what customers truly valued before a single line of code was written. Once the value was proven, they could then automate the parts that mattered. The concierge MVP traded efficiency for learning—and that trade was exactly right.
+
+A common objection to MVP is: "We can't release something that low quality; it will ruin our brand." Ries addresses this directly.
+
+The key is to understand that an MVP is not built for everyone. It is built for early adopters—the subset of customers who are so desperate for a solution to their problem that they are willing to overlook rough edges, missing features, and even bugs. Early adopters are not just tolerant; they are actively looking for the future. They can see past the imperfection because they are hungry for the core value.
+
+That does not mean quality doesn't matter. The MVP must still solve the customer's problem well enough to be used and evaluated honestly. The quality bar is set by the early adopters, not by the eventual mass market. Over-engineering quality before you know what customers actually want is waste.
+
+The most common failure in early-stage ventures is not building too little, but building too much before testing. Teams spend months adding features, polishing design, and scaling infrastructure—all based on assumptions that have never been tested with real customers. The result is often a beautifully engineered product that nobody wants.
+
+The MVP is the antidote. It forces the team to confront reality early, cheaply, and quickly. It is not about lowering standards; it is about aligning effort with validated learning. The question shifts from "Can we build it?" to "Should we build it?" and "What is the smallest thing we can build to find out?"
+
+The MVP is the first execution of the Build-Measure-Learn loop. It is not the final product; it is the fastest vehicle for learning. By testing the riskiest assumptions with early adopters before heavy investment, startups avoid the fatal trap of building something nobody wants. The MVP honors the grand vision by taking the first small, disciplined step toward making it real.
+
+## Measure
+How do we know we are actually learning something true? Ries’s answer is that startups need a new kind of accounting—**innovation accounting**—because traditional financial metrics were designed for established businesses executing a known model, not for startups searching for one.
+
+Most startups measure progress using what Ries calls **vanity metrics**: total registered users, cumulative downloads, raw page views, or total revenue. These numbers look impressive and can always be arranged to tell a positive story. But they hide the real question: Are we making progress toward a sustainable business? A startup can add thousands of users while its retention, conversion, and growth engine are fundamentally broken. Vanity metrics give the illusion of traction; actionable metrics reveal the truth.
+
+Ries proposes a structured framework for measuring progress in a startup. It has three stages:
+1. **Establish the Baseline**: Use your MVP to measure where you actually are right now. What is the current conversion rate, sign-up rate, retention rate, or revenue per customer? This baseline is almost always terrible. That’s normal. It exists to give you a real starting point, not to flatter you.
+2. **Tune the Engine**: Once you have a baseline, run experiments designed to move the metrics from the baseline toward the ideal. This is the Build-Measure-Learn loop in overdrive. Each experiment tests a specific change—a new feature, a different message, a new pricing model—and you measure the effect on the metric that matters. The goal is to see steady, verifiable improvement.
+3. **Pivot or Persevere**: After a series of tuning experiments, you look honestly at the trend. Is the engine improving fast enough to suggest you are on a path to a sustainable business? If yes, persevere and optimize. If not, it’s time to pivot—to change one of the fundamental strategic hypotheses while keeping what you’ve learned.
+
+This framework forces you to compare actual progress against a clear goal, not against a vague feeling of "we're doing great."
+
+The heart of the chapter is a distinction between metrics that help you make decisions and metrics that simply make you feel good.
+
+Actionable metrics have three qualities—Ries calls them the Three A's:
+- **Actionable**: The metric must demonstrate clear cause and effect. When you see a change in the number, you should know what action caused it. This is why **split-testing (A/B testing)** is so important: you show two versions of a feature to similar groups of users and measure the difference in behavior. If version B causes a higher conversion rate, you know exactly what to do next.
+- **Accessible**: Metrics must be simple enough that everyone on the team understands them. If the report requires a data scientist to interpret, it cannot guide daily decision-making. Reports should be generated automatically, in plain language, and tied to the specific questions the team is asking.
+- **Auditable**: The data must be credible. When a metric shows a surprising result, the team should be able to trace the data back to real customer behavior. Ries advises talking directly to customers to verify that the numbers reflect reality, not a bug in the tracking system or a quirk of the algorithm.
+
+One of the most powerful tools Ries introduces is cohort analysis. Instead of looking at all users lumped together, you group them by the period in which they first used the product—say, "users who signed up in January" versus "users who signed up in February." Then you track each cohort’s behavior over time.
+
+Why? Because new users can mask the failure of old users. Total user numbers can climb while every cohort actually gets worse at retention. Cohort analysis reveals whether changes are improving the experience for people over time or whether growth is just hiding churn.
+
+Ries returns to IMVU to show how innovation accounting transformed their decisions. For a long time, they tracked total revenue and total users—both were rising, so it looked like success. But when they switched to cohort-based metrics, they discovered something alarming: the revenue from each new cohort was actually declining. The engine was not improving; it was getting worse. That honest measurement forced them to abandon flattering vanity metrics and start the painful work of tuning the real engine.
+
+Measurement is not a neutral activity. Bad metrics actively mislead startups into wasting time and money. Good metrics—actionable, accessible, auditable, and cohort-based—turn the Build-Measure-Learn loop into a reliable instrument for steering. Innovation accounting gives you the discipline to know whether you are truly making progress or simply fooling yourself.
+
+## Pivot (or Persevere)
