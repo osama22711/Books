@@ -3,6 +3,26 @@
 - Started Reading: **30/07/2026**
 - Book cover: ![Book Cover](imgs/book-cover.png)
 
+# Table of Contents
+- [Info](#info)
+- [Table of Contents](#table-of-contents)
+- [Introduction: Why Lean Startup?](#introduction-why-lean-startup)
+- [The lean startup and Toyota's production system](#the-lean-startup-and-toyotas-production-system)
+- [1. Vision](#1-vision)
+  - [Start](#start)
+  - [Define](#define)
+  - [Learn](#learn)
+  - [Experiment](#experiment)
+- [2. Steer](#2-steer)
+  - [Leap](#leap)
+  - [Test](#test)
+  - [Measure](#measure)
+  - [Pivot (or Persevere)](#pivot-or-persevere)
+- [3. Accelerate](#3-accelerate)
+  - [Batch](#batch)
+  - [Grow](#grow)
+
+
 # Introduction: Why Lean Startup?
 Right from the first page, Eric Ries makes it personal. He doesn’t start with a theory; he starts with a failure—his own. As the co-founder and CTO of IMVU, an early social network and 3D avatar chat platform, he poured months of work into a product he was sure people would love. They built it in stealth, added dozens of features, and launched to... crickets. Hardly anyone signed up, and even fewer stuck around.
 
