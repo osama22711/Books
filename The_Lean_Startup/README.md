@@ -275,3 +275,58 @@ Each of these is not a random guess. It is a new hypothesis to be tested through
 **Pivoting is not failure**. It is the disciplined application of learning. The real failure is refusing to pivot when the evidence demands it—or pivoting so chaotically that no learning accumulates. The pivot is the bridge between what you thought was true and what you now know is true. It is the mechanism by which a startup changes direction without losing its vision. By the end of this chapter, the Build-Measure-Learn loop is complete. You have leaped, tested, measured, and decided. Now the question becomes: how do you speed up that loop and grow? That is the subject of Part Three: Accelerate.
 
 # 3. Accelerate
+With the Build-Measure-Learn loop fully established in Part Two, Part Three focuses on speed and scale: how to accelerate the loop and grow sustainably. Chapter 9 begins with a counterintuitive idea borrowed from lean manufacturing: small batches are more efficient than large batches, even though they feel slower.
+
+## Batch
+Ries tells the story of a father and daughter stuffing envelopes. The father uses the traditional "large batch" approach: fold all envelopes, then insert all letters, then seal all envelopes, then stamp all. The daughter uses "small batch" or single-piece flow: complete one entire envelope at a time.
+
+At first glance, the large batch seems faster because each step is repetitive. But small batch has hidden advantages:
+
+- **Faster feedback**: If the daughter makes a mistake folding, she finds out immediately, not after folding 100 envelopes.
+- **Less work-in-progress (WIP)**: Large batches pile up inventory; small batches keep inventory low and expose problems early.
+- **Higher quality**: Defects are caught and corrected before they multiply.
+
+Toyota perfected this with just-in-time production and andon cords that let workers stop the line to fix problems. The result was not slower production but dramatically higher quality and efficiency.
+
+Ries applies this to startups with the story of IMVU. Instead of releasing a large batch of changes every few weeks (or months), IMVU adopted continuous deployment: every code change that passes automated tests is deployed to production immediately, often dozens of times per day.
+
+This feels terrifying to traditional software teams—what if a bug goes live? But IMVU found that small batches actually reduce risk:
+
+- If a bug appears, it's easy to identify which change caused it because only one small change was deployed.
+- Fixing is fast because you revert or patch that one change.
+- Customers see improvements constantly, not in jarring big updates.
+- The team gets immediate feedback on whether a new feature actually changes user behavior.
+
+The key enabler is automated testing and a cluster immune system that detects problems in production and rolls back automatically. This infrastructure lets small batches work safely.
+
+The same logic applies to the entire Build-Measure-Learn loop. Instead of building a large batch of features and then measuring their impact all at once, you should:
+
+- **Build a small batch**: one feature, one change, one hypothesis.
+- Measure its effect immediately.
+- Learn and decide the next small batch.
+
+This accelerates validated learning because you are not waiting weeks to see if a large pile of changes worked; you get data on each change in near real time. The smaller the batch, the faster you can pivot or persevere.
+
+Ries uses a metaphor from sushi: a sashimi cut slices a problem into very thin pieces, allowing you to see each layer clearly. In a startup, that means breaking down a large feature into a series of small experiments, each testing one assumption.
+
+The classic argument for large batches is economies of scale: if you produce 1,000 units at once, the cost per unit is lower. But this ignores the cost of inventory and delayed feedback. In knowledge work, inventory is invisible—it's unfinished code, untested assumptions, unreleased features. That inventory ties up capital, hides defects, and delays learning. Small batches reduce inventory and shorten cycle time, which often more than compensates for any lost "economies of scale."
+
+Small batches are not about moving faster in a panicked way; they are about moving smarter. By reducing batch size, you get faster feedback, lower risk, higher quality, and faster validated learning. The Build-Measure-Learn loop works best when each loop is as small and fast as possible. This is the first key to accelerating a startup: don't build big and hope; build small and learn.
+
+Ries points toward what he calls “the startup way” — the management system required to make small-batch, validated learning work at scale. He frames it with four pillars:
+
+1. **Accountability**:
+Startups must hold people accountable for validated learning, not just for shipping features or hitting vanity metrics. You are accountable for the outcome of experiments: did we learn what we needed to learn? Did we pivot or persevere based on evidence? This replaces “we worked hard” with “we produced verifiable progress.”
+
+2. **Process**:
+The Build-Measure-Learn loop is a repeatable process, not bureaucracy. Small batches, continuous deployment, and innovation accounting are all part of the process. It gives teams a disciplined way to move fast without chaos.
+
+3. **Culture**:
+The startup way requires a culture that tolerates failure when it produces learning. It rejects the “failure is not an option” mindset that causes people to hide bad news. Instead, it celebrates fast, cheap experiments—even when they fail—because each one reduces uncertainty.
+
+4. **People**:
+It relies on empowered, cross-functional teams close to the customer. These teams are trusted to run experiments, interpret data, and make decisions without waiting for top-down approval. The system works only if people have both the responsibility and the authority to act.
+
+![The startup way](imgs/the-startup-way.png)
+
+## Grow
