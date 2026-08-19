@@ -22,6 +22,7 @@
   - [Batch](#batch)
   - [Grow](#grow)
   - [Adapt](#adapt)
+  - [Innovate](#innovate)
 
 
 # Introduction: Why Lean Startup?
@@ -411,3 +412,54 @@ This means it is not enough for a few customers to like the product. There must 
 Growth is not magic. It is a system that can be designed, measured, and optimized. By identifying which engine of growth suits your startup—sticky, viral, or paid—and focusing on its key metric, you move from hoping for growth to engineering it. 
 
 ## Adapt
+How do you build an organization that can adapt as it grows? Many startups find that the processes and culture that worked at small scale break down as they expand. Ries argues that the Lean Startup principles must evolve into a permanent management discipline, not just a temporary phase.
+
+As a startup grows, it faces new pressures:
+- More employees, more departments, more layers.
+- Pressure to become “efficient” by standardizing processes.
+- Temptation to abandon experimentation in favor of predictable execution.
+
+But Ries warns that this leads to a dangerous situation: the company becomes optimized for executing a plan rather than learning what to build. The startup becomes a traditional company, losing its ability to adapt to changing market conditions.
+
+An adaptive organization is one that continuously runs validated learning loops at every level, even as it scales. This means:
+- Experimentation is not just for the early days; it is embedded in how the company operates.
+- Teams have the autonomy to run their own Build-Measure-Learn loops.
+- Management focuses on creating the conditions for learning, not on controlling every decision.
+
+Ries borrows from Toyota’s kata (routines for continuous improvement) and Agile software development to describe how this works in practice.
+
+The Five Whys: A Technique for Root-Cause Analysis
+
+A central tool in this chapter is The Five Whys. When a problem occurs, instead of blaming individuals or applying a quick fix, you ask “why” five times to find the root cause, then fix that root cause.
+
+Example from the book:
+
+1. Why did the website go down? Because the server ran out of memory.
+2. Why did it run out of memory? Because a new feature had a memory leak.
+3. Why did the feature have a memory leak? Because the developer didn’t know how to test for it.
+4. Why didn’t they know? Because they were never trained.
+5. Why were they not trained? Because the team lead didn’t prioritize training.
+
+The fix is not to punish the developer; it is to invest in training. The Five Whys turns failures into systematic improvements.
+
+Key rule: The Five Whys must be used proportionally and with a no-blame culture. If used too often or in a punitive way, it becomes a weapon. If used too rarely, problems recur.
+
+Ries also discusses the andon cord, another Toyota concept. In a factory, workers can pull a cord to stop the entire production line if they spot a defect. This seems inefficient, but it prevents defects from multiplying. In a startup, this translates to:
+- Teams can halt a release or an experiment if they see a critical problem.
+- Management supports this by not punishing the person who stops the line.
+- The focus is on quality and learning, not on speed at any cost.
+
+Chapter 9 introduced continuous deployment. In this chapter, Ries shows how it enables adaptation:
+- If you can deploy small changes quickly, you can react to feedback fast.
+- You can run multiple experiments simultaneously, learning which features work.
+- The organization becomes a learning machine, not just a feature factory.
+
+In an adaptive organization, managers are not “bosses” who dictate what to build. They are coaches and systems designers:
+- They ensure teams have the right metrics and tools.
+- They remove obstacles that slow the Build-Measure-Learn loop.
+- They hold teams accountable for validated learning, not just output.
+- They create a culture where experimentation is safe and failure is seen as data.
+
+Adaptation is not a one-time event; it is a continuous capability. The Lean Startup is not just for the garage phase—it is a management system for companies that want to remain innovative and resilient as they grow. By embedding small batches, the Five Whys, and the andon cord into the organization, you build a company that can adapt to change instead of being crushed by it.
+
+## Innovate
