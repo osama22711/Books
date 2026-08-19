@@ -21,6 +21,7 @@
 - [3. Accelerate](#3-accelerate)
   - [Batch](#batch)
   - [Grow](#grow)
+  - [Adapt](#adapt)
 
 
 # Introduction: Why Lean Startup?
@@ -350,3 +351,63 @@ It relies on empowered, cross-functional teams close to the customer. These team
 ![The startup way](imgs/the-startup-way.png)
 
 ## Grow
+How does a startup grow sustainably? Chapter 10 answers this by introducing the concept of engines of growth—systematic mechanisms that turn customer actions into new customers. Ries argues that sustainable growth is not random or driven by one-off PR bursts; it comes from a repeatable engine that can be measured and tuned.
+
+Ries defines sustainable growth by a simple rule:
+> New customers come from the actions of past customers.
+
+This can happen in four ways:
+- Word of mouth (customers tell others).
+- As a side effect of product usage (e.g., a branded email signature or shared form).
+- Through funded advertising (paid acquisition, but only sustainable if the cost is less than the lifetime value of a customer).
+- Through repeat purchase or subscription (existing customers keep paying).
+
+But not all growth is equal. A startup must identify which engine is driving its growth and focus on optimizing that one engine—not all three at once.
+
+The Three Engines of Growth:
+1. The Sticky Engine of Growth
+
+   The sticky engine is about **retention**. Growth comes from existing customers continuing to use the product, while new customers are added. The key metric is churn rate—the fraction of customers who stop using the product over a given period.
+
+   - If churn is low, the customer base compounds over time.
+   - If churn is high, you must constantly add new customers just to stay even.
+
+   **Example**: A subscription SaaS product. If 5% of customers cancel each month, you need to add at least 5% new customers just to maintain size. If churn drops to 2%, the same acquisition rate produces real growth.
+
+   **Key metric**: Churn rate, retention rate, customer lifetime value (LTV).
+2. The Viral Engine of Growth
+
+   The viral engine relies on customers spreading the product to others as a natural consequence of using it. This is not just word of mouth; it is built into the product experience.
+
+   The critical metric is the viral coefficient—how many new customers each existing customer brings in. If the coefficient is greater than 1.0, growth becomes exponential (each person brings more than one new person). If it is less than 1.0, growth eventually slows and stops.
+
+   **Example**: A form builder where every respondent sees "Powered by [YourApp]" and some percentage sign up as new creators. If each new creator brings in 1.2 new creators, the product grows virally.
+
+   **Key metrics**: Viral coefficient, viral loop time (how fast a user refers another), conversion rate from exposure to signup.
+3. The Paid Engine of Growth
+
+   The paid engine uses advertising or paid acquisition to bring in new customers. This is sustainable only if the customer lifetime value (LTV) exceeds the cost per acquisition (CPA). The difference is profit that can be reinvested in more acquisition.
+
+   - If LTV > CPA, you can scale by buying more ads.
+   - If CPA > LTV, every new customer loses money, and growth is a money pit.
+
+   **Example**: A company pays $50 per new customer via Google Ads. If the average customer brings in $200 over their lifetime, the paid engine works. The key is to measure LTV and CPA accurately, not just total ad spend and total signups.
+
+   **Key metrics**: LTV, CPA, payback period, margin.
+
+The Discipline of Choosing One Engine
+
+A common mistake is to try to optimize all three engines at once, or to confuse activity with growth. Ries recommends focusing on one primary engine at a time. The engine you choose depends on your business model and which leap-of-faith assumption is riskiest.
+
+- If customers are likely to churn, fix the sticky engine first.
+- If the product naturally spreads, invest in the viral loop.
+- If you have a clear acquisition channel with profitable margins, scale the paid engine.
+
+Ries connects this to the famous concept of product/market fit:
+> A startup has achieved product/market fit when it has a working engine of growth.
+
+This means it is not enough for a few customers to like the product. There must be a measurable, repeatable system that brings in new customers and retains them. Once you have that, you have found a sustainable business model.
+
+Growth is not magic. It is a system that can be designed, measured, and optimized. By identifying which engine of growth suits your startup—sticky, viral, or paid—and focusing on its key metric, you move from hoping for growth to engineering it. 
+
+## Adapt
