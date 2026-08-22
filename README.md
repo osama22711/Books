@@ -26,7 +26,7 @@ Categories:
 6. 🎦 [System Design Interview](./System_Design_Interview/)
 
 ## Business
-1. 🎦 [The Learn Startup](./The_Lean_Startup)
+1. ✅ [The Learn Startup](./The_Lean_Startup)
 2. 🎦 [The Manager's Path](./The_Manager's_Path)
 3. 🎦 [Venture Deals](./Venture_Deals)
 4. 🎦 [Zero to One](./Zero_To_One)
