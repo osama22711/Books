@@ -137,6 +137,8 @@ As the project grows in size and complexity, this simple folder-based organizati
 
     The lack of discipline leads to tightly coupled, fragile code.
 
+![Monolith Deployment Architecture](imgs/monolith-deployment-architecture.png)
+
 ## N-Layer
 As applications grow, complexity becomes the biggest enemy. Layering is a strategy to manage this complexity.
 
