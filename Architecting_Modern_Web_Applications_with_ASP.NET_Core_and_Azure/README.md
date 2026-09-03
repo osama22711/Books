@@ -26,6 +26,7 @@
   - [Microservices](#microservices)
   - [Web-Queue-Worker](#web-queue-worker)
 - [Bird eye view on architecture (deployment, structural, patterns)](#bird-eye-view-on-architecture-deployment-structural-patterns)
+- [Domain-driven design](#domain-driven-design)
 
 # Ways of building web applications
 1. **Traditional web applications**
@@ -541,3 +542,5 @@ To fully understand:
 - **Deployment** = “How many running units? How are they scaled and updated?”
 - **Structure** = “How are projects, layers, and modules organized in the repo?”
 - **Patterns** = “Which proven designs solve specific problems inside those layers?”
+
+# Domain-driven design
