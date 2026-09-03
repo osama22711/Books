@@ -20,9 +20,12 @@
 - [Web applications architectures](#web-applications-architectures)
   - [Monolith](#monolith)
   - [N-Layer](#n-layer)
-- [Clean](#clean)
-- [Vertical Slice](#vertical-slice)
-- [Modular Monolith](#modular-monolith)
+  - [Clean](#clean)
+  - [Vertical Slice](#vertical-slice)
+  - [Modular Monolith](#modular-monolith)
+  - [Microservices](#microservices)
+  - [Web-Queue-Worker](#web-queue-worker)
+- [Bird eye view on architecture (deployment, structural, patterns)](#bird-eye-view-on-architecture-deployment-structural-patterns)
 
 # Ways of building web applications
 1. **Traditional web applications**
@@ -173,7 +176,7 @@ To test your business logic, you are forced to have a test database set up. This
 
 ![N-layer Architecture](imgs/n-layer-architecture.png)
 
-# Clean
+## Clean
 
 **The Core Idea**:
 Clean Architecture is an architectural pattern that places your business logic and application model at the very center of your application.
@@ -310,7 +313,7 @@ Comparison between N-Layer and Clean
 
 > In Clean Architecture, the Database depends on the Business Logic.
 
-# Vertical Slice
+## Vertical Slice
 > Not mentioned in the book.
 
 Vertical Slice Architecture groups code by feature or use case, not by technical class type. Instead of locating one “create order” feature across `Controllers`, `Services`, `Repositories`, and `DTOs`, keep its relevant code together.
@@ -401,4 +404,138 @@ Weaknesses
 
 > See repo: [Vertical Slice Example Github Repo](https://github.com/jeangatto/ASP.NET-Core-Vertical-Slice-Architecture/tree/main) for reference
 
-# Modular Monolith
+## Modular Monolith
+> Not mentioned in the book.
+
+A modular monolith is one deployed application split internally by business capability. The difference from a normal layered monolith is that modules have deliberately enforced boundaries.
+
+It's like Microservices architecture but deployed as a single process
+
+```
+Commerce.sln
+├── Commerce.Api
+├── BuildingBlocks
+│   ├── SharedKernel
+│   └── EventBus
+├── Modules
+│   ├── Identity
+│   ├── Catalog
+│   ├── Ordering
+|   |   ├── Ordering.Domain
+|   |   ├── Ordering.Application
+|   │   └── Features
+|   │       ├── PlaceOrder
+|   │       └── CancelOrder
+|   |   └── Ordering.Infrastructure
+│   ├── Payments
+│   └── Shipping
+└── tests
+```
+
+| Characteristic         | Modular monolith                                         | Microservices                      |
+| ---------------------- | -------------------------------------------------------- | ---------------------------------- |
+| Deployment             | One application/container                                | One deployment per service         |
+| Process                | One process                                              | Multiple processes                 |
+| Scaling                | Scale the entire app                                     | Scale individual services          |
+| Database               | Often one database, ideally separated schemas per module | Each service owns its database     |
+| Calls between domains  | In-process method calls or in-process events             | HTTP, gRPC, queues, event broker   |
+| Operational complexity | Lower                                                    | Higher                             |
+| Failure boundary       | A process failure can affect all modules                 | One service can fail independently |
+
+## Microservices
+> Not mentioned in the book.
+
+Microservices mean separately deployable services, each built around a bounded business context. Microsoft describes them as small autonomous services, each implementing one business capability within a bounded context.
+
+```
+API Gateway
+├── Identity Service
+├── Catalog Service
+├── Ordering Service
+├── Payment Service
+└── Shipping Service
+```
+
+Each service owns its own:
+
+```
+Service
+├── API
+├── Application
+├── Domain
+├── Infrastructure
+├── Database
+├── Deployment pipeline
+└── Monitoring and logs
+```
+
+Communication styles:
+
+| Style                 | Example                               | Use it for                    |
+| --------------------- | ------------------------------------- | ----------------------------- |
+| Synchronous HTTP/gRPC | Ordering checks a customer account    | Immediate answer required     |
+| Asynchronous event    | OrderPlaced triggers payment workflow | Decoupled workflows           |
+| Queue                 | Generate a large report               | Long-running background tasks |
+| Outbox pattern        | Save order and event reliably         | Preventing lost events        |
+
+## Web-Queue-Worker
+Some work should not happen during the HTTP request: sending emails, importing files, generating reports, resizing images, processing payments, or running scheduled jobs. Microsoft identifies a web-queue-worker architecture as an option for long-running, batch, or resource-intensive processes.
+
+```
+Commerce.sln
+├── Commerce.Api
+├── Commerce.Application
+├── Commerce.Domain
+├── Commerce.Infrastructure
+└── Commerce.Worker
+```
+
+```
+Client
+→ API saves request
+→ Queue
+→ Background Worker processes work
+→ Database / Email / External API
+```
+
+The API responds quickly, while the worker handles durable background processing.
+
+# Bird eye view on architecture (deployment, structural, patterns)
+> Not mentioned in the book.
+
+Think in layers of concern:
+
+1. **Deployment architecture**
+
+   - Decides: monolith vs modular monolith vs microservices vs serverless.
+   - Determines how many processes/containers you run, how they scale, and how they fail.
+
+2. **Structural architecture (projects, layers, modules)**
+
+   - Decides: how you split code into projects, layers (Domain/Application/Infrastructure/Api), and modules (Catalog, Ordering, etc.).
+   - Determines maintainability, testability, and team boundaries.
+
+3. **Design patterns**
+
+   - Decides: how you implement specific responsibilities inside those layers/modules.
+
+   - Examples: DI, Repository, Mediator, CQRS, Command, Domain Events.
+
+You can mix and match:
+
+- A **monolith** can use:
+  - Clean Architecture layers
+  - Vertical slices
+  - DI, Repository, Mediator, CQRS
+- A **microservice** can use:
+  - The same internal layers and patterns
+  - But is deployed separately and communicates over the network
+
+Microsoft’s microservices guidance explicitly distinguishes:
+  - **External architecture**: microservices, API gateways, pub/sub, resilience.
+  - **Internal architecture**: DDD, CQRS, DI, layered structure inside each service.
+
+To fully understand:
+- **Deployment** = “How many running units? How are they scaled and updated?”
+- **Structure** = “How are projects, layers, and modules organized in the repo?”
+- **Patterns** = “Which proven designs solve specific problems inside those layers?”
