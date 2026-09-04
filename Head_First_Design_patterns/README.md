@@ -1,5 +1,10 @@
-# Table of Contents
+# Info
+- Book: **Head First Design Patterns**
+- Started Reading: **In 2023**
+- Book cover: ![Book Cover](imgs/book-cover.png)
 
+# Table of Contents
+- [Info](#info)
 - [Table of Contents](#table-of-contents)
 - [ChatGPT Q\&A](#chatgpt-qa)
 - [Good References along with this Book](#good-references-along-with-this-book)
@@ -109,14 +114,6 @@
     - [Detailed Introduction](#detailed-introduction-15)
     - [Real world examples](#real-world-examples-15)
     - [Architecture from Chapter 14](#architecture-from-chapter-14-2)
-- [Interesting Articles to makes](#interesting-articles-to-makes)
-- [Pattern of creating "patterns in details" sections](#pattern-of-creating-patterns-in-details-sections)
-  - [{{Name of the pattern}} Pattern](#name-of-the-pattern-pattern)
-    - [Picture from Refactoring Guru](#picture-from-refactoring-guru-16)
-    - [Quick Introduction](#quick-introduction-16)
-    - [Detailed Introduction](#detailed-introduction-16)
-    - [Real world examples](#real-world-examples-16)
-    - [Architecture from Chapter NO.](#architecture-from-chapter-no)
 
 
 # ChatGPT Q&A
@@ -968,26 +965,3 @@ The Mediator Pattern is particularly useful in scenarios where complex interacti
 
 ### Architecture from Chapter 14
 ![Some Title](./Chapter%2014-%20The%20Mediator%20Pattern/MediatorPattern.drawio.png)
-
----
-# Interesting Articles to makes
-1. Patterns specific articles
-2. Software OO Design principles in Arabic language
-----
-
-# Pattern of creating "patterns in details" sections
-
-## {{Name of the pattern}} Pattern
-
-### Picture from [Refactoring Guru](https://refactoring.guru/)
-
-### Quick Introduction
-
-### Detailed Introduction
-
-### Real world examples
-
-### Architecture from Chapter NO.
-
----
-> Reached page: <span style="color: yellow;">Book is done</span>
