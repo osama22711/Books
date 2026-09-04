@@ -1,3 +1,11 @@
+# Info
+- Book: **Clean Code**
+- Started Reading: **In 2024**
+- Book cover: ![Book Cover](imgs/book-cover.png)
+  
+# Table Of Contents
+- [Info](#info)
+- [Table Of Contents](#table-of-contents)
 - [Foreword](#foreword)
     - [Japanese 5S methodology](#japanese-5s-methodology)
 - [Chapter 2: Meaningful Names](#chapter-2-meaningful-names)
@@ -461,7 +469,3 @@ Overall functions should be short, well named and nicely organized.
          1. The tests are insufficient so long as there are conditions that have not been explored by the tests or calculations that have not been validated.
    2.  Use a Coverage Tool
          1. They make it easy to find modules, classes, and functions that are insufficiently tested.
-
-
----
-> Book is done on `11/09/2024`
