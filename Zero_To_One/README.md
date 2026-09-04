@@ -1,10 +1,18 @@
 # Info
-- Book: Zero To One
+- Book: **Zero To One**
 - Started Reading: 30/08/2026
 - Book Cover: ![Book Cover](imgs/book-cover.png)
 
 # Table Of Contents
 - [Info](#info)
+- [Table Of Contents](#table-of-contents)
+- [Preface](#preface)
+- [The Challenge of the Future](#the-challenge-of-the-future)
+- [Party like it's 1999](#party-like-its-1999)
+- [All Happy Companies Are Different](#all-happy-companies-are-different)
+- [The Ideology of Competition](#the-ideology-of-competition)
+- [Last Mover Advantage](#last-mover-advantage)
+
 
 # Preface
 The book’s central question: “What important truth do very few people agree with you on?”
