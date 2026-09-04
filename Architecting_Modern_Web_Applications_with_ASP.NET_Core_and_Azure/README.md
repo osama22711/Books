@@ -27,6 +27,14 @@
   - [Web-Queue-Worker](#web-queue-worker)
 - [Bird eye view on architecture (deployment, structural, patterns)](#bird-eye-view-on-architecture-deployment-structural-patterns)
 - [Domain-driven design](#domain-driven-design)
+- [.NET Caching](#net-caching)
+  - [1. Response Caching](#1-response-caching)
+  - [2. Data Caching](#2-data-caching)
+- [Kinds of Automated Tests](#kinds-of-automated-tests)
+  - [1. Unit Tests](#1-unit-tests)
+  - [2. Integration Tests](#2-integration-tests)
+  - [3. Functional Tests](#3-functional-tests)
+- [Conclusion: Principles Over Rules](#conclusion-principles-over-rules)
 
 # Ways of building web applications
 1. **Traditional web applications**
@@ -544,3 +552,344 @@ To fully understand:
 - **Patterns** = “Which proven designs solve specific problems inside those layers?”
 
 # Domain-driven design
+Domain-Driven Design (DDD) is an approach to building software that centers the design around the business domain rather than technology. It is most valuable for large, complex systems with rich business rules, and often overkill for simple CRUD applications
+
+Your domain model is made of objects that represent business concepts and behavior:
+1. Entities
+   
+   - Objects with a distinct identity (e.g., `Customer`, `Order`).
+   - Typically persisted with a key (e.g., Id).
+2. Aggregates
+   
+   - Clusters of related objects treated as a single unit for changes and persistence (e.g., `Order` + `OrderItems`).
+
+   - One aggregate root controls access and enforces invariants.
+3. Value Objects
+   
+   - Objects defined by their attributes, not identity (e.g., `Money`, `Address`, `DateRange`).
+
+   - Usually immutable and compared by their property values.
+4. Domain Events
+   
+   - Represent significant things that happened in the domain (e.g., `OrderPlaced`, `PaymentCompleted`).
+   - Used to decouple reactions within or across parts of the system.
+
+A good DDD model encapsulates behavior, not just state. Entities should have methods that enforce business rules. If your model is just properties with getters/setters, it is an anemic model, which DDD tries to avoid.
+
+DDD typically uses several patterns to structure the domain and application layers:
+1. **Repository**
+
+    - Abstracts persistence; provides collection-like access to aggregates.
+    - Keeps database details out of the domain model.
+2. **Factory**
+
+    - Encapsulates complex object or aggregate creation.
+
+3. **Domain Services**
+
+    - Encapsulate behavior that doesn’t naturally belong to a single entity or value object.
+
+4. **Command**
+
+   - Represents an intention to perform an action (e.g., CreateOrderCommand).
+
+   - Decouples the request to do something from the execution logic.
+
+5. **Specification**
+
+   - Encapsulates query or business rule criteria (e.g., “active customers with overdue invoices”).
+
+DDD also aligns well with Clean Architecture, promoting loose coupling, clear boundaries, and testability.
+
+Traditional Implementation (Anemic Model)
+```csharp
+// Service layer: bloated order placement logic
+public class OrderService {
+    @Autowired private InventoryDAO inventoryDAO;
+    @Autowired private CouponDAO couponDAO;
+
+    public Order createOrder(Long userId, List<ItemDTO> items, Long couponId) {
+        // 1. Stock validation (scattered in Service)
+        for (ItemDTO item : items) {
+            Integer stock = inventoryDAO.getStock(item.getSkuId());
+            if (item.getQuantity() > stock) {
+                throw new RuntimeException("Insufficient stock");
+            }
+        }
+
+        // 2. Calculate total amount
+        BigDecimal total = items.stream()
+                .map(i -> i.getPrice().multiply(i.getQuantity()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        // 3. Apply coupon (logic hidden in utility class)
+        if (couponId != null) {
+            Coupon coupon = couponDAO.getById(couponId);
+            total = CouponUtil.applyCoupon(coupon, total); // Discount logic is in util
+        }
+
+        // 4. Save order (pure data operation)
+        Order order = new Order();
+        order.setUserId(userId);
+        order.setTotalAmount(total);
+        orderDAO.save(order);
+        return order;
+    }
+}
+```
+
+DDD Implementation (Rich Model): Business Logic Encapsulated in Domain
+```csharp
+// Aggregate Root: Order (carries core logic)
+public class Order {
+    private List<OrderItem> items;
+    private Coupon coupon;
+    private Money totalAmount;
+
+    // Business logic encapsulated in the constructor
+    public Order(User user, List<OrderItem> items, Coupon coupon) {
+        // 1. Stock validation (domain rule encapsulated)
+        items.forEach(item -> item.checkStock());
+
+        // 2. Calculate total amount (logic resides in value objects)
+        this.totalAmount = items.stream()
+                .map(OrderItem::subtotal)
+                .reduce(Money.ZERO, Money::add);
+
+        // 3. Apply coupon (rules encapsulated in entity)
+        if (coupon != null) {
+            validateCoupon(coupon, user); // Coupon rule encapsulated
+            this.totalAmount = coupon.applyDiscount(this.totalAmount);
+        }
+    }
+
+    // Coupon validation logic (clearly owned by the domain)
+    private void validateCoupon(Coupon coupon, User user) {
+        if (!coupon.isValid() || !coupon.isApplicable(user)) {
+            throw new InvalidCouponException();
+        }
+    }
+}
+
+// Domain Service: orchestrates the order process
+public class OrderService {
+    public Order createOrder(User user, List<Item> items, Coupon coupon) {
+        Order order = new Order(user, convertItems(items), coupon);
+        orderRepository.save(order);
+        domainEventPublisher.publish(new OrderCreatedEvent(order)); // Domain event
+        return order;
+    }
+}
+```
+
+# .NET Caching
+ASP.NET Core provides two complementary caching strategies:
+   1. Response caching – cache entire HTTP responses.
+   2. Data caching – cache the results of individual queries or computations.
+
+Using them together can dramatically reduce database load and improve response times, but each has different trade-offs and use cases.
+
+## 1. Response Caching
+- **Client and Proxy Caching (HTTP Headers)**
+
+     This level does not cache anything on the server. Instead, it adds HTTP headers that instruct browsers and intermediate proxies to cache the response.
+
+     ```csharp
+             [ResponseCache(Duration = 60)]
+             public IActionResult Contact()
+             {
+                 ViewData["Message"] = "Your contact page.";
+                 return View();
+             }
+     ```
+     The example above adds this header to the response:
+     ```text
+     Cache-Control: public,max-age=60
+     ```
+     This tells clients and proxies they may cache the response for up to 60 seconds.
+
+     Use this when:
+     - The content is the same for many users.
+     - You’re fine with clients/proxies holding a cached copy for a short time.
+     - You want to reduce load without adding server-side caching complexity.
+ - **Server-Side Response Caching**
+
+     This level caches responses on the server in memory, so repeated requests can be served without re-executing the action.
+
+     ```csharp
+         builder.Services.AddResponseCaching();
+
+         var app = builder.Build();
+
+         app.UseResponseCaching();
+
+         // other middleware (routing, endpoints, etc.)
+     ```
+     The Response Caching middleware automatically caches responses when certain conditions are met.
+
+     By default, a response is cached only if:
+     - The HTTP method is GET or HEAD.
+     - The status code is 200 OK.
+     - The response includes the header: `Cache-Control: public`
+     - The request does not include:
+         - An Authorization header.
+         - A Set-Cookie header in the response.
+
+     If any of these conditions fail, the middleware will not cache the response.
+
+     Use server-side caching when:
+     - The action is expensive to compute (database calls, external API calls, heavy processing).
+     - The result is the same for many users and requests.
+     - You want to reduce server load and improve response times.
+## 2. Data Caching
+   
+Instead of caching full responses, you cache data (query results, computed values) and reuse them across requests or components.
+
+- In-memory caching setup
+    
+    ```csharp
+    builder.Services.AddMemoryCache();
+    builder.Services.AddMvc();
+    ```
+- Using IMemoryCache with a cached decorator
+
+    Example: CachedCatalogService
+    ```csharp
+    public class CachedCatalogService : ICatalogService
+    {
+        private readonly IMemoryCache _cache;
+        private readonly CatalogService _catalogService;
+
+        private static readonly string _brandsKey = "brands";
+        private static readonly string _typesKey = "types";
+        private static readonly TimeSpan _defaultCacheDuration = TimeSpan.FromSeconds(30);
+
+        public CachedCatalogService(IMemoryCache cache, CatalogService catalogService)
+        {
+            _cache = cache;
+            _catalogService = catalogService;
+        }
+
+        public async Task<List<Brand>> GetBrands()
+        {
+            return await _cache.GetOrCreateAsync(_brandsKey, async entry =>
+            {
+                entry.SlidingExpiration = _defaultCacheDuration;
+                return await _catalogService.GetBrands();
+            });
+        }
+
+        public async Task<CatalogItemsResult> GetCatalogItems(
+            int pageIndex, int itemsPage, int? brandId, int? typeId)
+        {
+            var cacheKey = $"items-{pageIndex}-{itemsPage}-{brandId}-{typeId}";
+
+            return await _cache.GetOrCreateAsync(cacheKey, async entry =>
+            {
+                entry.SlidingExpiration = _defaultCacheDuration;
+                return await _catalogService.GetCatalogItems(pageIndex, itemsPage, brandId, typeId);
+            });
+        }
+
+        public async Task<List<Type>> GetTypes()
+        {
+            return await _cache.GetOrCreateAsync(_typesKey, async entry =>
+            {
+                entry.SlidingExpiration = _defaultCacheDuration;
+                return await _catalogService.GetTypes();
+            });
+        }
+    }
+    ```
+    Register services
+    ```csharp
+    builder.Services.AddMemoryCache();
+    builder.Services.AddScoped<CatalogService>();
+    builder.Services.AddScoped<ICatalogService, CachedCatalogService>();
+    ```
+
+You can combine both:
+   - Use **data caching** inside services to reduce database load.
+   - Use r**esponse caching** on top of endpoints that return cached data, to avoid re-executing even the service layer for repeated identical requests.
+
+```
+Request
+→ Response cache (if hit: return cached HTTP response)
+→ Controller
+→ Cached service (if hit: return cached data)
+→ Database / external system
+```
+
+# Kinds of Automated Tests
+## 1. Unit Tests
+A unit test verifies a single, isolated piece of application logic.
+
+Characteristics:
+- Tests only your code, not dependencies or infrastructure.
+- Does not test the framework (assume ASP.NET Core, EF Core, etc. work; if not, file a bug and work around it).
+- Runs fully in memory and in process.
+- No file system, network, or database access.
+- Extremely fast: hundreds of tests should run in seconds.
+
+Use unit tests to verify:
+- Business rules.
+- Conditional logic (if/else, switch).
+- Edge cases and error handling in pure logic.
+
+Run them:
+- Frequently, ideally before every push.
+- On every automated build.
+
+## 2. Integration Tests
+
+Integration tests verify that components work correctly together, especially with real or realistic infrastructure.
+
+Characteristics:
+- Test code that interacts with databases, file systems, external services, or other infrastructure.
+- Verify that layers interact correctly when dependencies are fully resolved.
+- Slower and more complex to set up than unit tests.
+- Often require setup/teardown (e.g., resetting a test database to a known state).
+
+Guidelines:
+- If a scenario can be tested with a unit test, prefer a unit test.
+- Use integration tests when you must involve external dependencies.
+- In large systems, run full integration suites on a build server rather than on every developer machine.
+
+## 3. Functional Tests
+
+Functional tests verify the system from the user’s perspective, based on requirements.
+
+Analogy:
+- Unit tests ≈ building inspector checking foundation, wiring, plumbing (internal correctness).
+- Functional tests ≈ homeowner checking if the house fits their needs, looks right, rooms are comfortable (external behavior).
+  > “As developers, we fail in two ways: we build the thing wrong, or we build the wrong thing. Unit tests ensure you are building the thing right; functional tests ensure you are building the right thing.”
+
+Characteristics:
+- Operate at the system level.
+- May involve UI automation or HTTP requests against a test host.
+- Slower and more brittle than unit and integration tests.
+- Should be kept to the minimum set needed to be confident the system behaves as users expect.
+
+![Testing Pyramid](imgs/testing-pyramid.png)
+
+Common starting points on what to test:
+- Conditional logic:
+Any method with behavior that changes based on conditions (if/else, switch) should have tests for different branches.
+- Happy path and sad path:
+  - At least one test for normal, successful flow.
+  - At least one test for error conditions or atypical results.
+- Focus on what can fail:
+Prioritize complex, business-critical methods over trivial code.
+Code coverage metrics are useful, but don’t write tests just to increase coverage; write tests where failures matter.
+
+# Conclusion: Principles Over Rules
+
+Architecture is not about following a rigid set of rules; it is about making intentional trade-offs to manage complexity. This guide is based on the core principles of Architecting Modern Web Applications with ASP.NET Core and Azure, but it has been extended with additional practical patterns to create a more complete reference. As you apply the concepts in this guide, keep these core principles in mind:
+
+1. **Start Simple**: Begin with a well-structured modular monolith. Do not introduce the complexity of microservices until you have a proven need for independent scaling or deployment.
+2. **Protect the Domain**: Your business logic is the most valuable part of your application. Keep it pure, testable, and free from dependencies on frameworks, databases, or UI concerns.
+3. **Embrace Evolution**: Architecture is iterative. Refactor when you feel pain, when tests become brittle, or when a module clearly needs to be split.
+4. **Test for Confidence**: Use the testing pyramid to build a safety net. Fast unit tests for logic, integration tests for boundaries, and functional tests for critical user journeys.
+5. **Measure Before Optimizing**: Whether it is caching, scaling, or complex patterns, measure performance and complexity first. Optimize only where it provides tangible value.
+
+The goal of architecture is not perfection; it is sustainability. Build a system that is easy to change, easy to understand, and easy to deploy.

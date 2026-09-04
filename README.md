@@ -29,7 +29,7 @@ Categories:
 ### Architecture
 1. ✅ [Head First Design Patterns](./Head_First_Design_patterns/)
 2. ✅ [Clean Code](./Clean_Code/)
-3. 🎦 [Architecting Modern Web Applications with ASP.NET Core and Azure](./Architecting-Modern-Web-Applications-with-ASP.NET-Core-and-Azure)
+3. ✅ [Architecting Modern Web Applications with ASP.NET Core and Azure](./Architecting-Modern-Web-Applications-with-ASP.NET-Core-and-Azure)
 
 ### AI
 1. ⏸ [AI Driven Development Notes](./AI_Driven_Development_Notes/)
