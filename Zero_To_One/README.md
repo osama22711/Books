@@ -14,6 +14,7 @@
 - [Last Mover Advantage](#last-mover-advantage)
 - [You Are Not a Lottery Ticket](#you-are-not-a-lottery-ticket)
 - [Follow the Money](#follow-the-money)
+- [Secrets](#secrets)
 
 
 # Preface
@@ -145,3 +146,24 @@ Thiel argues that founders must reject the lottery ticket mindset. You are not a
 > Key takeaway: You are not a lottery ticket. The future is not something that happens to you; it is something you build. Great founders are definite optimists who commit to a specific vision and work systematically to make it real. Indefinite optimism feels safe, but it produces stagnation. Definite optimism is risky, but it is the only path to 0 to 1.
 
 # Follow the Money
+Thiel introduces one of the most important concepts in the book: the power law. This is the idea that in venture capital—and in startups generally—outcomes are not evenly distributed. A tiny number of investments generate the vast majority of returns. Most investments lose money or break even; a few produce extraordinary gains.
+
+Thiel uses venture capital as the clearest example. A VC fund may invest in dozens of companies. But the returns are not spread evenly. One company—like Google or Facebook—may return more than the entire rest of the portfolio combined.
+
+This means the traditional "diversified portfolio" approach is partly an illusion. VCs diversify because they cannot know in advance which company will win. But the truth is that the best investment in a successful fund equals or outperforms all other investments combined.
+
+The power law means you cannot simply "spread your bets" and expect great results. You must identify the one opportunity with massive potential and concentrate on it.
+
+This principle applies beyond investing. It applies to startups themselves:
+- **Product focus**: A startup cannot do everything. It must find the one thing it does 10x better than anyone else and focus relentlessly on that.
+- **Market focus**: A startup should dominate one specific market before expanding. Trying to serve everyone usually means serving no one well.
+- **People focus**: One exceptional hire or co-founder can be worth more than ten average ones.
+- **Distribution focus**: One distribution channel that works is worth more than five that are mediocre.
+
+The startup that tries to do many things moderately well will be beaten by the startup that does one thing extraordinarily well.
+
+The power law is difficult to accept because it contradicts the safety-first mindset. It is easier to believe that if you work hard and cover all bases, you will succeed. But the data says otherwise. In a startup, a few key decisions—choosing the right market, building the right product, hiring the right co-founder—determine almost everything.
+
+> Key takeaway: The power law rules everything. In venture capital and startups, a tiny number of outcomes matter more than everything else combined. You cannot diversify your way to greatness. You must identify the one thing that has the potential to be 10x better and focus relentlessly on it.
+
+# Secrets
