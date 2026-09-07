@@ -25,7 +25,7 @@ Categories:
 ### System Design
 1. ✅ [Designing Data Intensive Applications](./Designing_Data_Intensive_Applications/)
 2. ⏸ [System Design Use Cases](./System_Design_Use_Cases/)
-3. ⏸ [System Design Interview](./System_Design_Interview/)
+3. 🎦 [System Design Interview](./System_Design_Interview/)
 
 ### Architecture
 1. ✅ [Head First Design Patterns](./Head_First_Design_patterns/)
