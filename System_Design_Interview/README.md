@@ -15,6 +15,8 @@
     - [Write-Through](#write-through)
     - [Write-Behind](#write-behind)
     - [Interview Practice Question](#interview-practice-question-1)
+- [Content delivery network (CDN)](#content-delivery-network-cdn)
+  - [CDN Considerations](#cdn-considerations)
 
 # Single Point of Failure (SPOF)
 **Definition**: A Single Point of Failure is any component in your system that, if it fails, will cause the entire system to go down or become completely unusable.
@@ -36,6 +38,8 @@ The solution to Eliminate SPOFs is redundancy and failover:
 | Active-Passive Failover    | Have a standby replica that takes over if the primary fails (e.g., database replication with failover).                  |
 | Active-Active Clustering   | Have multiple nodes all handling traffic simultaneously (e.g., Cassandra, Redis Cluster).                                |
 | Multi-Region/AZ Deployment | Deploy across multiple Availability Zones (AZs) within a cloud provider so a single datacenter failure doesn't kill you. |
+
+![SPOF](imgs/SPOF.png)
 
 > Interview Tip: Whenever you design a system, the interviewer will ask: "What happens if this component dies?" Your answer should always include eliminating SPOFs by making each tier (web, app, cache, DB) highly available.
 
@@ -157,3 +161,23 @@ Solutions:
 - Set an LRU eviction policy with TTL = 2 minutes.
 - On product update, delete the cache entry.
 - Use a mutex to prevent Thundering Herd when a product goes viral.
+
+# Content delivery network (CDN)
+A CDN is a network of geographically dispersed servers used to deliver static content. CDN
+servers cache static content like images, videos, CSS, JavaScript files, etc.
+
+Here is how CDN works at the high-level: when a user visits a website, a CDN server closest
+to the user will deliver static content. Intuitively, the further users are from CDN servers, the
+slower the website loads. For example, if CDN servers are in San Francisco, users in Los
+Angeles will get content faster than users in Europe. Figure 1-9 is a great example that shows
+how CDN improves load time.
+
+![CDN](imgs/cdn.png)
+
+![CDN Workflow](imgs/cdn-workflow.png)
+
+## CDN Considerations
+- **Cost** – CDNs charge for data transfer; avoid caching rarely used assets to save money.
+- **Cache expiry (TTL)** – Choose TTL carefully: too long risks stale content; too short increases origin load.
+- **CDN fallback** – Plan for outages: clients should detect CDN failure and fetch assets from the origin.
+- **Invalidation** – Update content early via CDN purge APIs or, preferably, URL versioning (e.g., image.png?v=2).
