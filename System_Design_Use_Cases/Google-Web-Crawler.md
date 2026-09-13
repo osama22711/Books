@@ -1,0 +1,2 @@
+# References:
+1. [Hello Interview - Design a Web Crawler System Design Interview w/ a Ex-Meta Staff Engineer](https://www.youtube.com/watch?v=krsuaUp__pM&list=PL5q3E8eRUieWtYLmRU3z94-vGRcwKr9tM&index=10)
